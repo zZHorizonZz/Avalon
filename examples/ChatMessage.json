@@ -1,0 +1,47 @@
+{
+  "text": "Item\u003e ",
+  "color": "#edb334",
+  "bold": false,
+  "underline": false,
+  "italic": false,
+  "obfuscated": false,
+  "strikethrough": false,
+  "extra": [
+    {
+      "text": "You received ",
+      "color": "#aaaaaa",
+      "bold": false,
+      "underline": false,
+      "italic": false,
+      "obfuscated": false,
+      "strikethrough": false
+    },
+    {
+      "text": "32x ",
+      "color": "#ffff55",
+      "bold": false,
+      "underline": false,
+      "italic": false,
+      "obfuscated": false,
+      "strikethrough": false
+    },
+    {
+      "text": " of ",
+      "color": "#aaaaaa",
+      "bold": false,
+      "underline": false,
+      "italic": false,
+      "obfuscated": false,
+      "strikethrough": false
+    },
+    {
+      "text": "STONE",
+      "color": "#ffff55",
+      "bold": false,
+      "underline": false,
+      "italic": false,
+      "obfuscated": false,
+      "strikethrough": false
+    }
+  ]
+}

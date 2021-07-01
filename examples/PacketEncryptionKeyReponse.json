@@ -1,0 +1,26 @@
+{
+  "response" : {
+    "id": "{identifier}",
+    "name": "{nickname}",
+    "properties": [
+      {
+        "name": "{name of property}",
+        "value": "{value}",
+        "signature": "{signature}"
+      }
+    ]
+  },
+  "response" : {
+    "comment": "Should be formatted"
+  },
+  "response" : {
+    "id": "{identifier}",
+    "name": "{nickname}",
+    "properties":
+      {
+        "name": "{name of property}",
+        "value": "{value}",
+        "signature": "{signature}"
+      }
+  }
+}

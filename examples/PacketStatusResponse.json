@@ -1,0 +1,14 @@
+{
+  "description": {
+    "text": "JSON Testing -\u003e Running...",
+    "color": "#55ffff"
+  },
+  "version": {
+    "name": "1.16.4",
+    "protocol": 754
+  },
+  "players": {
+    "max":128,
+    "online":64
+  }
+}

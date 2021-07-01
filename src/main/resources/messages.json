@@ -1,0 +1,39 @@
+{
+  "network_server": {
+    "welcome_message": "Welcome to the horizontier server custom server developers-friendly server core.",
+    "developer_mode_message": "This server is currently running in developer mode and should be used only for develop purposes and nothing else!",
+    "loading_message": "Loading server...",
+    "loading_complete_message": "Server has been successfully loaded. In %s seconds.",
+    "shutdown_message": "Stopping the server...",
+    "shutdown_complete_message": "Server has been successfully stopped."
+  },
+  "socket_server": {
+    "loading_message": "Loading socket server...",
+    "loading_done_message": "Socket server has been successfully started.",
+    "bind_message": "Starting bind of the server to the address.",
+    "bind_complete_message": "Server has been successfully bound and is now listening on address: %s",
+    "bind_failure_message": "Error occurred when the binding server... The server now will be stopped.",
+    "shutdown_message": "Stopping the socket server...",
+    "shutdown_complete_message": "Socket server has been successfully stopped."
+  },
+  "player_connection": {
+    "network_error_in": "Network error occurred on input.",
+    "network_error_out": "Network error occurred on output.",
+    "handling_error": "Error occurred while handling %s by handler %s.",
+    "session_closed": "[%s] Session has been closed. Reason: %s"
+  },
+  "abstract_manager": {
+    "task_asynchronous_null_exception": "Task can not be executed. Because there is not any assigned thread.",
+    "task_scheduler_null_exception": "Task can not be executed. Because Scheduler Manager is not assigned."
+  },
+  "scheduler_manager": {
+    "task_execution_exception": "[Task #%s] Failed execution."
+  },
+  "annotation_manager": {
+    "annotation_callback_error": "Something went wrong with finding classes annotated with %s"
+  },
+  "packet_manager": {
+    "lister_register_start": "Registering %s as Packet Listener.",
+    "lister_register_done": "%s successfully registered."
+  }
+}
