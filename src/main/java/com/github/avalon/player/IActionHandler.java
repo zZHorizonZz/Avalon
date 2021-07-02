@@ -68,13 +68,5 @@ public interface IActionHandler {
    */
   void handleDisconnect(String reason);
 
-  /**
-   * This method is called in tick method and validates the player's chunks if chunks are in the
-   * List of rendered chunks then this chunk si skipped if chunk is not then this chunk is rendered.
-   *
-   * @since 1.1
-   */
-  void handleChunk();
-
   void handleChat();
 }

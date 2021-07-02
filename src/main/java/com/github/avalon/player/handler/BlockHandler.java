@@ -34,17 +34,6 @@ public class BlockHandler implements PacketListener {
         .getChunk()
         .getProvider()
         .placeBlockAsPlayer(player, placeLocation, blockItem.getMaterial());
-
-    player
-        .getServer()
-        .getChatManager()
-        .broadcastMessage(
-            "%#f01f23%%bold%Manager %#7cedf2%Avalon %gray%> Block has been placed at X:"
-                + placeLocation.getBlockX()
-                + " ,Y: "
-                + placeLocation.getBlockY()
-                + " ,Z: "
-                + placeLocation.getBlockZ());
   }
 
   @PacketHandler

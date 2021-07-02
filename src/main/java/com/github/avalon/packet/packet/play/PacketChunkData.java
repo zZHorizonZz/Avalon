@@ -1,7 +1,7 @@
 package com.github.avalon.packet.packet.play;
 
 import com.github.avalon.common.data.DataType;
-import com.github.avalon.dimension.chunk.Chunk;
+import com.github.avalon.dimension.chunk.IChunk;
 import com.github.avalon.nbt.tag.TagCompound;
 import com.github.avalon.network.ProtocolType;
 import com.github.avalon.packet.annotation.PacketRegister;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Chunk data packet contains data about chunk his heightmaps, biomes, data (that contains blocks
+ * IChunk data packet contains data about chunk his heightmaps, biomes, data (that contains blocks
  * that are already in chunk) and block entities that are entities that are considered as blocks for
  * example shulkerbox.
  *
@@ -62,7 +62,7 @@ public class PacketChunkData extends Packet<PacketChunkData> {
 
   public PacketChunkData() {}
 
-  public PacketChunkData(Chunk chunk) {
+  public PacketChunkData(IChunk chunk) {
     x = chunk.getX();
     z = chunk.getZ();
 

@@ -2,7 +2,8 @@ package com.github.avalon.block;
 
 import com.github.avalon.data.Material;
 import com.github.avalon.data.Transform;
-import com.github.avalon.dimension.chunk.Chunk;
+import com.github.avalon.dimension.chunk.IChunk;
+import com.github.avalon.dimension.chunk.IChunkSection;
 
 public class Block {
 
@@ -22,15 +23,15 @@ public class Block {
    * them with this method.
    *
    * @return Material of block. If material of block does not exist in {@link
-   *     com.github.avalon.dimension.chunk.ChunkSection} then AIR is returned.
+   *     IChunkSection} then AIR is returned.
    */
   public Material getMaterial() {
     return transform.getChunk().getProvider().getMaterial(transform);
   }
 
   /**
-   * Sets the material of current block at it's coordinates in {@link Chunk} respectively in {@link
-   * com.github.avalon.dimension.chunk.ChunkSection}.
+   * Sets the material of current block at it's coordinates in {@link IChunk} respectively in {@link
+   * IChunkSection}.
    *
    * @param material Material of block.
    */
@@ -38,7 +39,7 @@ public class Block {
     transform.getChunk().getProvider().placeBlockAsSystem(transform, material);
   }
 
-  public Chunk getChunk() {
+  public IChunk getChunk() {
     return transform.getChunk();
   }
 }

@@ -2,49 +2,59 @@ package com.github.avalon.dimension.chunk;
 
 import com.github.avalon.data.Material;
 
+import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Chunk section is used in chunk it's created by 16*16*16 cube of blocks. {@link
- * com.github.avalon.packet.packet.play.PacketChunkData} sends chunk column that is created by
- * these sections. In versions below 1.17 usually Chunk column was created by 16 sections. Also we
- * should determine whether is chunk section empty or not for writing of these information's to the
- * {@link com.github.avalon.network.PacketBuffer}
- *
- * @author Horizon
- * @version 1.0
- */
-public interface ChunkSection {
+public class ChunkSection implements IChunkSection {
 
-  Chunk getChunk();
+  private final IChunk chunk;
 
-  int getX();
+  private final int x;
+  private final int y;
+  private final int z;
 
-  int getY();
+  private final Map<Integer, Material> blocks;
 
-  int getZ();
+  public ChunkSection(IChunk chunk, int x, int y, int z) {
+    this.chunk = chunk;
 
-  boolean isEmpty();
+    this.x = x;
+    this.y = y;
+    this.z = z;
 
-  void setEmpty(boolean empty);
-
-  Map<Integer, Material> getMaterials();
-
-  default Material getMaterialAt(int x, int y, int z) {
-    int location = x | (y << 0x08) | (z << 0x10);
-    return getMaterials().getOrDefault(location, Material.AIR);
+    blocks = new HashMap<>();
   }
 
-  default void setMaterialAt(int x, int y, int z, Material material) {
-    int location = x | (y << 0x08) | (z << 0x10);
-    if (getMaterials().containsKey(location)) {
-      if (material.equals(Material.AIR)) {
-        getMaterials().remove(location);
-        return;
-      }
-      getMaterials().replace(location, material);
-    } else if (material != Material.AIR) {
-      getMaterials().put(location, material);
-    }
+  @Override
+  public IChunk getChunk() {
+    return chunk;
+  }
+
+  @Override
+  public int getX() {
+    return x;
+  }
+
+  @Override
+  public int getY() {
+    return y;
+  }
+
+  @Override
+  public int getZ() {
+    return z;
+  }
+
+  @Override
+  public boolean isEmpty() {
+    return false;
+  }
+
+  @Override
+  public void setEmpty(boolean empty) {}
+
+  @Override
+  public Map<Integer, Material> getMaterials() {
+    return blocks;
   }
 }

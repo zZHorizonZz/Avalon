@@ -19,7 +19,7 @@ public class Bootstrap implements Initializer {
 
   private final ResourceManager resourceManager;
   private final ConsoleManager consoleManager;
-  private final NetworkServer server;
+  private final Server server;
 
   public Bootstrap() {
     INSTANCE = this;
@@ -27,7 +27,7 @@ public class Bootstrap implements Initializer {
     resourceManager = new ResourceManager();
     message = new ServerMessage(resourceManager.loadResource(null, "messages.json"));
     consoleManager = new ConsoleManager(this);
-    server = new NetworkServer(this);
+    server = new Server(this);
     server.startServer();
   }
 
@@ -38,7 +38,7 @@ public class Bootstrap implements Initializer {
     return consoleManager;
   }
 
-  public NetworkServer getServer() {
+  public Server getServer() {
     return server;
   }
 

@@ -7,8 +7,9 @@ import com.github.avalon.data.Transform;
 import com.github.avalon.dimension.DimensionManager;
 import com.github.avalon.dimension.biome.Biome;
 import com.github.avalon.dimension.biome.BiomeContainer;
-import com.github.avalon.dimension.chunk.Chunk;
-import com.github.avalon.dimension.chunk.ChunkBatch;
+import com.github.avalon.dimension.chunk.ChunkService;
+import com.github.avalon.dimension.chunk.IChunk;
+import com.github.avalon.dimension.chunk.IChunkBatch;
 import com.github.avalon.nbt.serialization.NamedBinarySerializer;
 import com.github.avalon.player.IPlayer;
 import com.github.avalon.resource.data.ResourceIdentifier;
@@ -28,18 +29,21 @@ public interface Dimension extends NamedBinarySerializer {
   /** Start unload of the world. */
   void unload();
 
+  /** Is called every tick by server main thread tick. */
+  void tick();
+
   /**
-   * If {@link ChunkBatch} already exists it will be loaded otherwise new chunk batch will be
+   * If {@link IChunkBatch} already exists it will be loaded otherwise new chunk batch will be
    * created.
    *
    * @param x X position
    * @param z Z position
    */
-  ChunkBatch loadChunkBatch(int x, int z);
+  IChunkBatch loadChunkBatch(int x, int z);
 
-  ChunkBatch getBatchAt(int x, int z);
+  IChunkBatch getBatchAt(int x, int z);
 
-  Chunk getChunkAt(int x, int z);
+  IChunk getChunkAt(int x, int z);
 
   Block getBlockAt(int x, int y, int z);
 
@@ -73,6 +77,9 @@ public interface Dimension extends NamedBinarySerializer {
 
   /** @return Container of the {@link Biome} */
   BiomeContainer getBiomeRegistry();
+
+  /** @return Returns the {@link ChunkService} that handles sending of chunks to client. */
+  ChunkService getChunkService();
 
   /**
    * Returns the type of current dimension.
@@ -111,7 +118,7 @@ public interface Dimension extends NamedBinarySerializer {
    * @param transform Location of character to spawn.
    */
   void spawnCharacter(
-          com.github.avalon.character.character.Character character, Transform transform);
+      com.github.avalon.character.character.Character character, Transform transform);
 
   /**
    * Spawns the character on the specified location in current dimension. Control of the character
@@ -128,8 +135,8 @@ public interface Dimension extends NamedBinarySerializer {
   /** @return Map of {@link IPlayer}s in current dimension. */
   Map<Integer, IPlayer> getPlayers();
 
-  /** @return World {@link ChunkBatch}s {@link TripleMap}. */
-  TripleMap<Integer, Integer, ChunkBatch> getChunkBatches();
+  /** @return World {@link IChunkBatch}s {@link TripleMap}. */
+  TripleMap<Integer, Integer, IChunkBatch> getChunkBatches();
 
   /** @return Seed of the world. */
   long getSeed();

@@ -4,7 +4,7 @@ import com.flowpowered.network.ConnectionManager;
 import com.github.avalon.network.ProtocolType;
 import com.github.avalon.packet.PacketBatch;
 import com.github.avalon.packet.packet.Packet;
-import com.github.avalon.server.NetworkServer;
+import com.github.avalon.server.Server;
 
 import java.net.InetSocketAddress;
 import java.util.LinkedList;
@@ -79,6 +79,6 @@ public interface IPlayerSession {
   /** @return Returns player connection handler. */
   PlayerConnection getConnection();
 
-  /** @return The {@link com.github.avalon.server.NetworkServer} */
-  NetworkServer getServer();
+  /** @return The {@link Server} */
+  Server getServer();
 }

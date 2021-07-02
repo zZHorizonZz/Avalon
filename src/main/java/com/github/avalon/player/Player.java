@@ -7,7 +7,7 @@ import com.github.avalon.chat.message.ChatColor;
 import com.github.avalon.common.math.Vector2;
 import com.github.avalon.data.Material;
 import com.github.avalon.data.Transform;
-import com.github.avalon.dimension.chunk.Chunk;
+import com.github.avalon.dimension.chunk.IChunk;
 import com.github.avalon.dimension.dimension.Dimension;
 import com.github.avalon.inventory.Inventory;
 import com.github.avalon.inventory.inventory.PlayerInventory;
@@ -22,7 +22,8 @@ import com.github.avalon.player.attributes.MessageType;
 import com.github.avalon.player.attributes.PlayerAttributes;
 import com.github.avalon.player.attributes.PlayerSettings;
 import com.github.avalon.player.attributes.Status;
-import com.github.avalon.server.NetworkServer;
+import com.github.avalon.player.handler.PlayerChunkProvider;
+import com.github.avalon.server.Server;
 import io.netty.channel.Channel;
 
 import java.net.InetSocketAddress;
@@ -33,7 +34,7 @@ public class Player implements IPlayer {
 
   public static final int INVALID_MOVES = 10; // This is something like basic antiteleport ac.
 
-  private final NetworkServer server;
+  private final Server server;
   private final ConnectionManager connectionManager;
   private final PlayerConnection playerConnection;
 
@@ -55,6 +56,7 @@ public class Player implements IPlayer {
   private Map<Integer, Inventory> inventories;
 
   private Dimension dimension;
+  private PlayerChunkProvider chunkProvider;
   private final List<Vector2> chunkView;
 
   private PlayerProfile profile;
@@ -70,7 +72,7 @@ public class Player implements IPlayer {
 
   private long lifetime;
 
-  public Player(NetworkServer server, Channel channel, ConnectionManager connectionManager) {
+  public Player(Server server, Channel channel, ConnectionManager connectionManager) {
     this.server = server;
     playerConnection = new PlayerConnection(this, channel);
     this.connectionManager = connectionManager;
@@ -89,6 +91,7 @@ public class Player implements IPlayer {
     inventories = new LinkedHashMap<>();
     incomingMovements = new LinkedTransferQueue<>();
     actionHandler = new ActionHandler(this);
+    chunkProvider = new PlayerChunkProvider(this);
 
     inventories.put(0, new PlayerInventory(this));
   }
@@ -107,14 +110,13 @@ public class Player implements IPlayer {
       }
 
       actionHandler.handleMovementOut();
-      actionHandler.handleChunk();
+      chunkProvider.handleChunk();
     }
   }
 
   @Override
   public void idle() {
-    if (
-    /*pingMessageId == 0 && */ playerConnection.getProtocolType().equals(ProtocolType.PLAY)) {
+    if (playerConnection.getProtocolType().equals(ProtocolType.PLAY)) {
       pingMessageId = System.currentTimeMillis();
       sendPacket(new PacketKeepAliveClient(pingMessageId));
     } else {
@@ -260,7 +262,7 @@ public class Player implements IPlayer {
   }
 
   @Override
-  public Chunk getCurrentChunk() {
+  public IChunk getCurrentChunk() {
     return currentLocation.getChunk();
   }
 
@@ -310,7 +312,7 @@ public class Player implements IPlayer {
   }
 
   @Override
-  public NetworkServer getServer() {
+  public Server getServer() {
     return server;
   }
 

@@ -10,29 +10,29 @@ import java.util.Collection;
 
 public class ChunkSectionProvider {
 
-  private final Chunk chunk;
-  private final ChunkSection[] sections;
+  private final IChunk chunk;
+  private final IChunkSection[] sections;
 
-  public ChunkSectionProvider(Chunk chunk) {
+  public ChunkSectionProvider(IChunk chunk) {
     this.chunk = chunk;
 
-    sections = new ChunkSection[16];
-    for (int y = 0; y < Chunk.CHUNK_SECTIONS; y++) {
-      sections[y] = new NetworkChunkSection(chunk, chunk.getX(), y, chunk.getZ());
+    sections = new IChunkSection[16];
+    for (int y = 0; y < IChunk.CHUNK_SECTIONS; y++) {
+      sections[y] = new ChunkSection(chunk, chunk.getX(), y, chunk.getZ());
     }
   }
 
   /**
    * Return the material at selected location. Because material call can/can not be called we
-   * retrieving material directly from {@link ChunkSection}.
+   * retrieving material directly from {@link IChunkSection}.
    *
    * @param x,y,z Location of material.
    * @return Material at specified location.
    */
   private Material getMaterialAt(int x, int y, int z) {
-    return sections[y / Chunk.CHUNK_SECTION_SIZE].getMaterialAt(
+    return sections[y / IChunk.CHUNK_SECTION_SIZE].getMaterialAt(
         x,
-        y % Chunk.CHUNK_SECTION_SIZE == 0 ? Chunk.CHUNK_SECTION_SIZE : y % Chunk.CHUNK_SECTION_SIZE,
+        y % IChunk.CHUNK_SECTION_SIZE == 0 ? IChunk.CHUNK_SECTION_SIZE : y % IChunk.CHUNK_SECTION_SIZE,
         z);
   }
 
@@ -43,9 +43,9 @@ public class ChunkSectionProvider {
    * @param material Material that will be set.
    */
   private void setMaterialAt(int x, int y, int z, Material material) {
-    sections[Math.floorDiv(y, Chunk.CHUNK_SECTION_SIZE)].setMaterialAt(
+    sections[Math.floorDiv(y, IChunk.CHUNK_SECTION_SIZE)].setMaterialAt(
         x,
-        y % Chunk.CHUNK_SECTION_SIZE == 0 ? Chunk.CHUNK_SECTION_SIZE : y % Chunk.CHUNK_SECTION_SIZE,
+        y % IChunk.CHUNK_SECTION_SIZE == 0 ? IChunk.CHUNK_SECTION_SIZE : y % IChunk.CHUNK_SECTION_SIZE,
         z,
         material);
   }
@@ -126,7 +126,7 @@ public class ChunkSectionProvider {
     return getMaterialAt(location.getBlockX(), location.getBlockY(), location.getBlockZ());
   }
 
-  public Chunk getChunk() {
+  public IChunk getChunk() {
     return chunk;
   }
 }

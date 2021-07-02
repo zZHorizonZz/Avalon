@@ -7,9 +7,10 @@ import com.github.avalon.common.system.TripleMap;
 import com.github.avalon.data.Transform;
 import com.github.avalon.dimension.DimensionManager;
 import com.github.avalon.dimension.biome.BiomeContainer;
-import com.github.avalon.dimension.chunk.Chunk;
 import com.github.avalon.dimension.chunk.ChunkBatch;
-import com.github.avalon.dimension.chunk.NetworkChunkBatch;
+import com.github.avalon.dimension.chunk.ChunkService;
+import com.github.avalon.dimension.chunk.IChunk;
+import com.github.avalon.dimension.chunk.IChunkBatch;
 import com.github.avalon.nbt.tag.Tag;
 import com.github.avalon.nbt.tag.TagCompound;
 import com.github.avalon.nbt.tag.TagInteger;
@@ -33,13 +34,15 @@ public class NetworkDimension implements Dimension {
   private final DimensionType dimensionType;
   private final int dimensionIdentifier;
 
+  private final ChunkService chunkService;
+
   private String dimensionName;
   private DimensionData dimensionData;
   private Difficulty difficulty;
   private boolean difficultyLocked;
 
   private final Map<Integer, IPlayer> players;
-  private final TripleMap<Integer, Integer, ChunkBatch> chunkBatches;
+  private final TripleMap<Integer, Integer, IChunkBatch> chunkBatches;
 
   public NetworkDimension(
       DimensionManager dimensionManager,
@@ -53,6 +56,8 @@ public class NetworkDimension implements Dimension {
 
     this.dimensionName = dimensionName;
     this.dimensionType = dimensionType;
+
+    chunkService = new ChunkService(this);
     dimensionData = new DimensionData(this);
     difficulty = Difficulty.NORMAL;
     difficultyLocked = true;
@@ -79,12 +84,19 @@ public class NetworkDimension implements Dimension {
   public void unload() {}
 
   @Override
-  public ChunkBatch loadChunkBatch(int xCoordinate, int zCoordinate) {
-    int batchSize = NetworkChunkBatch.DEFAULT_CHUNK_BATCH_SIZE;
+  public void tick() {
+    if (chunkService != null) {
+      chunkService.tick();
+    }
+  }
+
+  @Override
+  public IChunkBatch loadChunkBatch(int xCoordinate, int zCoordinate) {
+    int batchSize = ChunkBatch.DEFAULT_CHUNK_BATCH_SIZE;
     int xMin = -Math.floorDiv(batchSize, 2);
     int zMin = -Math.floorDiv(batchSize, 2);
 
-    ChunkBatch chunkBatch = new NetworkChunkBatch(this, xCoordinate, zCoordinate);
+    IChunkBatch chunkBatch = new ChunkBatch(this, xCoordinate, zCoordinate);
 
     for (int x = xMin; x <= batchSize - Math.floorDiv(batchSize, 2); x++) {
       for (int z = zMin; z <= batchSize - Math.floorDiv(batchSize, 2); z++) {
@@ -98,18 +110,16 @@ public class NetworkDimension implements Dimension {
 
   @Nullable
   @Override
-  public ChunkBatch getBatchAt(int x, int z) {
+  public IChunkBatch getBatchAt(int x, int z) {
     return chunkBatches.get(x, z);
   }
 
   @Override
-  public Chunk getChunkAt(int x, int z) {
-    int batchX = x / NetworkChunkBatch.DEFAULT_CHUNK_BATCH_SIZE;
-    int batchZ = z / NetworkChunkBatch.DEFAULT_CHUNK_BATCH_SIZE;
+  public IChunk getChunkAt(int x, int z) {
+    int batchX = x / ChunkBatch.DEFAULT_CHUNK_BATCH_SIZE;
+    int batchZ = z / ChunkBatch.DEFAULT_CHUNK_BATCH_SIZE;
     return Objects.requireNonNull(getBatchAt(batchX, batchZ))
-        .getChunk(
-            x % NetworkChunkBatch.DEFAULT_CHUNK_BATCH_SIZE,
-            z % NetworkChunkBatch.DEFAULT_CHUNK_BATCH_SIZE);
+        .getChunk(x % ChunkBatch.DEFAULT_CHUNK_BATCH_SIZE, z % ChunkBatch.DEFAULT_CHUNK_BATCH_SIZE);
   }
 
   @Override
@@ -155,6 +165,11 @@ public class NetworkDimension implements Dimension {
   @Override
   public BiomeContainer getBiomeRegistry() {
     return null;
+  }
+
+  @Override
+  public ChunkService getChunkService() {
+    return chunkService;
   }
 
   @Override
@@ -225,7 +240,7 @@ public class NetworkDimension implements Dimension {
   }
 
   @Override
-  public TripleMap<Integer, Integer, ChunkBatch> getChunkBatches() {
+  public TripleMap<Integer, Integer, IChunkBatch> getChunkBatches() {
     return chunkBatches;
   }
 

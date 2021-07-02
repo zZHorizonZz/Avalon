@@ -6,7 +6,7 @@ import com.github.avalon.common.system.UtilNetwork;
 import com.github.avalon.console.logging.DefaultLogger;
 import com.github.avalon.player.Player;
 import com.github.avalon.player.PlayerConnection;
-import com.github.avalon.server.NetworkServer;
+import com.github.avalon.server.Server;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -24,9 +24,12 @@ import java.util.concurrent.CountDownLatch;
  * @author Horizon
  * @version 1.0
  */
-public class SocketServer extends Server implements ConnectionManager {
+public class SocketServer implements ConnectionManager {
 
   public static final DefaultLogger LOGGER = new DefaultLogger(SocketServer.class);
+
+  private final Server server;
+  protected CountDownLatch latch;
 
   protected final EventLoopGroup bossGroup;
   protected final EventLoopGroup workerGroup;
@@ -36,11 +39,12 @@ public class SocketServer extends Server implements ConnectionManager {
   /**
    * Creates an instance for the specified server.
    *
-   * @param server the associated {@link NetworkServer}
+   * @param server the associated {@link Server}
    * @param latch The countdown latch used during server startup to wait for network server binding.
    */
-  public SocketServer(NetworkServer server, CountDownLatch latch) {
-    super(server, latch);
+  public SocketServer(Server server, CountDownLatch latch) {
+    this.server = server;
+    this.latch = latch;
 
     bossGroup = UtilNetwork.createBestEventLoopGroup();
     workerGroup = UtilNetwork.createBestEventLoopGroup();
@@ -55,46 +59,15 @@ public class SocketServer extends Server implements ConnectionManager {
   }
 
   @Override
-  public ChannelFuture bind(InetSocketAddress address) {
-    LOGGER.info("Binding the server address...");
-    ChannelFuture channelFuture =
-        bootstrap
-            .bind(address)
-            .addListener(
-                future -> {
-                  if (future.isSuccess()) {
-                    onBindSuccess(address);
-                  } else {
-                    onBindFailure(address, future.cause());
-                  }
-                });
-    channel = channelFuture.channel();
-    return channelFuture;
-  }
-
-  @Override
-  public void onBindSuccess(InetSocketAddress address) {
-    getServer().getServerData().setPort(address.getPort());
-    getServer().getServerData().setHostname(address.getHostString());
-    LOGGER.info("Server successfully bound to ");
-    super.onBindSuccess(address);
-  }
-
-  @Override
-  public void onBindFailure(InetSocketAddress address, Throwable t) {
-    System.exit(1);
-  }
-
-  @Override
   public PlayerConnection newSession(Channel channel) {
     LOGGER.info("Opening new channel on address %s", channel.remoteAddress().toString());
-    Player player = new Player(getServer(), channel, this);
+    Player player = new Player(server, channel, this);
     return player.getConnection();
   }
 
   @Override
   public void sessionInactivated(Session session) {
-    getServer().getPlayerSessionRegistry().remove(((PlayerConnection) session).getPlayer());
+    server.getPlayerSessionRegistry().remove(((PlayerConnection) session).getPlayer());
   }
 
   @Override
@@ -112,5 +85,37 @@ public class SocketServer extends Server implements ConnectionManager {
     } finally {
       LOGGER.info("Socket server has been successfully stopped.");
     }
+  }
+
+  public ChannelFuture bind(InetSocketAddress address) {
+    LOGGER.info("Binding the server address...");
+    ChannelFuture channelFuture =
+        bootstrap
+            .bind(address)
+            .addListener(
+                future -> {
+                  if (future.isSuccess()) {
+                    onBindSuccess(address);
+                  } else {
+                    onBindFailure(address, future.cause());
+                  }
+                });
+    channel = channelFuture.channel();
+    return channelFuture;
+  }
+
+  public void onBindSuccess(InetSocketAddress address) {
+    server.getServerData().setPort(address.getPort());
+    server.getServerData().setHostname(address.getHostString());
+    latch.countDown();
+    LOGGER.info("Server successfully bound to address.");
+  }
+
+  public void onBindFailure(InetSocketAddress address, Throwable t) {
+    System.exit(1);
+  }
+
+  public Server getServer() {
+    return server;
   }
 }

@@ -5,14 +5,14 @@ import com.github.avalon.character.character.CharacterLiving;
 import com.github.avalon.chat.command.ChatOperator;
 import com.github.avalon.common.math.Vector2;
 import com.github.avalon.data.Transform;
-import com.github.avalon.dimension.chunk.Chunk;
+import com.github.avalon.dimension.chunk.IChunk;
 import com.github.avalon.dimension.dimension.Dimension;
 import com.github.avalon.inventory.Inventory;
 import com.github.avalon.inventory.inventory.PlayerInventory;
 import com.github.avalon.player.attributes.PlayerAttributes;
 import com.github.avalon.player.attributes.PlayerSettings;
 import com.github.avalon.player.attributes.Status;
-import com.github.avalon.server.NetworkServer;
+import com.github.avalon.server.Server;
 
 import java.util.List;
 import java.util.Map;
@@ -85,7 +85,7 @@ public interface IPlayer extends IPlayerSession, ChatOperator {
 
   List<Vector2> getChunkView();
 
-  Chunk getCurrentChunk();
+  IChunk getCurrentChunk();
 
   CharacterLiving getControllingCharacter();
 
@@ -98,7 +98,7 @@ public interface IPlayer extends IPlayerSession, ChatOperator {
   Dimension getDimension();
 
   @Override
-  NetworkServer getServer();
+  Server getServer();
 
   /** @return Returns the profile of player with his uuid, skin data, etc. */
   PlayerProfile getPlayerProfile();

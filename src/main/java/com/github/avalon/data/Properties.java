@@ -3,7 +3,6 @@ package com.github.avalon.data;
 /**
  * This class provides data about player.
  *
- * @author Horizon
  * @version 1.0
  */
 public class Properties {

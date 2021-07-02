@@ -2,7 +2,7 @@ package com.github.avalon.chat.command;
 
 import com.github.avalon.chat.ChatManager;
 import com.github.avalon.player.attributes.MessageType;
-import com.github.avalon.server.NetworkServer;
+import com.github.avalon.server.Server;
 
 /**
  * Represents an object that can receive messages from server side. Or send messages to the server.
@@ -80,6 +80,6 @@ public interface ChatOperator {
     }
   }
 
-  /** @return Returns the {@link NetworkServer} */
-  NetworkServer getServer();
+  /** @return Returns the {@link Server} */
+  Server getServer();
 }

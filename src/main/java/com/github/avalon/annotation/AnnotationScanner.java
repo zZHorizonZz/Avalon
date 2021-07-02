@@ -4,6 +4,7 @@ import org.reflections.Reflections;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -15,7 +16,7 @@ import java.util.Set;
  */
 public class AnnotationScanner {
 
-  public static String DEFAULT_REFLECTION_PATH = "com.github.horizontier";
+  public static final String DEFAULT_REFLECTION_PATH = "com.github.avalon";
 
   public <A extends Annotation> Set<Class<?>> scanForClassesByAnnotation(Class<A> annotation) throws IOException {
     return scanForClassesByAnnotation(null, annotation);
@@ -31,7 +32,7 @@ public class AnnotationScanner {
    */
   public <A extends Annotation> Set<Class<?>> scanForClassesByAnnotation(
           String path, Class<A> annotation) {
-    if (annotation == null) throw new IllegalArgumentException("Annotation should be set!");
+    Objects.requireNonNull(annotation, "Annotation should be set!");
 
     Reflections reflections = new Reflections(path == null ? AnnotationScanner.DEFAULT_REFLECTION_PATH : path);
     Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(annotation);

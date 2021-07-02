@@ -7,14 +7,14 @@ public class BetaPlayer {
 
   private final IPlayerSession session;
   private final PlayerProfile playerProfile;
-  private final NetworkServer server;
+  private final Server server;
 
   private volatile Status playerStatus = Status.DISCONNECTED;
 
   private CharacterLiving controllingCharacter;
 
   private Dimension dimension;
-  private volatile List<Chunk> renderedChunks;
+  private volatile List<IChunk> renderedChunks;
 
   private PlayerSettings settings;
   private GameMode gameMode = GameMode.CREATIVE;
@@ -56,7 +56,7 @@ public class BetaPlayer {
   }
 
   @Override
-  public NetworkServer getServer() {
+  public Server getServer() {
     return this.server;
   }
 
@@ -92,13 +92,13 @@ public class BetaPlayer {
   }
 
   @Override
-  public List<Chunk> getRenderingChunks() {
+  public List<IChunk> getRenderingChunks() {
     return null;
   }
 
   @Override
   public void renderChunks() {
-    Chunk currentChunk = getPosition().getChunk();
+    IChunk currentChunk = getPosition().getChunk();
     if (!renderedChunks.contains(currentChunk)) {
       PacketChunkData data =
           new PacketChunkData(currentChunk.getX(), currentChunk.getZ(), true, currentChunk);
@@ -108,7 +108,7 @@ public class BetaPlayer {
   }
 
   @Override
-  public Chunk getCurrentChunk() {
+  public IChunk getCurrentChunk() {
     return null;
   }
 

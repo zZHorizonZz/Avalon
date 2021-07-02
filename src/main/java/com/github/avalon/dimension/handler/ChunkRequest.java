@@ -1,20 +1,21 @@
 package com.github.avalon.dimension.handler;
 
-import com.github.avalon.dimension.chunk.Chunk;
+import com.github.avalon.dimension.chunk.IChunk;
 import com.github.avalon.dimension.chunk.ChunkStatus;
 import com.github.avalon.packet.packet.play.PacketChunkData;
 import com.github.avalon.player.IPlayer;
+import com.github.avalon.player.attributes.Status;
 
 import java.util.concurrent.Callable;
 
 public class ChunkRequest implements Callable<Boolean> {
 
-  private final Chunk chunk;
+  private final IChunk chunk;
   private final IPlayer player;
 
   private final ChunkStatus status;
 
-  public ChunkRequest(Chunk chunk, IPlayer player) {
+  public ChunkRequest(IChunk chunk, IPlayer player) {
     this.player = player;
     this.chunk = chunk;
 
@@ -23,15 +24,13 @@ public class ChunkRequest implements Callable<Boolean> {
 
   @Override
   public Boolean call() {
-    if (!player.getConnection().isActive()) {
+    if (player.getPlayerStatus().equals(Status.DISCONNECTED)) {
       return false;
     }
 
-    System.out.println("Sending chunk: " + chunk.getX() + " , " + chunk.getZ());
-
     PacketChunkData data = new PacketChunkData(chunk);
     /*PacketUpdateLight light =
-        new PacketUpdateLight(position.getXAsInteger(), position.getZAsInteger(), true);*/
+    new PacketUpdateLight(position.getXAsInteger(), position.getZAsInteger(), true);*/
     player.sendPacket(data);
     // player.sendPacket(light);
 

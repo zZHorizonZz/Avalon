@@ -1,7 +1,7 @@
 package com.github.avalon.data;
 
 import com.github.avalon.common.math.Vector3;
-import com.github.avalon.dimension.chunk.Chunk;
+import com.github.avalon.dimension.chunk.IChunk;
 import com.github.avalon.dimension.dimension.Dimension;
 
 /**
@@ -9,7 +9,6 @@ import com.github.avalon.dimension.dimension.Dimension;
  * transform system includes some mathematical calculation methods for better handling of
  * coordinates.
  *
- * @author Horizon
  * @version 1.0
  */
 public class Transform {
@@ -101,9 +100,9 @@ public class Transform {
    * @return Location integer.
    */
   public int getChunkSectionLocation() {
-    return getBlockX() % Chunk.CHUNK_SECTION_SIZE
-        | (getBlockY() % Chunk.CHUNK_SECTION_SIZE << 0x08)
-        | (getBlockZ() % Chunk.CHUNK_SECTION_SIZE << 0x10);
+    return getBlockX() % IChunk.CHUNK_SECTION_SIZE
+        | (getBlockY() % IChunk.CHUNK_SECTION_SIZE << 0x08)
+        | (getBlockZ() % IChunk.CHUNK_SECTION_SIZE << 0x10);
   }
 
   public Vector3 toVector() {
@@ -118,10 +117,10 @@ public class Transform {
     return pitch;
   }
 
-  public Chunk getChunk() {
+  public IChunk getChunk() {
     return getDimension()
         .getChunkAt(
-            getBlockX() / (Chunk.CHUNK_SECTION_SIZE), getBlockZ() / (Chunk.CHUNK_SECTION_SIZE));
+            getBlockX() / (IChunk.CHUNK_SECTION_SIZE), getBlockZ() / (IChunk.CHUNK_SECTION_SIZE));
   }
 
   public Transform setX(double x) {

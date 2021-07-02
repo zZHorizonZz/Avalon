@@ -13,7 +13,7 @@ import com.github.avalon.packet.packet.login.PacketEncryptionKeyResponse;
 import com.github.avalon.packet.packet.login.PacketLoginIn;
 import com.github.avalon.player.IPlayer;
 import com.github.avalon.player.PlayerConnection;
-import com.github.avalon.server.NetworkServer;
+import com.github.avalon.server.Server;
 
 import javax.annotation.Nullable;
 import javax.crypto.*;
@@ -61,7 +61,7 @@ public class LoginHandler implements PacketListener {
     IPlayer player = connection.getPlayer();
 
     String name = packet.getUsername();
-    NetworkServer server = player.getServer();
+    Server server = player.getServer();
 
     if (!server.getServerData().isDeveloperMode()) {
       String sessionId = connection.getSessionId();

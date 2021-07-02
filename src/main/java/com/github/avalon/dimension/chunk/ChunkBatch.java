@@ -3,49 +3,67 @@ package com.github.avalon.dimension.chunk;
 import com.github.avalon.common.system.TripleMap;
 import com.github.avalon.dimension.dimension.Dimension;
 
-/**
- * Chunk batch is something like {@link Chunk} but instead of blocks it contains the chunks.
- *
- * @author Horizon
- * @version 1.0
- */
-public interface ChunkBatch {
+public class ChunkBatch implements IChunkBatch {
 
-  Dimension getDimension();
+  public static int DEFAULT_CHUNK_BATCH_SIZE = 25;
 
-  /** @return Returns the width of the batch in chunks. */
-  int getSizeOfBatch();
+  private final Dimension dimension;
+  private final int chunk_batch_size;
+  private final int x;
+  private final int z;
 
-  /** @return X coordinate of chunk batch in the world. */
-  int getX();
+  private final TripleMap<Integer, Integer, IChunk> chunks;
 
-  /** @return Z coordinate of chunk batch in the world. */
-  int getZ();
+  public ChunkBatch(Dimension dimension, int x, int z, int chunk_batch_size) {
+    this.dimension = dimension;
+    this.chunk_batch_size = chunk_batch_size;
+    this.x = x;
+    this.z = z;
 
-  /**
-   * Returns the list of chunks in current batch.
-   *
-   * @return List of chunks.
-   */
-  TripleMap<Integer, Integer, Chunk> getChunks();
+      chunks = new TripleMap<>();
+  }
 
-  /**
-   * Create chunk at specified coordinates.
-   *
-   * @param x X position
-   * @param z Z position
-   */
-  Chunk createChunk(int x, int z);
+  public ChunkBatch(Dimension dimension, int x, int z) {
+    this(dimension, x, z, ChunkBatch.DEFAULT_CHUNK_BATCH_SIZE);
+  }
 
-  /**
-   * Tries to find the chunk in this current batch.
-   *
-   * @param x X coordinates.
-   * @param z Z coordinates.
-   * @return Chunk if exists.
-   */
-  Chunk getChunk(int x, int z);
+  @Override
+  public Dimension getDimension() {
+    return dimension;
+  }
 
-  /** Performs the update of all chunks in this batch. */
-  void tick();
+  @Override
+  public int getSizeOfBatch() {
+    return chunk_batch_size;
+  }
+
+  @Override
+  public int getX() {
+    return x;
+  }
+
+  @Override
+  public int getZ() {
+    return z;
+  }
+
+  @Override
+  public TripleMap<Integer, Integer, IChunk> getChunks() {
+    return chunks;
+  }
+
+  @Override
+  public IChunk createChunk(int x, int z) {
+    IChunk chunk = new Chunk(this, x, z);
+    chunks.put(x, z, chunk);
+    return chunk;
+  }
+
+  @Override
+  public IChunk getChunk(int x, int z) {
+    return chunks.get(x, z);
+  }
+
+  @Override
+  public void tick() {}
 }

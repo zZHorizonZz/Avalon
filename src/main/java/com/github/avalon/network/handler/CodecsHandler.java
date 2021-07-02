@@ -5,6 +5,7 @@ import com.flowpowered.network.Message;
 import com.flowpowered.network.util.ByteBufUtils;
 import com.github.avalon.network.PacketBuffer;
 import com.github.avalon.network.protocol.ProtocolRegistry;
+import com.github.avalon.server.Server;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
@@ -15,11 +16,11 @@ import java.util.List;
 
 public final class CodecsHandler extends MessageToMessageCodec<ByteBuf, Message> {
 
-  private final com.github.avalon.server.NetworkServer server;
+  private final Server server;
   private final ProtocolRegistry protocol;
 
   public CodecsHandler(
-          com.github.avalon.server.NetworkServer server, ProtocolRegistry protocol) {
+          Server server, ProtocolRegistry protocol) {
     this.server = server;
     this.protocol = protocol;
   }

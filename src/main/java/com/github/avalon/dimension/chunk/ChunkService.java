@@ -1,7 +1,8 @@
-package com.github.avalon.dimension.handler;
+package com.github.avalon.dimension.chunk;
 
-import com.github.avalon.dimension.DimensionManager;
-import com.github.avalon.dimension.chunk.Chunk;
+import com.github.avalon.dimension.dimension.Dimension;
+import com.github.avalon.dimension.handler.ChunkRequest;
+import com.github.avalon.dimension.handler.IChunkService;
 import com.github.avalon.player.IPlayer;
 
 import java.util.Iterator;
@@ -12,14 +13,15 @@ import java.util.concurrent.LinkedTransferQueue;
 
 public class ChunkService implements IChunkService {
 
-  private DimensionManager dimensionManager;
+  public static final int MAX_CHUNKS_PER_TICK = 2;
 
+  private final Dimension dimension;
   private final Map<IPlayer, Queue<ChunkRequest>> chunkQueue;
 
-  public ChunkService(DimensionManager dimensionManager) {
-      chunkQueue = new ConcurrentHashMap<>();
+  public ChunkService(Dimension dimension) {
+    this.dimension = dimension;
 
-    dimensionManager.getSchedulerManager().runRepeatingTask(this::tick, 40);
+    chunkQueue = new ConcurrentHashMap<>();
   }
 
   @Override
@@ -35,11 +37,13 @@ public class ChunkService implements IChunkService {
       IPlayer player = entry.getKey();
       Queue<ChunkRequest> queue = entry.getValue();
 
-      ChunkRequest chunk = queue.poll();
-      if (chunk.call()) {
+      for (int i = 0; i < (Math.max(MAX_CHUNKS_PER_TICK, queue.size())); i++) {
+        ChunkRequest chunk = queue.poll();
+        if (chunk != null && chunk.call()) {
 
-      } else {
+        } else {
 
+        }
       }
 
       if (queue.isEmpty()) {
@@ -54,7 +58,7 @@ public class ChunkService implements IChunkService {
   }
 
   @Override
-  public void loadToClient(IPlayer player, Chunk chunk) {
+  public void loadToClient(IPlayer player, IChunk chunk) {
     if (chunkQueue.containsKey(player)) {
       Queue<ChunkRequest> queue = chunkQueue.get(player);
       ChunkRequest request = new ChunkRequest(chunk, player);
@@ -68,5 +72,9 @@ public class ChunkService implements IChunkService {
   }
 
   @Override
-  public void unloadFromClient(IPlayer player, Chunk chunk) {}
+  public void unloadFromClient(IPlayer player, IChunk chunk) {}
+
+  public Dimension getDimension() {
+    return dimension;
+  }
 }

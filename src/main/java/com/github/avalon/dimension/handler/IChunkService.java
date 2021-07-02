@@ -1,6 +1,6 @@
 package com.github.avalon.dimension.handler;
 
-import com.github.avalon.dimension.chunk.Chunk;
+import com.github.avalon.dimension.chunk.IChunk;
 import com.github.avalon.player.IPlayer;
 
 import java.util.Map;
@@ -20,7 +20,7 @@ public interface IChunkService {
    * @since 1.1
    * @param player Client that will receive the data.
    */
-  void loadToClient(IPlayer player, Chunk chunk);
+  void loadToClient(IPlayer player, IChunk chunk);
 
   /**
    * Send the information packet about unload of the chunk the client.
@@ -28,5 +28,5 @@ public interface IChunkService {
    * @since 1.1
    * @param player Client that will receive the packet.
    */
-  void unloadFromClient(IPlayer player, Chunk chunk);
+  void unloadFromClient(IPlayer player, IChunk chunk);
 }

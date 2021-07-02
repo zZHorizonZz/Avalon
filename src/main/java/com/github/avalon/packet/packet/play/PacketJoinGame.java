@@ -16,7 +16,7 @@ import com.github.avalon.player.IPlayer;
 import com.github.avalon.player.PlayerConnection;
 import com.github.avalon.player.attributes.PlayerAttributes;
 import com.github.avalon.resource.data.ResourceIdentifier;
-import com.github.avalon.server.NetworkServer;
+import com.github.avalon.server.Server;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -98,7 +98,7 @@ public class PacketJoinGame extends Packet<PacketJoinGame> {
   private boolean flatWorld;
 
   public PacketJoinGame(IPlayer player) {
-    NetworkServer server = player.getServer();
+    Server server = player.getServer();
 
     PlayerAttributes attributes = player.getPlayerAttributes();
     Dimension playerDimension = player.getDimension();

@@ -14,25 +14,25 @@ import javax.annotation.Nullable;
  */
 public class ChunkManager extends DefaultManager<Dimension> {
 
-  private final TripleMap<Integer, Integer, ChunkBatch> batches;
+  private final TripleMap<Integer, Integer, IChunkBatch> batches;
 
   public ChunkManager(Dimension host) {
-    super("Chunk manager", host);
+    super("IChunk manager", host);
 
     batches = new TripleMap<>();
   }
 
   @Nullable
-  public Chunk getChunk(int x, int z) {
+  public IChunk getChunk(int x, int z) {
     // TODO check for maximum size of the world.
     return batches
         .get(
-            (int) Math.round((double) (x / NetworkChunkBatch.DEFAULT_CHUNK_BATCH_SIZE)),
-            (int) Math.round((double) (z / NetworkChunkBatch.DEFAULT_CHUNK_BATCH_SIZE)))
+            (int) Math.round((double) (x / ChunkBatch.DEFAULT_CHUNK_BATCH_SIZE)),
+            (int) Math.round((double) (z / ChunkBatch.DEFAULT_CHUNK_BATCH_SIZE)))
         .getChunk(x, z);
   }
 
-  public TripleMap<Integer, Integer, ChunkBatch> getBatches() {
+  public TripleMap<Integer, Integer, IChunkBatch> getBatches() {
     return batches;
   }
 }

@@ -2,13 +2,11 @@ package com.github.avalon.player;
 
 import com.github.avalon.account.PlayerProfile;
 import com.github.avalon.data.Transform;
-import com.github.avalon.dimension.chunk.Chunk;
-import com.github.avalon.dimension.dimension.Dimension;
 import com.github.avalon.network.ProtocolType;
 import com.github.avalon.packet.packet.login.PacketLoginSuccess;
 import com.github.avalon.packet.packet.play.PacketEntityAction;
 import com.github.avalon.packet.packet.play.PacketPlayerPositionAndRotation;
-import com.github.avalon.server.NetworkServer;
+import com.github.avalon.server.Server;
 
 import java.util.Queue;
 
@@ -16,7 +14,7 @@ public class ActionHandler implements IActionHandler {
 
   private final Player player;
   private final PlayerConnection connection;
-  private final NetworkServer server;
+  private final Server server;
 
   private boolean blockPlaced;
 
@@ -38,9 +36,6 @@ public class ActionHandler implements IActionHandler {
     Transform moveTransform = new Transform(player.getDimension(), x, y, z, yaw, pitch);
     player.getIncomingMovements().offer(moveTransform);
   }
-
-  // TODO Create packet service that will manage all packets. And createte PacketHandler annotation
-  // similar to bukkits eventhandler.
 
   @Override
   public void handleMovementOut() {
@@ -99,28 +94,6 @@ public class ActionHandler implements IActionHandler {
 
   @Override
   public void handleDisconnect(String reason) {}
-
-  // TODO Rework chunk chandler and playerhandler (actionhandler) to work as one class with inputs
-  // by players for better handling.
-  // Should be 5
-  @Override
-  public void handleChunk() {
-    Chunk currentChunk = player.getLocation().getChunk();
-    Dimension dimension = player.getDimension();
-    for (int x = -1; x <= 1; x++) {
-      for (int z = -1; z <= 1; z++) {
-        int xPosition = currentChunk.getX() + x;
-        int zPosition = currentChunk.getZ() + z;
-
-        Chunk chunk = dimension.getChunkAt(xPosition, zPosition);
-
-        if (!player.getChunkView().contains(chunk.getPosition())) {
-          player.getDimension().getDimensionManager().getChunkHandler().loadToClient(player, chunk);
-          player.getChunkView().add(chunk.getPosition());
-        }
-      }
-    }
-  }
 
   @Override
   public void handleChat() {}

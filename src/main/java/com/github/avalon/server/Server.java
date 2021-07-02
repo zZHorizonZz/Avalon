@@ -31,14 +31,14 @@ import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.CountDownLatch;
 
 /**
- * NetworkServer is basic implementation of of the {@link IServer} and {@link ServerRunner}.
+ * Server is basic implementation of of the {@link IServer} and {@link ServerRunner}.
  *
  * @version 1.0
  * @author Horizon
  */
-public class NetworkServer implements IServer, ServerRunner {
+public class Server implements IServer, ServerRunner {
 
-  public static final DefaultLogger LOGGER = new DefaultLogger(NetworkServer.class);
+  public static final DefaultLogger LOGGER = new DefaultLogger(Server.class);
 
   private static ServerData serverData = new ServerData();
 
@@ -66,7 +66,7 @@ public class NetworkServer implements IServer, ServerRunner {
 
   private final PlayerSessionContainer playerSessionRegistry;
 
-  public NetworkServer(Bootstrap bootstrap) {
+  public Server(Bootstrap bootstrap) {
     this.bootstrap = bootstrap;
 
     concurrentManager = new ConcurrentManager(this);
@@ -180,6 +180,7 @@ public class NetworkServer implements IServer, ServerRunner {
   @Override
   public synchronized void heartbeat() {
     schedulerManager.runTask(playerSessionRegistry::tick);
+    dimensionManager.tick();
     schedulerManager.heartbeat();
   }
 
@@ -221,7 +222,7 @@ public class NetworkServer implements IServer, ServerRunner {
 
   @Override
   public void setServerData(ServerData serverData) {
-    NetworkServer.serverData = serverData;
+    Server.serverData = serverData;
   }
 
   @Override

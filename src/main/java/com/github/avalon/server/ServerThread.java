@@ -4,7 +4,7 @@ import com.github.avalon.console.logging.DefaultLogger;
 
 public class ServerThread extends Thread {
 
-  public static final DefaultLogger LOGGER = new DefaultLogger(NetworkServer.class);
+  public static final DefaultLogger LOGGER = new DefaultLogger(Server.class);
 
   private ServerRunner serverRunner;
 
@@ -16,9 +16,9 @@ public class ServerThread extends Thread {
   private long lastTick;
 
   private long currentTick;
-  private final NetworkServer server;
+  private final Server server;
 
-  public ServerThread(NetworkServer server) {
+  public ServerThread(Server server) {
     LOGGER.info("Starting server thread...");
     this.server = server;
   }

@@ -9,7 +9,6 @@ import com.github.avalon.dimension.dimension.Dimension;
 import com.github.avalon.dimension.dimension.DimensionContainer;
 import com.github.avalon.dimension.dimension.DimensionType;
 import com.github.avalon.dimension.dimension.NetworkDimension;
-import com.github.avalon.dimension.handler.ChunkService;
 import com.github.avalon.manager.ServerManager;
 import com.github.avalon.server.IServer;
 
@@ -17,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-@Manager(name = "Dimension Manager", asynchronous = false)
+@Manager(name = "Dimension Manager", asynchronous = true)
 public class DimensionManager extends ServerManager {
 
   public static final DefaultLogger LOGGER = new DefaultLogger(DimensionManager.class);
@@ -27,8 +26,6 @@ public class DimensionManager extends ServerManager {
   private final DimensionContainer dimensionRegistry;
   private final BiomeContainer biomeRegistry;
 
-  private ChunkService chunkHandler;
-
   public DimensionManager(IServer host) {
     super(host);
 
@@ -37,13 +34,6 @@ public class DimensionManager extends ServerManager {
 
     registerBiomes();
     loadDimension();
-  }
-
-  @Override
-  public void enable() {
-    super.enable();
-
-    chunkHandler = new ChunkService(this);
   }
 
   public void registerBiomes() {
@@ -60,6 +50,10 @@ public class DimensionManager extends ServerManager {
     dimension.load();
     dimensionRegistry.addDimension(dimension.getDimensionName(), dimension);
     mainDimension = dimension;
+  }
+
+  public void tick() {
+    runTaskAsynchronously(() -> getDimensions().forEach(Dimension::tick));
   }
 
   public List<Dimension> getDimensions() {
@@ -80,9 +74,5 @@ public class DimensionManager extends ServerManager {
 
   public BiomeContainer getBiomeRegistry() {
     return biomeRegistry;
-  }
-
-  public ChunkService getChunkHandler() {
-    return chunkHandler;
   }
 }

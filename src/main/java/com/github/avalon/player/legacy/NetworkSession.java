@@ -11,7 +11,7 @@ package com.github.avalon.player.legacy;
 @Deprecated
 public class NetworkSession {
 
-  /*private final NetworkServer server;
+  /*private final Server server;
 
   private final ConnectionManager connectionManager;
 
@@ -41,7 +41,7 @@ public class NetworkSession {
   // private volatile ProxyData proxyData;
 
   /*public NetworkSession(
-      NetworkServer server, Channel channel, ConnectionManager connectionManager) {
+      Server server, Channel channel, ConnectionManager connectionManager) {
     this.server = server;
     this.connectionManager = connectionManager;
     this.playerConnection = new PlayerConnection(this, channel);
@@ -267,7 +267,7 @@ public class NetworkSession {
   public void setProtocol(AbstractProtocol protocol) {}
 
   @Override
-  public NetworkServer getServer() {
+  public Server getServer() {
     return server;
   }
 
