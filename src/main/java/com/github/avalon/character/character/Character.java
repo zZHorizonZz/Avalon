@@ -29,11 +29,8 @@ public abstract class Character {
    */
   public abstract void teleport(IPlayer player, Transform transform);
 
-  /**
-   * Spawns entity
-   * @param player
-   */
-  public abstract void spawn(IPlayer player);
+  /** Spawns the entity and sends data to all possible players. */
+  public abstract void spawn();
 
   public int getIdentifier() {
     return identifier;

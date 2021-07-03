@@ -1,6 +1,6 @@
 package com.github.avalon.dimension.dimension;
 
-import com.github.avalon.block.Block;
+import com.github.avalon.block.block.Block;
 import com.github.avalon.character.character.CharacterLiving;
 import com.github.avalon.common.system.TripleMap;
 import com.github.avalon.data.Transform;

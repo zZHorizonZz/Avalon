@@ -23,7 +23,7 @@ public class ChunkSectionProvider {
   }
 
   /**
-   * Return the material at selected location. Because material call can/can not be called we
+   * Return the material at specified location. Because material call can/can not be called we
    * retrieving material directly from {@link IChunkSection}.
    *
    * @param x,y,z Location of material.
@@ -32,7 +32,25 @@ public class ChunkSectionProvider {
   private Material getMaterialAt(int x, int y, int z) {
     return sections[y / IChunk.CHUNK_SECTION_SIZE].getMaterialAt(
         x,
-        y % IChunk.CHUNK_SECTION_SIZE == 0 ? IChunk.CHUNK_SECTION_SIZE : y % IChunk.CHUNK_SECTION_SIZE,
+        y % IChunk.CHUNK_SECTION_SIZE == 0
+            ? IChunk.CHUNK_SECTION_SIZE
+            : y % IChunk.CHUNK_SECTION_SIZE,
+        z);
+  }
+
+  /**
+   * Return the state at specified location. Because material call can/can not be called we
+   * retrieving material directly from {@link IChunkSection}.
+   *
+   * @param x,y,z Location of material.
+   * @return Material at specified location.
+   */
+  private int getStateAt(int x, int y, int z) {
+    return sections[y / IChunk.CHUNK_SECTION_SIZE].getStateAt(
+        x,
+        y % IChunk.CHUNK_SECTION_SIZE == 0
+            ? IChunk.CHUNK_SECTION_SIZE
+            : y % IChunk.CHUNK_SECTION_SIZE,
         z);
   }
 
@@ -45,18 +63,36 @@ public class ChunkSectionProvider {
   private void setMaterialAt(int x, int y, int z, Material material) {
     sections[Math.floorDiv(y, IChunk.CHUNK_SECTION_SIZE)].setMaterialAt(
         x,
-        y % IChunk.CHUNK_SECTION_SIZE == 0 ? IChunk.CHUNK_SECTION_SIZE : y % IChunk.CHUNK_SECTION_SIZE,
+        y % IChunk.CHUNK_SECTION_SIZE == 0
+            ? IChunk.CHUNK_SECTION_SIZE
+            : y % IChunk.CHUNK_SECTION_SIZE,
         z,
         material);
+  }
+
+  /**
+   * Sets the state of block at specified location.
+   *
+   * @param x,y,z Location of block/material.
+   * @param state State that will be set.
+   */
+  private void setStateAt(int x, int y, int z, int state) {
+    sections[Math.floorDiv(y, IChunk.CHUNK_SECTION_SIZE)].setStateAt(
+        x,
+        y % IChunk.CHUNK_SECTION_SIZE == 0
+            ? IChunk.CHUNK_SECTION_SIZE
+            : y % IChunk.CHUNK_SECTION_SIZE,
+        z,
+        state);
   }
 
   /**
    * @param x,y,z Location of block.
    * @param players
    */
-  private void updateMaterialAt(int x, int y, int z, Collection<IPlayer> players) {
+  private void updateBlockAt(int x, int y, int z, Collection<IPlayer> players) {
     for (IPlayer player : players) {
-      updateMaterialAt(x, y, z, player);
+      updateBlockAt(x, y, z, player);
     }
   }
 
@@ -64,9 +100,9 @@ public class ChunkSectionProvider {
    * @param x,y,z Location of block.
    * @param players
    */
-  private void updateMaterialAt(int x, int y, int z, IPlayer... players) {
+  private void updateBlockAt(int x, int y, int z, IPlayer... players) {
     for (IPlayer player : players) {
-      updateMaterialAt(x, y, z, player);
+      updateBlockAt(x, y, z, player);
     }
   }
 
@@ -78,9 +114,11 @@ public class ChunkSectionProvider {
    * @param x,y,z Location of block.
    * @param receiver Client that will receive packet about block change.
    */
-  private void updateMaterialAt(int x, int y, int z, IPlayer receiver) {
-    PacketBlockChange packet =
-        new PacketBlockChange(x, y, z, getMaterialAt(x, y, z).getIdentifier());
+  private void updateBlockAt(int x, int y, int z, IPlayer receiver) {
+    int material = getMaterialAt(x, y, z).getIdentifier();
+    int state = getStateAt(x, y, z);
+
+    PacketBlockChange packet = new PacketBlockChange(x, y, z, material + state);
     receiver.sendPacket(packet);
   }
 
@@ -101,7 +139,7 @@ public class ChunkSectionProvider {
     }
 
     setMaterialAt(location.getBlockX(), location.getBlockY(), location.getBlockZ(), material);
-    updateMaterialAt(location.getBlockX(), location.getBlockY(), location.getBlockZ(), receivers);
+    updateBlockAt(location.getBlockX(), location.getBlockY(), location.getBlockZ(), receivers);
   }
 
   /**
@@ -113,7 +151,19 @@ public class ChunkSectionProvider {
   public void placeBlockAsSystem(Transform location, Material material) {
     Collection<IPlayer> receivers = chunk.getChunkBatch().getDimension().getPlayers().values();
     setMaterialAt(location.getBlockX(), location.getBlockY(), location.getBlockZ(), material);
-    updateMaterialAt(location.getBlockX(), location.getBlockY(), location.getBlockZ(), receivers);
+    updateBlockAt(location.getBlockX(), location.getBlockY(), location.getBlockZ(), receivers);
+  }
+
+  /**
+   * Sets the state at specified location to state and sends the update packet to all players.
+   *
+   * @param location Location of block.
+   * @param state State that will be changed.
+   */
+  public void setStateAsSystem(Transform location, int state) {
+    Collection<IPlayer> receivers = chunk.getChunkBatch().getDimension().getPlayers().values();
+    setStateAt(location.getBlockX(), location.getBlockY(), location.getBlockZ(), state);
+    updateBlockAt(location.getBlockX(), location.getBlockY(), location.getBlockZ(), receivers);
   }
 
   /**
@@ -124,6 +174,16 @@ public class ChunkSectionProvider {
    */
   public Material getMaterial(Transform location) {
     return getMaterialAt(location.getBlockX(), location.getBlockY(), location.getBlockZ());
+  }
+
+  /**
+   * Returns the state of block at specified location.
+   *
+   * @param location Location of block.
+   * @return State of block. If nothing is found then 0 is returned.
+   */
+  public int getState(Transform location) {
+    return getStateAt(location.getBlockX(), location.getBlockY(), location.getBlockZ());
   }
 
   public IChunk getChunk() {

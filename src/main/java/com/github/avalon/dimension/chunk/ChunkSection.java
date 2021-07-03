@@ -1,7 +1,5 @@
 package com.github.avalon.dimension.chunk;
 
-import com.github.avalon.data.Material;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,7 +11,7 @@ public class ChunkSection implements IChunkSection {
   private final int y;
   private final int z;
 
-  private final Map<Integer, Material> blocks;
+  private final Map<Integer, Integer> blocks;
 
   public ChunkSection(IChunk chunk, int x, int y, int z) {
     this.chunk = chunk;
@@ -54,7 +52,7 @@ public class ChunkSection implements IChunkSection {
   public void setEmpty(boolean empty) {}
 
   @Override
-  public Map<Integer, Material> getMaterials() {
+  public Map<Integer, Integer> getBlocks() {
     return blocks;
   }
 }

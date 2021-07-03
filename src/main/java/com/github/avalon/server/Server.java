@@ -7,6 +7,7 @@ import com.github.avalon.chat.ChatManager;
 import com.github.avalon.common.system.UtilSecurity;
 import com.github.avalon.concurrent.ConcurrentManager;
 import com.github.avalon.console.logging.DefaultLogger;
+import com.github.avalon.debug.DebugManager;
 import com.github.avalon.descriptor.DescriptorManager;
 import com.github.avalon.dimension.DimensionManager;
 import com.github.avalon.editor.EditManager;
@@ -63,6 +64,7 @@ public class Server implements IServer, ServerRunner {
   private ChatManager chatManager;
   private ItemManager itemManager;
   private EditManager editManager;
+  private DebugManager debugManager;
 
   private final PlayerSessionContainer playerSessionRegistry;
 
@@ -113,6 +115,7 @@ public class Server implements IServer, ServerRunner {
     chatManager = initializationManager.registerManager(new ChatManager(this));
     itemManager = initializationManager.registerManager(new ItemManager(this));
     editManager = initializationManager.registerManager(new EditManager(this));
+    debugManager = initializationManager.registerManager(new DebugManager(this));
 
     AnnotationManager.ANNOTATION_TASK_EXECUTOR.initialize(
         new DefaultThreadFactory("Annotation_Executor"));

@@ -3,7 +3,11 @@ package com.github.avalon.character.character;
 import com.github.avalon.character.Controllable;
 import com.github.avalon.common.system.UtilMath;
 import com.github.avalon.data.Transform;
+import com.github.avalon.dimension.DimensionManager;
+import com.github.avalon.packet.packet.play.PacketEntityPositionAndRotation;
 import com.github.avalon.player.IPlayer;
+
+import java.util.Collection;
 
 public abstract class CharacterLiving extends Character implements Controllable {
 
@@ -36,11 +40,18 @@ public abstract class CharacterLiving extends Character implements Controllable 
       deltaY = UtilMath.toDelta(deltaY, delta.getY());
       deltaZ = UtilMath.toDelta(deltaZ, delta.getZ());
 
-    /*PacketEntityPositionAndRotation packet =
+    Collection<IPlayer> receivers = newTransform.getDimension().getPlayers().values();
+    if(controller != null) {
+      receivers.remove(controller);
+    }
+
+    PacketEntityPositionAndRotation packet =
         new PacketEntityPositionAndRotation(
             getIdentifier(), deltaX, deltaY, deltaZ, delta.getYaw(), delta.getPitch(), true);
 
-    getController().sendPacket(packet);*/
+    for (IPlayer player : receivers) {
+      player.sendPacket(packet);
+    }
     setTransform(newTransform);
   }
 

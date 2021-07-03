@@ -1,7 +1,7 @@
 package com.github.avalon.descriptor;
 
 import com.github.avalon.annotation.annotation.Manager;
-import com.github.avalon.block.Block;
+import com.github.avalon.block.block.Block;
 import com.github.avalon.console.logging.DefaultLogger;
 import com.github.avalon.fluid.Fluid;
 import com.github.avalon.item.Item;

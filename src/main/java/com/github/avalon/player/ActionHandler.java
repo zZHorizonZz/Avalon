@@ -43,8 +43,7 @@ public class ActionHandler implements IActionHandler {
     if (!movements.isEmpty()) {
 
       for (Transform lastMove : movements) {
-        // player.getControllingCharacter().move(lastMove);
-        // player.teleport(lastMove);
+        player.getControllingCharacter().move(lastMove);
       }
 
       movements.clear();

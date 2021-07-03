@@ -5,7 +5,6 @@ import com.github.avalon.account.PlayerProfile;
 import com.github.avalon.character.character.CharacterLiving;
 import com.github.avalon.chat.message.ChatColor;
 import com.github.avalon.common.math.Vector2;
-import com.github.avalon.data.Material;
 import com.github.avalon.data.Transform;
 import com.github.avalon.dimension.chunk.IChunk;
 import com.github.avalon.dimension.dimension.Dimension;
@@ -104,11 +103,6 @@ public class Player implements IPlayer {
       getServer().getPlayerSessionRegistry().removePlayer(this);
     } else if (playerStatus == Status.ONLINE) {
       lifetime++;
-
-      if (lifetime % 250 == 0) {
-        getDimension().getBlockAt(5, 5, 5).setMaterial(Material.STONE);
-      }
-
       actionHandler.handleMovementOut();
       chunkProvider.handleChunk();
     }
@@ -120,7 +114,7 @@ public class Player implements IPlayer {
       pingMessageId = System.currentTimeMillis();
       sendPacket(new PacketKeepAliveClient(pingMessageId));
     } else {
-      disconnect("Timed out");
+      disconnect("You connection timed out.");
     }
   }
 

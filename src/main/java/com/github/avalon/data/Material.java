@@ -1,34 +1,58 @@
 package com.github.avalon.data;
 
+import com.github.avalon.block.block.Block;
+import com.github.avalon.block.block.GrassBlock;
+import com.github.avalon.block.block.SimpleBlock;
 import com.github.avalon.resource.data.ResourceIdentifier;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
+import java.util.EnumMap;
+import java.util.function.Function;
 
 public enum Material {
-  AIR(0),
-  STONE(1),
-  GRANITE(2),
-  POLISHED_GRANITE(3),
-  DIORITE(4),
-  POLISHED_DIORITE(5),
-  ANDESITE(6),
-  POLISHED_ANDESITE(7),
-  GRASS_BLOCK(8),
-  DIRT(9),
-  COARSE_DIRT(10);
+  AIR(0, SimpleBlock::new),
+  STONE(0, SimpleBlock::new),
+  GRANITE(0, SimpleBlock::new),
+  POLISHED_GRANITE(0, SimpleBlock::new),
+  DIORITE(0, SimpleBlock::new),
+  POLISHED_DIORITE(0, SimpleBlock::new),
+  ANDESITE(0, SimpleBlock::new),
+  POLISHED_ANDESITE(0, SimpleBlock::new),
+  GRASS_BLOCK(1, GrassBlock::new),
+  DIRT(0, SimpleBlock::new),
+  COARSE_DIRT(0, SimpleBlock::new);
 
-  private final int identifier;
+  public static final EnumMap<Material, Integer> BLOCK_BY_IDENTIFIER =
+      new EnumMap<>(Material.class);
+
+  private final int validStates;
   private final String defaultName;
+  private final Function<Transform, Block> create;
 
-  Material(int identifier) {
-    this.identifier = identifier;
+  Material(int validStates, Function<Transform, Block> create) {
+    this.validStates = validStates;
+    this.create = create;
+
     defaultName = null;
   }
 
-  Material(int identifier, String defaultName) {
-    this.identifier = identifier;
+  Material(int validStates, String defaultName, Function<Transform, Block> create) {
+    this.validStates = validStates;
     this.defaultName = defaultName;
+    this.create = create;
+  }
+
+  static {
+    for (Material material : Material.values()) {
+      BLOCK_BY_IDENTIFIER.put(
+          material,
+          material.ordinal() > 0
+              ? values()[material.ordinal() - 1].getIdentifier()
+                  + values()[material.ordinal() - 1].getValidStates()
+                  + 1
+              : 0);
+    }
   }
 
   /**
@@ -64,14 +88,22 @@ public enum Material {
     return new ResourceIdentifier(getName());
   }
 
-  public int getIdentifier() {
-    return identifier;
-  }
-
   public String getName() {
     if (defaultName == null) {
       return StringUtils.capitalize(name().toLowerCase());
     }
     return defaultName;
+  }
+
+  public Block createBlock(Transform transform) {
+    return create.apply(transform);
+  }
+
+  public int getIdentifier() {
+    return BLOCK_BY_IDENTIFIER.get(this);
+  }
+
+  public int getValidStates() {
+    return validStates;
   }
 }

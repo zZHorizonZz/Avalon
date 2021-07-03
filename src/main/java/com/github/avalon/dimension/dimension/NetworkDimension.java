@@ -1,6 +1,6 @@
 package com.github.avalon.dimension.dimension;
 
-import com.github.avalon.block.Block;
+import com.github.avalon.block.block.Block;
 import com.github.avalon.character.character.Character;
 import com.github.avalon.character.character.CharacterLiving;
 import com.github.avalon.common.system.TripleMap;
@@ -124,7 +124,8 @@ public class NetworkDimension implements Dimension {
 
   @Override
   public Block getBlockAt(int x, int y, int z) {
-    return new Block(new Transform(this, x, y, z));
+    Transform location = new Transform(this, x, y, z);
+    return location.getChunk().getProvider().getMaterial(location).createBlock(location);
   }
 
   @Override
@@ -223,15 +224,12 @@ public class NetworkDimension implements Dimension {
       return; // TODO : Possible switch to new character?
     }
 
-    character.spawn(controller);
     controller.setControllingCharacter(character);
+    character.spawn();
 
-    if (!players.isEmpty()) {
-      players.forEach((id, player) -> character.spawn(player));
-    }
     players.put(character.getIdentifier(), controller);
     DimensionManager.LOGGER.info(
-        "Controllable character has been spawned. Controlling player is %s", character.getName());
+        "Controllable character was been spawned. Controlling player is %s", character.getName());
   }
 
   @Override

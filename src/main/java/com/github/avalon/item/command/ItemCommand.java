@@ -3,6 +3,7 @@ package com.github.avalon.item.command;
 import com.github.avalon.chat.command.CommandExecutor;
 import com.github.avalon.chat.command.CommandListener;
 import com.github.avalon.chat.command.annotation.CommandPerformer;
+import com.github.avalon.common.text.Format;
 import com.github.avalon.data.Material;
 import com.github.avalon.item.Item;
 import com.github.avalon.player.IPlayer;
@@ -18,7 +19,6 @@ public class ItemCommand extends CommandListener {
   public void commandItem(CommandExecutor executor) {
     if (executor.getSender() instanceof IPlayer) {
       IPlayer player = (IPlayer) executor.getSender();
-      player.sendSystemMessage("%red%It work's");
     }
   }
 
@@ -53,10 +53,8 @@ public class ItemCommand extends CommandListener {
 
       player.getInventory().setCurrentHeldItem(new Item(material, size));
       player.sendSystemMessage(
-          "%#edb334%Item> %gray%You received %yellow%"
-              + size
-              + "x %gray%of %yellow%"
-              + material.getName());
+          Format.defaultMessage(
+              "Item", "You received %yellow%" + size + "x %gray%of%yellow% " + material.getName()));
     }
   }
 }

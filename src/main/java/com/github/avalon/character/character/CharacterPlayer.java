@@ -2,10 +2,13 @@ package com.github.avalon.character.character;
 
 import com.github.avalon.account.PlayerProfile;
 import com.github.avalon.data.Transform;
+import com.github.avalon.packet.PacketBatch;
 import com.github.avalon.packet.packet.play.PacketPlayerInfo;
 import com.github.avalon.packet.packet.play.PacketSpawnPlayer;
 import com.github.avalon.player.IPlayer;
 import com.github.avalon.player.attributes.GameMode;
+
+import java.util.Collection;
 
 public class CharacterPlayer extends CharacterLiving {
 
@@ -60,15 +63,15 @@ public class CharacterPlayer extends CharacterLiving {
   public void teleport(IPlayer player, Transform transform) {}
 
   @Override
-  public void spawn(IPlayer player) {
-    if (player == null) {
-      throw new IllegalArgumentException("IPlayer argument must be specified!");
-    }
-
-    assert player != null : "Valid player info should be set before entity is spawned.";
+  public void spawn() {
     assert getTransform() != null : "Valid transform should be set before entity is spawned!";
 
     Transform transform = getTransform();
+
+    Collection<IPlayer> receivers = transform.getDimension().getPlayers().values();
+    if (getController() != null) {
+      receivers.remove(getController());
+    }
 
     PacketPlayerInfo packetPlayerInfo =
         new PacketPlayerInfo(
@@ -83,16 +86,14 @@ public class CharacterPlayer extends CharacterLiving {
     PacketSpawnPlayer packetSpawnPlayer =
         new PacketSpawnPlayer(getIdentifier(), getProfile().getUUID(), transform);
 
-    player.sendPacket(packetPlayerInfo);
-    if (!getController().equals(player)) {
-      player.sendPacket(packetSpawnPlayer);
+    for (IPlayer player : receivers) {
+      player.sendPacket(new PacketBatch(packetPlayerInfo, packetSpawnPlayer));
     }
   }
 
   @Override
   public void synchronize() {
-    if (getController() == null) {
-    }
+    if (getController() == null) {}
   }
 
   @Override

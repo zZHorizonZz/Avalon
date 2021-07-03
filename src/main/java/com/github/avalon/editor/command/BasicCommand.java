@@ -4,6 +4,7 @@ import com.github.avalon.chat.command.CommandExecutor;
 import com.github.avalon.chat.command.CommandListener;
 import com.github.avalon.chat.command.annotation.CommandPerformer;
 import com.github.avalon.common.math.Vector3;
+import com.github.avalon.common.text.Format;
 import com.github.avalon.data.Material;
 import com.github.avalon.editor.EditManager;
 import com.github.avalon.editor.tools.EditorSession;
@@ -20,9 +21,8 @@ public class BasicCommand extends CommandListener {
     register("pos1", this::cornerA);
     register("pos2", this::cornerB);
     register("fill", this::fill);
+    register("up", this::up);
   }
-
-  // TODO Rework usage of sessions.
 
   @CommandPerformer(command = "pos1")
   public void cornerA(CommandExecutor executor) {
@@ -39,12 +39,14 @@ public class BasicCommand extends CommandListener {
         executor
             .getSender()
             .sendSystemMessage(
-                "%green%Corner A has been successfully set to X: "
-                    + corner.getXAsInteger()
-                    + " Y: "
-                    + corner.getYAsInteger()
-                    + " Z: "
-                    + corner.getZAsInteger());
+                Format.defaultMessage(
+                    "Editor",
+                    "%green%Corner A was been successfully set to X: "
+                        + corner.getXAsInteger()
+                        + " Y: "
+                        + corner.getYAsInteger()
+                        + " Z: "
+                        + corner.getZAsInteger()));
 
         session.setPosition1(corner);
       }
@@ -66,12 +68,14 @@ public class BasicCommand extends CommandListener {
         executor
             .getSender()
             .sendSystemMessage(
-                "%green%Corner B has been successfully set to X: "
-                    + corner.getXAsInteger()
-                    + " Y: "
-                    + corner.getYAsInteger()
-                    + " Z: "
-                    + corner.getZAsInteger());
+                Format.defaultMessage(
+                    "Editor",
+                    "%green%Corner B was been successfully set to X: "
+                        + corner.getXAsInteger()
+                        + " Y: "
+                        + corner.getYAsInteger()
+                        + " Z: "
+                        + corner.getZAsInteger()));
 
         session.setPosition2(corner);
       }
@@ -99,8 +103,26 @@ public class BasicCommand extends CommandListener {
         operation.setNewMaterial(material);
 
         editManager.submitOperation(operation);
-        executor.getSender().sendSystemMessage("%green%Operation submitted...");
+        executor
+            .getSender()
+            .sendSystemMessage(Format.defaultMessage("Editor", "Operation submitted..."));
       }
+    }
+  }
+
+  @CommandPerformer(command = "up")
+  public void up(CommandExecutor executor) {
+    if (executor.getSender() instanceof IPlayer) {
+      IPlayer player = (IPlayer) executor.getSender();
+      player
+          .getCurrentChunk()
+          .getProvider()
+          .placeBlockAsSystem(
+              player.getLocation().setY(player.getLocation().getBlockY() - 1), Material.STONE);
+
+      executor
+          .getSender()
+          .sendSystemMessage(Format.defaultMessage("Editor", "Block under you is now solid."));
     }
   }
 
