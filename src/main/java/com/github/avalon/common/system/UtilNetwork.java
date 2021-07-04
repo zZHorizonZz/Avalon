@@ -16,7 +16,9 @@ import io.netty.channel.socket.nio.NioSocketChannel;
  * @author <url>https://github.com/GlowstoneMC/Glowstone</url> Thanks to these guys.
  */
 public final class UtilNetwork {
-  public static final boolean EPOLL_AVAILABLE = Epoll.isAvailable();
+
+  //TODO: There is something wrong with this is should be without !
+  public static final boolean EPOLL_AVAILABLE = !Epoll.isAvailable();
 
   private UtilNetwork() {}
 
@@ -30,9 +32,9 @@ public final class UtilNetwork {
   public static EventLoopGroup createBestEventLoopGroup() {
     if (EPOLL_AVAILABLE) {
       return new EpollEventLoopGroup();
-    } else {
-      return new NioEventLoopGroup();
     }
+
+    return new NioEventLoopGroup();
   }
 
   /**
@@ -45,9 +47,9 @@ public final class UtilNetwork {
   public static Class<? extends ServerSocketChannel> bestServerSocketChannel() {
     if (EPOLL_AVAILABLE) {
       return EpollServerSocketChannel.class;
-    } else {
-      return NioServerSocketChannel.class;
     }
+
+    return NioServerSocketChannel.class;
   }
 
   /**
@@ -60,9 +62,9 @@ public final class UtilNetwork {
   public static Class<? extends SocketChannel> bestSocketChannel() {
     if (EPOLL_AVAILABLE) {
       return EpollSocketChannel.class;
-    } else {
-      return NioSocketChannel.class;
     }
+
+    return NioSocketChannel.class;
   }
 
   /**
@@ -75,8 +77,8 @@ public final class UtilNetwork {
   public static Class<? extends DatagramChannel> bestDatagramChannel() {
     if (EPOLL_AVAILABLE) {
       return EpollDatagramChannel.class;
-    } else {
-      return NioDatagramChannel.class;
     }
+
+    return NioDatagramChannel.class;
   }
 }
