@@ -9,7 +9,7 @@ import com.github.avalon.packet.schema.PacketStrategy;
 import com.github.avalon.player.PlayerConnection;
 
 /**
- * This packet is sent by server if connection if inactive for specific period of time. Client
+ * This packet is sent by client if connection if inactive for specific period of time. Client
  * should respond with same identifier.
  *
  * <h3>Packet Strategy</h3>

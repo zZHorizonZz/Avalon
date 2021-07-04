@@ -131,6 +131,7 @@ public class Player implements IPlayer {
   @Override
   public void setProtocol(ProtocolType type) {
     ProtocolRegistry protocol = server.getProtocolContainer().getProtocol(type);
+    playerConnection.setCurrentProtocol(type);
     playerConnection.setProtocol(protocol);
   }
 
