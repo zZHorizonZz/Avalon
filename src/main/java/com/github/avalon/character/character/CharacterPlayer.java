@@ -68,7 +68,7 @@ public class CharacterPlayer extends CharacterLiving {
 
     Transform transform = getTransform();
 
-    Collection<IPlayer> receivers = transform.getDimension().getPlayers().values();
+    Collection<IPlayer> receivers = transform.getDimension().getPlayers();
     if (getController() != null) {
       receivers.remove(getController());
     }

@@ -14,7 +14,7 @@ import com.github.avalon.nbt.serialization.NamedBinarySerializer;
 import com.github.avalon.player.IPlayer;
 import com.github.avalon.resource.data.ResourceIdentifier;
 
-import java.util.Map;
+import java.util.Collection;
 
 /**
  * This interface provides an methods for creation and usage of dimension (worlds).
@@ -132,8 +132,8 @@ public interface Dimension extends NamedBinarySerializer {
   void spawnControllableCharacter(
       CharacterLiving character, IPlayer controller, Transform transform);
 
-  /** @return Map of {@link IPlayer}s in current dimension. */
-  Map<Integer, IPlayer> getPlayers();
+  /** @return {@link Collection} of {@link IPlayer}s in current dimension. */
+  Collection<IPlayer> getPlayers();
 
   /** @return World {@link IChunkBatch}s {@link TripleMap}. */
   TripleMap<Integer, Integer, IChunkBatch> getChunkBatches();

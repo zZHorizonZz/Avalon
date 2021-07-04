@@ -3,7 +3,6 @@ package com.github.avalon.character.character;
 import com.github.avalon.character.Controllable;
 import com.github.avalon.common.system.UtilMath;
 import com.github.avalon.data.Transform;
-import com.github.avalon.dimension.DimensionManager;
 import com.github.avalon.packet.packet.play.PacketEntityPositionAndRotation;
 import com.github.avalon.player.IPlayer;
 
@@ -29,19 +28,19 @@ public abstract class CharacterLiving extends Character implements Controllable 
 
   @Override
   public void setController(IPlayer player) {
-      controller = player;
+    controller = player;
   }
 
   public void move(Transform newTransform) {
     resetDeltas();
 
     Transform delta = getTransform().subtract(newTransform);
-      deltaX = UtilMath.toDelta(deltaX, delta.getX());
-      deltaY = UtilMath.toDelta(deltaY, delta.getY());
-      deltaZ = UtilMath.toDelta(deltaZ, delta.getZ());
+    deltaX = UtilMath.toDelta(deltaX, delta.getX());
+    deltaY = UtilMath.toDelta(deltaY, delta.getY());
+    deltaZ = UtilMath.toDelta(deltaZ, delta.getZ());
 
-    Collection<IPlayer> receivers = newTransform.getDimension().getPlayers().values();
-    if(controller != null) {
+    Collection<IPlayer> receivers = newTransform.getDimension().getPlayers();
+    if (controller != null) {
       receivers.remove(controller);
     }
 
@@ -56,9 +55,9 @@ public abstract class CharacterLiving extends Character implements Controllable 
   }
 
   public void resetDeltas() {
-      deltaX = 0;
-      deltaY = 0;
-      deltaZ = 0;
+    deltaX = 0;
+    deltaY = 0;
+    deltaZ = 0;
   }
 
   public String getDisplayName() {

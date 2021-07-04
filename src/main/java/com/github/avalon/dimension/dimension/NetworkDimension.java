@@ -21,8 +21,8 @@ import com.google.common.hash.Hashing;
 import io.netty.util.internal.StringUtil;
 
 import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.Objects;
 
 public class NetworkDimension implements Dimension {
@@ -41,7 +41,7 @@ public class NetworkDimension implements Dimension {
   private Difficulty difficulty;
   private boolean difficultyLocked;
 
-  private final Map<Integer, IPlayer> players;
+  private final Collection<IPlayer> players;
   private final TripleMap<Integer, Integer, IChunkBatch> chunkBatches;
 
   public NetworkDimension(
@@ -64,7 +64,7 @@ public class NetworkDimension implements Dimension {
 
     terrainType = TerrainType.FLAT;
 
-    players = new HashMap<>();
+    players = new LinkedList<>();
     chunkBatches = new TripleMap<>();
   }
 
@@ -220,21 +220,21 @@ public class NetworkDimension implements Dimension {
       character.setController(controller);
     }
 
-    if (players.containsValue(controller)) {
+    if (players.contains(controller)) {
       return; // TODO : Possible switch to new character?
     }
 
     controller.setControllingCharacter(character);
     character.spawn();
 
-    players.put(character.getIdentifier(), controller);
+    players.add(controller);
     DimensionManager.LOGGER.info(
-        "Controllable character was been spawned. Controlling player is %s", character.getName());
+        "Controllable character has been spawned. Controlling player is %s", character.getName());
   }
 
   @Override
-  public Map<Integer, IPlayer> getPlayers() {
-    return players;
+  public Collection<IPlayer> getPlayers() {
+    return new LinkedList<>(players);
   }
 
   @Override

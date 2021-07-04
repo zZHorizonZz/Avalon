@@ -1,5 +1,6 @@
 package com.github.avalon.editor;
 
+import com.github.avalon.common.text.Format;
 import com.github.avalon.concurrent.NetworkTaskExecutor;
 import com.github.avalon.editor.tools.basic.Operation;
 import com.github.avalon.editor.tools.basic.OperationBlock;
@@ -40,6 +41,13 @@ public class OperationExecutor {
                             operationBlock.getPosition().getYAsInteger(),
                             operationBlock.getPosition().getZAsInteger())
                         .setMaterial(operationBlock.getMaterial()));
+
+            operation
+                .getInform()
+                .sendSystemMessage(
+                    Format.defaultMessage(
+                        "Editor",
+                        "%green%Operation was successful and %yellow%" + blockQueue.size() + " blocks %green% was changed."));
           } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
             operation

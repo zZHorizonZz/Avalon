@@ -131,7 +131,7 @@ public class ChunkSectionProvider {
    * @param material Material that will be placed.
    */
   public void placeBlockAsPlayer(IPlayer caller, Transform location, Material material) {
-    Collection<IPlayer> receivers = chunk.getChunkBatch().getDimension().getPlayers().values();
+    Collection<IPlayer> receivers = chunk.getChunkBatch().getDimension().getPlayers();
     if (receivers.remove(caller)) {
       DimensionManager.LOGGER.info(
           "Registering weird behavior with block placement called by player (%s) at location %s",
@@ -149,7 +149,7 @@ public class ChunkSectionProvider {
    * @param material Material that will be placed.
    */
   public void placeBlockAsSystem(Transform location, Material material) {
-    Collection<IPlayer> receivers = chunk.getChunkBatch().getDimension().getPlayers().values();
+    Collection<IPlayer> receivers = chunk.getChunkBatch().getDimension().getPlayers();
     setMaterialAt(location.getBlockX(), location.getBlockY(), location.getBlockZ(), material);
     updateBlockAt(location.getBlockX(), location.getBlockY(), location.getBlockZ(), receivers);
   }
@@ -161,7 +161,7 @@ public class ChunkSectionProvider {
    * @param state State that will be changed.
    */
   public void setStateAsSystem(Transform location, int state) {
-    Collection<IPlayer> receivers = chunk.getChunkBatch().getDimension().getPlayers().values();
+    Collection<IPlayer> receivers = chunk.getChunkBatch().getDimension().getPlayers();
     setStateAt(location.getBlockX(), location.getBlockY(), location.getBlockZ(), state);
     updateBlockAt(location.getBlockX(), location.getBlockY(), location.getBlockZ(), receivers);
   }
