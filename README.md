@@ -32,7 +32,7 @@ run [BootLoader](https://github.com/Avalon-Minecraft/Avalon/blob/main/src/main/j
 
 ## TO-DO List
 
-* Implement all types of blocks and items. Currently, there is only few blocks for testing purposes (10 blocks).
+* Implement all types of blocks and items. Currently, there are only few blocks for testing purposes (10 blocks).
 * Implement all entities and ai (pathfinding with goals) for them.
 * Implement remaining packets for example Particle packets, scoreboard packets, boss bar packets, etc
 * Add some sort of movement, combat, etc validation (basic anticheat)
