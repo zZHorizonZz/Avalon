@@ -48,6 +48,7 @@ run [BootLoader](https://github.com/Avalon-Minecraft/Avalon/blob/main/src/main/j
 
 * Special thanks goes mostly to [Mojang](https://mojang.com) and their amazing game.
 * Another special thanks goes to [Glowstone Team](https://glowstone.net/) and their idea with Flow Network solution.
+* And final thanks goes to all peoples who contributed on creation of [Wiki for Minecraft Functionality.](https://wiki.vg/Protocol).
 
 ## License
 

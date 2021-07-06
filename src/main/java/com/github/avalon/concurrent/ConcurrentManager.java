@@ -7,6 +7,7 @@ import io.netty.util.concurrent.DefaultThreadFactory;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.*;
 
 /**
@@ -21,14 +22,14 @@ import java.util.concurrent.*;
  */
 public class ConcurrentManager extends AbstractManager<IServer> {
 
-  public static int CORE_POOL_SIZE = 1;
-  public static int MAX_POOL_SIZE = Integer.MAX_VALUE;
-  public static int KEEP_ALIVE = 60;
-  public static int QUEUE_CAPACITY = Integer.MAX_VALUE;
+  public static final int CORE_POOL_SIZE = 1;
+  public static final int MAX_POOL_SIZE = Integer.MAX_VALUE;
+  public static final int KEEP_ALIVE = 60;
+  public static final int QUEUE_CAPACITY = Integer.MAX_VALUE;
 
-  public static boolean ALLOW_THREAD_TIMEOUT;
+  public static final boolean ALLOW_THREAD_TIMEOUT = false;
 
-  public static TimeUnit DEFAULT_TIMEUNIT = TimeUnit.SECONDS;
+  public static final TimeUnit DEFAULT_TIMEUNIT = TimeUnit.SECONDS;
 
   private final Map<AbstractManager<?>, NetworkTaskExecutor> taskExecutors;
   private final Map<Integer, ThreadPoolExecutor> priorityExecutors;
@@ -72,7 +73,7 @@ public class ConcurrentManager extends AbstractManager<IServer> {
     }
 
     int priority = manager.priority();
-    ThreadPoolExecutor threadPoolExecutor = null;
+    ThreadPoolExecutor threadPoolExecutor;
 
     if (priorityExecutors.containsKey(priority)) {
       threadPoolExecutor = priorityExecutors.get(priority);
@@ -80,9 +81,8 @@ public class ConcurrentManager extends AbstractManager<IServer> {
       threadPoolExecutor = createSharableThreadPool(createQueue(ConcurrentManager.QUEUE_CAPACITY));
     }
 
-    if (threadPoolExecutor == null) {
-      throw new IllegalStateException("Thread pool executor is null. This should not happen.");
-    }
+    Objects.requireNonNull(
+        threadPoolExecutor, "Thread pool executor is null. This should not happen.");
 
     NetworkTaskExecutor taskExecutor = new NetworkTaskExecutor();
     taskExecutor.useThreadPool(threadPoolExecutor);

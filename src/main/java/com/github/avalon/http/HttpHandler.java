@@ -19,7 +19,7 @@ public class HttpHandler extends SimpleChannelInboundHandler<Object> {
   }
 
   @Override
-  public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+  public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
     try {
       callback.onError(cause);
     } finally {
@@ -29,7 +29,7 @@ public class HttpHandler extends SimpleChannelInboundHandler<Object> {
   }
 
   @Override
-  protected void channelRead0(ChannelHandlerContext ctx, Object msg) throws Exception {
+  protected void channelRead0(ChannelHandlerContext ctx, Object msg) {
     if (msg instanceof HttpResponse) {
       HttpResponse response = (HttpResponse) msg;
       int responseCode = response.getStatus().code();
@@ -39,9 +39,8 @@ public class HttpHandler extends SimpleChannelInboundHandler<Object> {
         return;
       }
 
-      if (responseCode != HttpResponseStatus.OK.code()) {
-        throw new IllegalStateException("Expected HTTP response 200 OK, got " + responseCode);
-      }
+      assert responseCode == HttpResponseStatus.OK.code()
+          : "Expected HTTP response 200 OK, got " + responseCode;
     }
 
     if (msg instanceof HttpContent) {
