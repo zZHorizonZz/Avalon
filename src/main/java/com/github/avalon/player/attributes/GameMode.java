@@ -14,12 +14,17 @@ public enum GameMode {
   }
 
   public static GameMode getByIndex(int index) {
-    if (index >= values().length || index < 0)
+    if (index >= values().length || index < 0) {
       throw new IllegalArgumentException(
           "Invalid index of gamemode. Index must be greater or equal to 0 or smaller than "
               + values().length);
+    }
 
     return values()[index];
+  }
+
+  public static GameMode getByName(String name) {
+    return GameMode.valueOf(name.toUpperCase());
   }
 
   public int getIndex() {

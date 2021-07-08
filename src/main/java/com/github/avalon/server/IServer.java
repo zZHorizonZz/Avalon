@@ -7,6 +7,7 @@ import com.github.avalon.network.PlayerSessionContainer;
 import com.github.avalon.network.protocol.ProtocolContainer;
 import com.github.avalon.packet.PacketModule;
 import com.github.avalon.scheduler.SchedulerModule;
+import com.github.avalon.translation.TranslationModule;
 
 import java.net.InetSocketAddress;
 
@@ -94,6 +95,9 @@ public interface IServer {
 
   /** @return Returns the module that manages the chat. */
   ChatModule getChatModule();
+
+  /** @return Returns translation module. */
+  TranslationModule getTranslationModule();
 
   /** @return We have 2 classes for server one is for server itself and one is for connection. */
   SocketServer getSocketServer();

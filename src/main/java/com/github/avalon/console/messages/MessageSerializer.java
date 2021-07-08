@@ -1,20 +1,21 @@
 package com.github.avalon.console.messages;
 
+import com.github.avalon.resource.data.ResourceJson;
 import com.google.gson.*;
 
 import java.lang.reflect.Type;
 import java.util.Map;
 
-public class MessageSerializer implements JsonDeserializer<ServerMessage> {
+public class MessageSerializer implements JsonDeserializer<ResourceJson> {
 
   @Override
-  public ServerMessage deserialize(
+  public ResourceJson deserialize(
           JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext)
       throws JsonParseException {
-    ServerMessage serverMessage = new ServerMessage();
+    ResourceJson resourceJson = new ResourceJson();
 
     JsonObject jsonObject = jsonElement.getAsJsonObject();
-    if (jsonObject.size() < 1) return serverMessage;
+    if (jsonObject.size() < 1) return resourceJson;
 
     for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
       String name = entry.getKey();
@@ -29,7 +30,7 @@ public class MessageSerializer implements JsonDeserializer<ServerMessage> {
                   message -> {
                     StringBuilder messageIdentifier = new StringBuilder();
                     messageIdentifier.append(name).append('.').append(message.getKey());
-                    serverMessage.registerMessage(
+                    resourceJson.registerMessage(
                         messageIdentifier.toString(),
                         jsonDeserializationContext.deserialize(message.getValue(), String.class));
                   });
@@ -37,6 +38,6 @@ public class MessageSerializer implements JsonDeserializer<ServerMessage> {
       }
     }
 
-    return serverMessage;
+    return resourceJson;
   }
 }

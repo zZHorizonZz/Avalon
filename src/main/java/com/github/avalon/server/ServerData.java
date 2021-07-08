@@ -1,6 +1,6 @@
 package com.github.avalon.server;
 
-import com.github.avalon.console.messages.ServerMessage;
+import com.github.avalon.resource.data.ResourceJson;
 
 /**
  * This class provides whole server settings from {@link ServerVersion} to server mode. This class
@@ -11,7 +11,7 @@ import com.github.avalon.console.messages.ServerMessage;
  */
 public class ServerData {
 
-  private ServerMessage serverMessage = new ServerMessage();
+  private ResourceJson resourceJson = new ResourceJson();
 
   private ServerVersion serverVersion = new ServerVersion();
   private String motd = "&eCurrently -> &aRunning.";
@@ -84,12 +84,12 @@ public class ServerData {
     this.serverStartTime = serverStartTime;
   }
 
-  public ServerMessage getServerMessage() {
-    return serverMessage;
+  public ResourceJson getServerMessage() {
+    return resourceJson;
   }
 
-  public void setServerMessage(ServerMessage serverMessage) {
-    this.serverMessage = serverMessage;
+  public void setServerMessage(ResourceJson resourceJson) {
+    this.resourceJson = resourceJson;
   }
 
   public boolean isDebugWorld() {

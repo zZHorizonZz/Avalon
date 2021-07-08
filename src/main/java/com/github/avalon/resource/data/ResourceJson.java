@@ -1,25 +1,33 @@
-package com.github.avalon.console.messages;
+package com.github.avalon.resource.data;
 
+import com.github.avalon.console.messages.MessageSerializer;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class ServerMessage {
+/**
+ * Resource json will convert json string format into map from which we can crab strings via it's
+ * identifier {@code 'player.command.gamemode'} will return message that is sent when player change
+ * his gamemode.
+ *
+ * @version 1.1
+ */
+public class ResourceJson {
 
   private Map<String, String> messages;
 
-  public ServerMessage(String messages) {
+  public ResourceJson(String messages) {
     GsonBuilder builder =
-        new GsonBuilder().registerTypeAdapter(ServerMessage.class, new MessageSerializer());
+        new GsonBuilder().registerTypeAdapter(ResourceJson.class, new MessageSerializer());
     Gson gson = builder.create();
-    ServerMessage message = gson.fromJson(messages, ServerMessage.class);
+    ResourceJson message = gson.fromJson(messages, ResourceJson.class);
     this.messages = message.getMessages();
   }
 
-  public ServerMessage() {
-      messages = new HashMap<>();
+  public ResourceJson() {
+    messages = new HashMap<>();
   }
 
   public String getMessage(String messageId) {

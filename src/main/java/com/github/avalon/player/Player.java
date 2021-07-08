@@ -4,6 +4,7 @@ import com.flowpowered.network.ConnectionManager;
 import com.github.avalon.account.PlayerProfile;
 import com.github.avalon.character.character.CharacterLiving;
 import com.github.avalon.chat.message.ChatColor;
+import com.github.avalon.chat.message.Message;
 import com.github.avalon.common.math.Vector2;
 import com.github.avalon.data.Transform;
 import com.github.avalon.dimension.chunk.IChunk;
@@ -226,28 +227,9 @@ public class Player implements IPlayer {
   }
 
   @Override
-  public void sendMessage(String message) {
-    sendMessage(MessageType.CHAT, message);
-  }
-
-  @Override
-  public void sendSystemMessage(String message) {
-    sendMessage(MessageType.SYSTEM_INFO, message);
-  }
-
-  @Override
-  public void sendGameInfo(String message) {
-    sendMessage(MessageType.GAME_INFO, message);
-  }
-
-  @Override
-  public void sendMessage(MessageType type, String message) {
-    PacketChatMessage packet =
-        new PacketChatMessage(
-            ChatColor.toChat(message),
-            type.getType(),
-            UUID.randomUUID()); // TODO: Maybe implement players uuids.
-
+  public void sendMessage(MessageType type, Message message) {
+    // TODO: Maybe implement players uuids.
+    PacketChatMessage packet = new PacketChatMessage(message, type.getType(), UUID.randomUUID());
     sendPacket(packet);
   }
 

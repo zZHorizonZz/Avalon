@@ -1,7 +1,7 @@
 package com.github.avalon.server;
 
 import com.github.avalon.console.ConsoleModule;
-import com.github.avalon.console.messages.ServerMessage;
+import com.github.avalon.resource.data.ResourceJson;
 import com.github.avalon.resource.ResourceModule;
 
 /**
@@ -15,7 +15,7 @@ public class Bootstrap implements Initializer {
 
   public static Bootstrap INSTANCE;
 
-  private final ServerMessage message;
+  private final ResourceJson message;
 
   private final ResourceModule resourceModule;
   private final ConsoleModule consoleModule;
@@ -25,7 +25,7 @@ public class Bootstrap implements Initializer {
     INSTANCE = this;
 
     resourceModule = new ResourceModule();
-    message = new ServerMessage(resourceModule.loadResource(null, "messages.json"));
+    message = new ResourceJson(resourceModule.loadResource(null, "messages.json"));
     consoleModule = new ConsoleModule(this);
     server = new Server(this);
     server.startServer();
@@ -42,7 +42,7 @@ public class Bootstrap implements Initializer {
     return server;
   }
 
-  public ServerMessage getMessage() {
+  public ResourceJson getMessage() {
     return message;
   }
 

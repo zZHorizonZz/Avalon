@@ -17,6 +17,11 @@ public class Message implements JsonSerializer<Message>, JsonDeserializer<Messag
     textEntities = new LinkedList<>();
   }
 
+  public Message(String message) {
+    MessageFactory factory = new MessageFactory(message);
+    textEntities = factory.toChat().getTextEntities();
+  }
+
   @Override
   public Message deserialize(
       JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext)

@@ -24,6 +24,7 @@ import com.github.avalon.player.handler.MovementHandler;
 import com.github.avalon.scheduler.SchedulerModule;
 import com.github.avalon.server.command.StopCommand;
 import com.github.avalon.timer.Timer;
+import com.github.avalon.translation.TranslationModule;
 import io.netty.util.concurrent.DefaultThreadFactory;
 
 import java.net.InetSocketAddress;
@@ -65,6 +66,7 @@ public class Server implements IServer, ServerRunner {
   private ItemModule itemModule;
   private EditModule editModule;
   private DebugModule debugModule;
+  private TranslationModule translationModule;
 
   private final PlayerSessionContainer playerSessionRegistry;
 
@@ -112,6 +114,7 @@ public class Server implements IServer, ServerRunner {
     schedulerModule = initializationManager.registerModule(new SchedulerModule(this));
     descriptorModule = initializationManager.registerModule(new DescriptorModule(this));
     dimensionModule = initializationManager.registerModule(new DimensionModule(this));
+    translationModule = initializationManager.registerModule(new TranslationModule(this));
     chatModule = initializationManager.registerModule(new ChatModule(this));
     itemModule = initializationManager.registerModule(new ItemModule(this));
     editModule = initializationManager.registerModule(new EditModule(this));
@@ -256,6 +259,11 @@ public class Server implements IServer, ServerRunner {
   @Override
   public ChatModule getChatModule() {
     return chatModule;
+  }
+
+  @Override
+  public TranslationModule getTranslationModule() {
+    return translationModule;
   }
 
   public ServerVersion getServerVersion() {
