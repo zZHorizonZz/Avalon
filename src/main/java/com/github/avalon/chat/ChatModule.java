@@ -1,28 +1,28 @@
 package com.github.avalon.chat;
 
-import com.github.avalon.annotation.annotation.Manager;
+import com.github.avalon.annotation.annotation.Module;
 import com.github.avalon.chat.command.Command;
 import com.github.avalon.chat.command.CommandExecutor;
 import com.github.avalon.chat.command.CommandListener;
 import com.github.avalon.chat.command.CommandNode;
 import com.github.avalon.chat.command.annotation.CommandPerformer;
 import com.github.avalon.console.logging.DefaultLogger;
-import com.github.avalon.manager.ServerManager;
+import com.github.avalon.module.ServerModule;
 import com.github.avalon.player.IPlayer;
 import com.github.avalon.server.IServer;
 
 import java.util.*;
 import java.util.function.Consumer;
 
-@Manager(name = "ChatOperator Manager", asynchronous = true)
-public class ChatManager extends ServerManager {
+@Module(name = "ChatOperator Module", asynchronous = true)
+public class ChatModule extends ServerModule {
 
-  public static final DefaultLogger LOGGER = new DefaultLogger(ChatManager.class);
+  public static final DefaultLogger LOGGER = new DefaultLogger(ChatModule.class);
 
   private final List<char[]> registeredPrefixes;
   private final Map<String, Command> commandMap;
 
-  public ChatManager(IServer host) {
+  public ChatModule(IServer host) {
     super(host);
 
     registeredPrefixes = new ArrayList<>();

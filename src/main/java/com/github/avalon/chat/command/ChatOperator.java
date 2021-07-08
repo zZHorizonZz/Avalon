@@ -1,6 +1,6 @@
 package com.github.avalon.chat.command;
 
-import com.github.avalon.chat.ChatManager;
+import com.github.avalon.chat.ChatModule;
 import com.github.avalon.player.attributes.MessageType;
 import com.github.avalon.server.Server;
 
@@ -61,16 +61,16 @@ public interface ChatOperator {
    * @param commandString
    */
   default void handleCommand(String commandString) {
-    ChatManager chatManager = getServer().getChatManager();
+    ChatModule chatModule = getServer().getChatModule();
     String[] arguments = commandString.split(" ");
 
-    for (char[] registeredPrefix : chatManager.getRegisteredPrefixes()) {
+    for (char[] registeredPrefix : chatModule.getRegisteredPrefixes()) {
       String firstArgument = arguments[0];
       if (firstArgument.startsWith(String.valueOf(registeredPrefix))) {
         arguments[0] = firstArgument.substring(registeredPrefix.length);
         firstArgument = arguments[0];
         if (!firstArgument.isEmpty()) {
-          Command command = chatManager.getCommandMap().get(firstArgument);
+          Command command = chatModule.getCommandMap().get(firstArgument);
           if (command != null) {
             command.handleCommand(this, command, arguments, commandString);
             return;

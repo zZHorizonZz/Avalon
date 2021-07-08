@@ -5,7 +5,7 @@ import com.github.avalon.character.character.Character;
 import com.github.avalon.character.character.CharacterLiving;
 import com.github.avalon.common.system.TripleMap;
 import com.github.avalon.data.Transform;
-import com.github.avalon.dimension.DimensionManager;
+import com.github.avalon.dimension.DimensionModule;
 import com.github.avalon.dimension.biome.BiomeContainer;
 import com.github.avalon.dimension.chunk.ChunkBatch;
 import com.github.avalon.dimension.chunk.ChunkService;
@@ -27,7 +27,7 @@ import java.util.Objects;
 
 public class NetworkDimension implements Dimension {
 
-  private final DimensionManager dimensionManager;
+  private final DimensionModule dimensionManager;
 
   private final long seed;
   private final TerrainType terrainType;
@@ -45,7 +45,7 @@ public class NetworkDimension implements Dimension {
   private final TripleMap<Integer, Integer, IChunkBatch> chunkBatches;
 
   public NetworkDimension(
-      DimensionManager dimensionManager,
+      DimensionModule dimensionManager,
       int dimensionIdentifier,
       String dimensionName,
       long seed,
@@ -72,10 +72,10 @@ public class NetworkDimension implements Dimension {
   public void load() {
     assert !StringUtil.isNullOrEmpty(dimensionName) : "Name of the world can not be null or blank.";
 
-    DimensionManager.LOGGER.info("Starting load of %s...", dimensionName);
-    DimensionManager.LOGGER.info("Preparing spawn chunk batch...");
+    DimensionModule.LOGGER.info("Starting load of %s...", dimensionName);
+    DimensionModule.LOGGER.info("Preparing spawn chunk batch...");
     loadChunkBatch(0, 0);
-    DimensionManager.LOGGER.info(
+    DimensionModule.LOGGER.info(
         "Dimension %s has been successfully loaded. And chunk batch has been created.",
         dimensionName);
   }
@@ -159,7 +159,7 @@ public class NetworkDimension implements Dimension {
   }
 
   @Override
-  public DimensionManager getDimensionManager() {
+  public DimensionModule getDimensionManager() {
     return dimensionManager;
   }
 
@@ -209,7 +209,7 @@ public class NetworkDimension implements Dimension {
   @Override
   public void spawnControllableCharacter(
       CharacterLiving character, IPlayer controller, Transform transform) {
-    DimensionManager.LOGGER.info(
+    DimensionModule.LOGGER.info(
         "Spawning controllable character with id %s ...", character.getIdentifier());
     if (!controller.getConnection().isActive()) {
       return;
@@ -228,7 +228,7 @@ public class NetworkDimension implements Dimension {
     character.spawn();
 
     players.add(controller);
-    DimensionManager.LOGGER.info(
+    DimensionModule.LOGGER.info(
         "Controllable character has been spawned. Controlling player is %s", character.getName());
   }
 

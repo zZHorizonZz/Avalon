@@ -37,7 +37,7 @@ public class BetaPlayer {
     this.playerProfile = playerProfile;
     this.session = session;
     this.server = session.getServer();
-    this.dimension = getServer().getDimensionManager().getMainDimension();
+    this.dimension = getServer().getDimensionModule().getMainDimension();
     this.renderedChunks = new ArrayList<>();
 
     if (this.dimension == null) {
@@ -226,7 +226,7 @@ public class BetaPlayer {
     // data.
 
     session.setOnline(true);
-    ConsoleManager.logInfo("%s successfully connected.", this.playerProfile.getName());
+    ConsoleModule.logInfo("%s successfully connected.", this.playerProfile.getName());
   }
 
   @Override

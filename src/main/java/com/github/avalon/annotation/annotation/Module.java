@@ -7,11 +7,11 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface Manager {
+public @interface Module {
 
   boolean asynchronous();
 
   int priority() default 100;
 
-  String name() default "Default Manager";
+  String name() default "Default Module";
 }

@@ -29,7 +29,7 @@ public class PacketCustomPayload extends LegacyPacket<PacketCustomPayload> {
   @Override
   public PacketCustomPayload decode(PacketBuffer buffer) throws IOException {
     /*String identifier = buffer.readUTF8();
-    PacketBuffer data = new PacketBuffer(buffer.getDescriptorManager(), buffer.getBytes(buffer.readableBytes(), buffer));*/
+    PacketBuffer data = new PacketBuffer(buffer.getDescriptorModule(), buffer.getBytes(buffer.readableBytes(), buffer));*/
     PacketCustomPayload packet = new PacketCustomPayload();
     return packet;
   }

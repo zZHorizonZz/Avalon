@@ -109,11 +109,11 @@ public class PacketJoinGame extends Packet<PacketJoinGame> {
     previousGameMode = (byte) attributes.getPreviousGameMode().getIndex();
     dimensionIdentifier = playerDimension.getResourceIdentifier();
     dimensions =
-        server.getDimensionManager().getDimensions().stream()
+        server.getDimensionModule().getDimensions().stream()
             .map(Dimension::getResourceIdentifier)
             .collect(Collectors.toList());
     dimensionCodec =
-        (TagCompound) server.getDimensionManager().getDimensionRegistry().serialize(this);
+        (TagCompound) server.getDimensionModule().getDimensionRegistry().serialize(this);
     dimension =
         (TagCompound)
             playerDimension.getDimensionData().serialize(playerDimension.getDimensionData());

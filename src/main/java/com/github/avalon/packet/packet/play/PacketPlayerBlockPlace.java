@@ -68,7 +68,7 @@ public class PacketPlayerBlockPlace extends Packet<PacketPlayerBlockPlace> {
 
   @Override
   public void handle(PlayerConnection connection, PacketPlayerBlockPlace packet) {
-    connection.getPlayer().getServer().getPacketManager().handle(packet, connection);
+    connection.getPlayer().getServer().getPacketModule().handle(packet, connection);
   }
 
   public Hand getHand() {

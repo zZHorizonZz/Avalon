@@ -1,6 +1,6 @@
 package com.github.avalon.dimension;
 
-import com.github.avalon.annotation.annotation.Manager;
+import com.github.avalon.annotation.annotation.Module;
 import com.github.avalon.console.logging.DefaultLogger;
 import com.github.avalon.dimension.biome.BiomeContainer;
 import com.github.avalon.dimension.biome.BiomeEffect;
@@ -9,24 +9,24 @@ import com.github.avalon.dimension.dimension.Dimension;
 import com.github.avalon.dimension.dimension.DimensionContainer;
 import com.github.avalon.dimension.dimension.DimensionType;
 import com.github.avalon.dimension.dimension.NetworkDimension;
-import com.github.avalon.manager.ServerManager;
+import com.github.avalon.module.ServerModule;
 import com.github.avalon.server.IServer;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-@Manager(name = "Dimension Manager", asynchronous = true)
-public class DimensionManager extends ServerManager {
+@Module(name = "Dimension Module", asynchronous = true)
+public class DimensionModule extends ServerModule {
 
-  public static final DefaultLogger LOGGER = new DefaultLogger(DimensionManager.class);
+  public static final DefaultLogger LOGGER = new DefaultLogger(DimensionModule.class);
 
   private Dimension mainDimension;
 
   private final DimensionContainer dimensionRegistry;
   private final BiomeContainer biomeRegistry;
 
-  public DimensionManager(IServer host) {
+  public DimensionModule(IServer host) {
     super(host);
 
     biomeRegistry = new BiomeContainer();

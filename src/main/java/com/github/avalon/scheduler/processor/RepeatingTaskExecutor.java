@@ -1,6 +1,6 @@
 package com.github.avalon.scheduler.processor;
 
-import com.github.avalon.scheduler.SchedulerManager;
+import com.github.avalon.scheduler.SchedulerModule;
 import com.github.avalon.scheduler.task.RepeatingTask;
 import com.github.avalon.scheduler.task.TaskStatus;
 
@@ -23,7 +23,7 @@ public class RepeatingTaskExecutor implements TaskExecutor<RepeatingTask> {
 
         repeatingTask.repeat();
       } catch (RuntimeException exception) {
-        SchedulerManager.LOGGER.error(
+        SchedulerModule.LOGGER.error(
             "[Task #%s] Execution of repeating task failed.", exception, repeatingTask.getTaskId());
       }
     }

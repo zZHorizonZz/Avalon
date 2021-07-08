@@ -1,21 +1,21 @@
 package com.github.avalon.descriptor;
 
-import com.github.avalon.annotation.annotation.Manager;
+import com.github.avalon.annotation.annotation.Module;
 import com.github.avalon.block.block.Block;
 import com.github.avalon.console.logging.DefaultLogger;
 import com.github.avalon.fluid.Fluid;
 import com.github.avalon.item.Item;
-import com.github.avalon.manager.ServerManager;
+import com.github.avalon.module.ServerModule;
 import com.github.avalon.server.IServer;
 
-@Manager(name = "Descriptor Manager", asynchronous = true)
-public class DescriptorManager extends ServerManager {
+@Module(name = "Descriptor Module", asynchronous = true)
+public class DescriptorModule extends ServerModule {
 
-  public static final DefaultLogger LOGGER = new DefaultLogger(DescriptorManager.class);
+  public static final DefaultLogger LOGGER = new DefaultLogger(DescriptorModule.class);
 
   private final DescriptorContainer registry;
 
-  public DescriptorManager(IServer host) {
+  public DescriptorModule(IServer host) {
     super(host);
 
     registry = new DescriptorContainer();

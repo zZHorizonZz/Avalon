@@ -1,6 +1,7 @@
 package com.github.avalon.dimension.chunk;
 
 import com.github.avalon.common.math.Vector2;
+import com.github.avalon.dimension.DimensionModule;
 import com.github.avalon.dimension.dimension.Dimension;
 import com.github.avalon.nbt.serialization.NamedBinarySerializer;
 import com.github.avalon.nbt.tag.Tag;
@@ -12,7 +13,7 @@ import java.util.Collection;
 
 /**
  * This class provides methods that are used by {@link
- * com.github.avalon.dimension.DimensionManager} to manage {@link Dimension} data. IChunk is
+ * DimensionModule} to manage {@link Dimension} data. IChunk is
  * 16x16 segment of blocks. From which is created whole world.
  *
  * @author Horizon

@@ -49,7 +49,7 @@ public class PacketEncryptionKeyResponse extends Packet<PacketEncryptionKeyRespo
 
   @Override
   public void handle(PlayerConnection connection, PacketEncryptionKeyResponse packet) {
-    connection.getPlayer().getServer().getPacketManager().handle(packet, connection);
+    connection.getPlayer().getServer().getPacketModule().handle(packet, connection);
   }
 
   @Override

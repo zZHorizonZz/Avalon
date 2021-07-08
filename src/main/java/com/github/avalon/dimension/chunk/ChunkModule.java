@@ -2,7 +2,7 @@ package com.github.avalon.dimension.chunk;
 
 import com.github.avalon.common.system.TripleMap;
 import com.github.avalon.dimension.dimension.Dimension;
-import com.github.avalon.manager.DefaultManager;
+import com.github.avalon.module.DefaultModule;
 
 import javax.annotation.Nullable;
 
@@ -12,11 +12,11 @@ import javax.annotation.Nullable;
  * @author Horizon
  * @version 1.0
  */
-public class ChunkManager extends DefaultManager<Dimension> {
+public class ChunkModule extends DefaultModule<Dimension> {
 
   private final TripleMap<Integer, Integer, IChunkBatch> batches;
 
-  public ChunkManager(Dimension host) {
+  public ChunkModule(Dimension host) {
     super("IChunk manager", host);
 
     batches = new TripleMap<>();

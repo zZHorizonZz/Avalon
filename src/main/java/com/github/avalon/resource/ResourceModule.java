@@ -5,11 +5,11 @@ import com.github.avalon.resource.data.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ResourceManager {
+public class ResourceModule {
 
   private final Map<String, Resource> resources;
 
-  public ResourceManager() {
+  public ResourceModule() {
       resources = new HashMap<>();
   }
 

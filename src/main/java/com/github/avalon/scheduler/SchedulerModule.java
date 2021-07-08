@@ -1,8 +1,8 @@
 package com.github.avalon.scheduler;
 
+import com.github.avalon.annotation.annotation.Module;
 import com.github.avalon.console.logging.DefaultLogger;
-import com.github.avalon.manager.AbstractManager;
-import com.github.avalon.annotation.annotation.Manager;
+import com.github.avalon.module.AbstractModule;
 import com.github.avalon.scheduler.processor.DelayedTaskExecutor;
 import com.github.avalon.scheduler.processor.RepeatingTaskExecutor;
 import com.github.avalon.scheduler.task.DelayedTask;
@@ -22,10 +22,10 @@ import java.util.concurrent.atomic.AtomicLong;
  * @version 1.1
  * @author Horizon
  */
-@Manager(name = "Scheduler Manager", asynchronous = true)
-public class SchedulerManager extends AbstractManager<IServer> {
+@Module(name = "Scheduler Module", asynchronous = true)
+public class SchedulerModule extends AbstractModule<IServer> {
 
-  public static final DefaultLogger LOGGER = new DefaultLogger(SchedulerManager.class);
+  public static final DefaultLogger LOGGER = new DefaultLogger(SchedulerModule.class);
 
   private final DelayedTaskExecutor delayedTaskExecutor;
   private final RepeatingTaskExecutor repeatingTaskExecutor;
@@ -37,7 +37,7 @@ public class SchedulerManager extends AbstractManager<IServer> {
 
   private final AtomicLong lastTaskId = new AtomicLong(1);
 
-  public SchedulerManager(IServer server) {
+  public SchedulerModule(IServer server) {
     super(server);
 
       taskMap = new ConcurrentHashMap<>();

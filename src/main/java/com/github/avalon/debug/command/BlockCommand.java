@@ -3,13 +3,13 @@ package com.github.avalon.debug.command;
 import com.github.avalon.chat.command.CommandExecutor;
 import com.github.avalon.chat.command.CommandListener;
 import com.github.avalon.chat.command.annotation.CommandPerformer;
-import com.github.avalon.debug.DebugManager;
+import com.github.avalon.debug.DebugModule;
 import com.github.avalon.packet.packet.play.PacketBlockChange;
 import com.github.avalon.player.IPlayer;
 
 public class BlockCommand extends CommandListener {
 
-  public BlockCommand(DebugManager debugManager) {
+  public BlockCommand(DebugModule debugManager) {
     register("debug.block", this::debugBlock);
   }
 

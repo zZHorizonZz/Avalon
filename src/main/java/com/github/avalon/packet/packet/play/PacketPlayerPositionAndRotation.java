@@ -66,7 +66,7 @@ public class PacketPlayerPositionAndRotation extends Packet<PacketPlayerPosition
 
   @Override
   public void handle(PlayerConnection connection, PacketPlayerPositionAndRotation packet) {
-    connection.getPlayer().getServer().getPacketManager().handle(packet, connection);
+    connection.getPlayer().getServer().getPacketModule().handle(packet, connection);
   }
 
   @Override

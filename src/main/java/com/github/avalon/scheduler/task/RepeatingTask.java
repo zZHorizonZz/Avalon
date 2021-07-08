@@ -1,11 +1,11 @@
 package com.github.avalon.scheduler.task;
 
-import com.github.avalon.scheduler.SchedulerManager;
+import com.github.avalon.scheduler.SchedulerModule;
 import com.github.avalon.server.ServerThread;
 
 /**
  * This class implements {@link Runnable} and provides repeatable run of code through {@link
- * SchedulerManager}.
+ * SchedulerModule}.
  *
  * @author Horizon
  * @version 1.0
@@ -22,7 +22,7 @@ public class RepeatingTask extends Task {
           Runnable task,
           long timer,
           boolean asynchronous,
-          SchedulerManager schedulerManager) {
+          SchedulerModule schedulerManager) {
     super(taskID, task, asynchronous, schedulerManager);
 
     this.timer = timer;

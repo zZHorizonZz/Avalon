@@ -3,15 +3,15 @@ package com.github.avalon.editor.command;
 import com.github.avalon.chat.command.CommandExecutor;
 import com.github.avalon.chat.command.CommandListener;
 import com.github.avalon.chat.command.annotation.CommandPerformer;
-import com.github.avalon.editor.EditManager;
+import com.github.avalon.editor.EditModule;
 import com.github.avalon.editor.tools.EditorSession;
 import com.github.avalon.player.IPlayer;
 
 public class EditCommand extends CommandListener {
 
-  private final EditManager editManager;
+  private final EditModule editManager;
 
-  public EditCommand(EditManager editManager) {
+  public EditCommand(EditModule editManager) {
     this.editManager = editManager;
 
     register("edit", this::edit);
@@ -33,7 +33,7 @@ public class EditCommand extends CommandListener {
     }
   }
 
-  public EditManager getEditManager() {
+  public EditModule getEditManager() {
     return editManager;
   }
 }

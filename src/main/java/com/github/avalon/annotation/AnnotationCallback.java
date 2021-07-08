@@ -16,7 +16,7 @@ public class AnnotationCallback<A extends Annotation> implements Callable<Set<Cl
   public Set<Class<?>> call() throws ExecutionException, InterruptedException, TimeoutException {
     CompletableFuture<Set<Class<?>>> future = new CompletableFuture<>();
 
-    AnnotationManager.ANNOTATION_TASK_EXECUTOR.submitTask(
+    AnnotationModule.ANNOTATION_TASK_EXECUTOR.submitTask(
         () -> {
           AnnotationScanner scanner = new AnnotationScanner();
           Set<Class<?>> result = scanner.scanForClassesByAnnotation(null, annotation);

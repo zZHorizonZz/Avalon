@@ -8,7 +8,7 @@ import com.flowpowered.network.exception.IllegalOpcodeException;
 import com.flowpowered.network.protocol.AbstractProtocol;
 import com.flowpowered.network.service.CodecLookupService;
 import com.flowpowered.network.util.ByteBufUtils;
-import com.github.avalon.annotation.AnnotationManager;
+import com.github.avalon.annotation.AnnotationModule;
 import com.github.avalon.console.logging.DefaultLogger;
 import com.github.avalon.network.ProtocolType;
 import com.github.avalon.network.handler.NetworkHandlerService;
@@ -60,7 +60,7 @@ public class ProtocolRegistry extends AbstractProtocol {
    * @since 1.0
    */
   private void registerPackets() {
-    Set<Class<?>> classes = AnnotationManager.scanForClassesByAnnotation(PacketRegister.class);
+    Set<Class<?>> classes = AnnotationModule.scanForClassesByAnnotation(PacketRegister.class);
     classes =
         classes.stream()
             .filter(

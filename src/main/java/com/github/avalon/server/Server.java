@@ -1,27 +1,27 @@
 package com.github.avalon.server;
 
 import com.github.avalon.account.handler.LoginHandler;
-import com.github.avalon.annotation.AnnotationManager;
+import com.github.avalon.annotation.AnnotationModule;
 import com.github.avalon.chat.ChatHandler;
-import com.github.avalon.chat.ChatManager;
+import com.github.avalon.chat.ChatModule;
 import com.github.avalon.common.system.UtilSecurity;
-import com.github.avalon.concurrent.ConcurrentManager;
+import com.github.avalon.concurrent.ConcurrentModule;
 import com.github.avalon.console.logging.DefaultLogger;
-import com.github.avalon.debug.DebugManager;
-import com.github.avalon.descriptor.DescriptorManager;
-import com.github.avalon.dimension.DimensionManager;
-import com.github.avalon.editor.EditManager;
+import com.github.avalon.debug.DebugModule;
+import com.github.avalon.descriptor.DescriptorModule;
+import com.github.avalon.dimension.DimensionModule;
+import com.github.avalon.editor.EditModule;
 import com.github.avalon.initialization.InitializationManager;
-import com.github.avalon.item.ItemManager;
+import com.github.avalon.item.ItemModule;
 import com.github.avalon.network.PlayerSessionContainer;
 import com.github.avalon.network.ProtocolType;
 import com.github.avalon.network.SocketServer;
 import com.github.avalon.network.protocol.ProtocolContainer;
 import com.github.avalon.network.protocol.ProtocolRegistry;
-import com.github.avalon.packet.PacketManager;
+import com.github.avalon.packet.PacketModule;
 import com.github.avalon.player.handler.BlockHandler;
 import com.github.avalon.player.handler.MovementHandler;
-import com.github.avalon.scheduler.SchedulerManager;
+import com.github.avalon.scheduler.SchedulerModule;
 import com.github.avalon.server.command.StopCommand;
 import com.github.avalon.timer.Timer;
 import io.netty.util.concurrent.DefaultThreadFactory;
@@ -56,22 +56,22 @@ public class Server implements IServer, ServerRunner {
 
   private final InitializationManager initializationManager;
 
-  private final ConcurrentManager concurrentManager;
-  private PacketManager packetManager;
-  private SchedulerManager schedulerManager;
-  private DescriptorManager descriptorManager;
-  private DimensionManager dimensionManager;
-  private ChatManager chatManager;
-  private ItemManager itemManager;
-  private EditManager editManager;
-  private DebugManager debugManager;
+  private final ConcurrentModule concurrentModule;
+  private PacketModule packetModule;
+  private SchedulerModule schedulerModule;
+  private DescriptorModule descriptorModule;
+  private DimensionModule dimensionModule;
+  private ChatModule chatModule;
+  private ItemModule itemModule;
+  private EditModule editModule;
+  private DebugModule debugModule;
 
   private final PlayerSessionContainer playerSessionRegistry;
 
   public Server(Bootstrap bootstrap) {
     this.bootstrap = bootstrap;
 
-    concurrentManager = new ConcurrentManager(this);
+    concurrentModule = new ConcurrentModule(this);
     initializationManager = new InitializationManager(this);
 
     serverState = ServerState.STARTING;
@@ -108,16 +108,16 @@ public class Server implements IServer, ServerRunner {
     }
     LOGGER.info("Loading server...");
 
-    packetManager = initializationManager.registerManager(new PacketManager(this));
-    schedulerManager = initializationManager.registerManager(new SchedulerManager(this));
-    descriptorManager = initializationManager.registerManager(new DescriptorManager(this));
-    dimensionManager = initializationManager.registerManager(new DimensionManager(this));
-    chatManager = initializationManager.registerManager(new ChatManager(this));
-    itemManager = initializationManager.registerManager(new ItemManager(this));
-    editManager = initializationManager.registerManager(new EditManager(this));
-    debugManager = initializationManager.registerManager(new DebugManager(this));
+    packetModule = initializationManager.registerModule(new PacketModule(this));
+    schedulerModule = initializationManager.registerModule(new SchedulerModule(this));
+    descriptorModule = initializationManager.registerModule(new DescriptorModule(this));
+    dimensionModule = initializationManager.registerModule(new DimensionModule(this));
+    chatModule = initializationManager.registerModule(new ChatModule(this));
+    itemModule = initializationManager.registerModule(new ItemModule(this));
+    editModule = initializationManager.registerModule(new EditModule(this));
+    debugModule = initializationManager.registerModule(new DebugModule(this));
 
-    AnnotationManager.ANNOTATION_TASK_EXECUTOR.initialize(
+    AnnotationModule.ANNOTATION_TASK_EXECUTOR.initialize(
         new DefaultThreadFactory("Annotation_Executor"));
 
     bindServer();
@@ -128,12 +128,12 @@ public class Server implements IServer, ServerRunner {
       shutdown();
     }
 
-    packetManager.registerPacketListener(new MovementHandler());
-    packetManager.registerPacketListener(new BlockHandler());
-    packetManager.registerPacketListener(new ChatHandler());
-    packetManager.registerPacketListener(new LoginHandler());
+    packetModule.registerPacketListener(new MovementHandler());
+    packetModule.registerPacketListener(new BlockHandler());
+    packetModule.registerPacketListener(new ChatHandler());
+    packetModule.registerPacketListener(new LoginHandler());
 
-    chatManager.registerCommands(new StopCommand());
+    chatModule.registerCommands(new StopCommand());
 
     LOGGER.info("Server has been successfully loaded. In %s seconds.", startTimer.stop() / 1000);
   }
@@ -182,17 +182,17 @@ public class Server implements IServer, ServerRunner {
 
   @Override
   public synchronized void heartbeat() {
-    schedulerManager.runTask(playerSessionRegistry::tick);
-    dimensionManager.tick();
-    schedulerManager.heartbeat();
+    schedulerModule.runTask(playerSessionRegistry::tick);
+    dimensionModule.tick();
+    schedulerModule.heartbeat();
   }
 
   @Override
   public synchronized void shutdown() {
     LOGGER.info("Server shutdown...");
-    chatManager.broadcastMessage("%red%Server is now shutting down, you will be disconnected.");
+    chatModule.broadcastMessage("%red%Server is now shutting down, you will be disconnected.");
     setServerState(ServerState.STOPPING);
-    AnnotationManager.ANNOTATION_TASK_EXECUTOR.interrupt();
+    AnnotationModule.ANNOTATION_TASK_EXECUTOR.interrupt();
     initializationManager.shutdown();
     stopServer();
     LOGGER.info("Server successfully shutdown.");
@@ -209,8 +209,8 @@ public class Server implements IServer, ServerRunner {
   }
 
   @Override
-  public ConcurrentManager getConcurrentManager() {
-    return concurrentManager;
+  public ConcurrentModule getConcurrentModule() {
+    return concurrentModule;
   }
 
   @Override
@@ -234,7 +234,7 @@ public class Server implements IServer, ServerRunner {
   }
 
   @Override
-  public Bootstrap getServerManager() {
+  public Bootstrap getBootstrap() {
     return bootstrap;
   }
 
@@ -244,18 +244,18 @@ public class Server implements IServer, ServerRunner {
   }
 
   @Override
-  public SchedulerManager getSchedulerManager() {
-    return schedulerManager;
+  public SchedulerModule getSchedulerModule() {
+    return schedulerModule;
   }
 
   @Override
-  public PacketManager getPacketManager() {
-    return packetManager;
+  public PacketModule getPacketModule() {
+    return packetModule;
   }
 
   @Override
-  public ChatManager getChatManager() {
-    return chatManager;
+  public ChatModule getChatModule() {
+    return chatModule;
   }
 
   public ServerVersion getServerVersion() {
@@ -266,11 +266,11 @@ public class Server implements IServer, ServerRunner {
     return securityKey;
   }
 
-  public DimensionManager getDimensionManager() {
-    return dimensionManager;
+  public DimensionModule getDimensionModule() {
+    return dimensionModule;
   }
 
-  public DescriptorManager getDescriptorManager() {
-    return descriptorManager;
+  public DescriptorModule getDescriptorModule() {
+    return descriptorModule;
   }
 }

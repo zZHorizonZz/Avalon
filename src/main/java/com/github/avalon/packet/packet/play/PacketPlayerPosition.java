@@ -47,7 +47,7 @@ public class PacketPlayerPosition extends Packet<PacketPlayerPosition> {
 
   @Override
   public void handle(PlayerConnection connection, PacketPlayerPosition packet) {
-    connection.getPlayer().getServer().getPacketManager().handle(packet, connection);
+    connection.getPlayer().getServer().getPacketModule().handle(packet, connection);
   }
 
   public double getX() {

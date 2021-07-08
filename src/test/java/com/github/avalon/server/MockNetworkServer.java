@@ -1,12 +1,12 @@
 package com.github.avalon.server;
 
-import com.github.avalon.chat.ChatManager;
-import com.github.avalon.concurrent.ConcurrentManager;
+import com.github.avalon.chat.ChatModule;
+import com.github.avalon.concurrent.ConcurrentModule;
 import com.github.avalon.network.SocketServer;
 import com.github.avalon.network.PlayerSessionContainer;
 import com.github.avalon.network.protocol.ProtocolContainer;
-import com.github.avalon.packet.PacketManager;
-import com.github.avalon.scheduler.SchedulerManager;
+import com.github.avalon.packet.PacketModule;
+import com.github.avalon.scheduler.SchedulerModule;
 
 import java.net.InetSocketAddress;
 
@@ -58,27 +58,27 @@ public class MockNetworkServer implements IServer{
     }
 
     @Override
-    public ConcurrentManager getConcurrentManager() {
+    public ConcurrentModule getConcurrentModule() {
         return null;
     }
 
     @Override
-    public SchedulerManager getSchedulerManager() {
+    public SchedulerModule getSchedulerModule() {
         return null;
     }
 
     @Override
-    public Bootstrap getServerManager() {
+    public Bootstrap getBootstrap() {
         return null;
     }
 
     @Override
-    public PacketManager getPacketManager() {
+    public PacketModule getPacketModule() {
         return null;
     }
 
     @Override
-    public ChatManager getChatManager() {
+    public ChatModule getChatModule() {
         return null;
     }
 

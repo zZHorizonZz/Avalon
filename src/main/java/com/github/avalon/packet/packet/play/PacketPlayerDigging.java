@@ -57,7 +57,7 @@ public class PacketPlayerDigging extends Packet<PacketPlayerDigging> {
 
   @Override
   public void handle(PlayerConnection connection, PacketPlayerDigging packet) {
-    connection.getPlayer().getServer().getPacketManager().handle(packet, connection);
+    connection.getPlayer().getServer().getPacketModule().handle(packet, connection);
   }
 
   public DiggingStatus getStatus() {

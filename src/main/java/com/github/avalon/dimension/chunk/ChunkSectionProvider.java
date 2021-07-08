@@ -2,7 +2,7 @@ package com.github.avalon.dimension.chunk;
 
 import com.github.avalon.data.Material;
 import com.github.avalon.data.Transform;
-import com.github.avalon.dimension.DimensionManager;
+import com.github.avalon.dimension.DimensionModule;
 import com.github.avalon.packet.packet.play.PacketBlockChange;
 import com.github.avalon.player.IPlayer;
 
@@ -133,7 +133,7 @@ public class ChunkSectionProvider {
   public void placeBlockAsPlayer(IPlayer caller, Transform location, Material material) {
     Collection<IPlayer> receivers = chunk.getChunkBatch().getDimension().getPlayers();
     if (receivers.remove(caller)) {
-      DimensionManager.LOGGER.info(
+      DimensionModule.LOGGER.info(
           "Registering weird behavior with block placement called by player (%s) at location %s",
           caller.getPlayerProfile().getName(), location.toString());
     }

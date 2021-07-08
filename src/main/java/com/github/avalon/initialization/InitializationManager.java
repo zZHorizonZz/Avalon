@@ -1,8 +1,8 @@
 package com.github.avalon.initialization;
 
-import com.github.avalon.annotation.annotation.Manager;
+import com.github.avalon.annotation.annotation.Module;
 import com.github.avalon.console.logging.DefaultLogger;
-import com.github.avalon.manager.AbstractManager;
+import com.github.avalon.module.AbstractModule;
 import com.github.avalon.server.IServer;
 import com.github.avalon.timer.Timer;
 
@@ -14,47 +14,47 @@ public class InitializationManager {
 
   public static final DefaultLogger LOGGER = new DefaultLogger(InitializationManager.class);
 
-  private final Map<String, AbstractManager<?>> managers;
+  private final Map<String, AbstractModule<?>> modules;
   private final IServer server;
 
   public InitializationManager(IServer server) {
-    managers = new HashMap<>();
+    modules = new HashMap<>();
     this.server = server;
   }
 
-  public <T extends AbstractManager<?>> T registerManager(T manager) {
-    Manager managerAnnotation = manager.getClass().getAnnotation(Manager.class);
+  public <T extends AbstractModule<?>> T registerModule(T manager) {
+    Module moduleAnnotation = manager.getClass().getAnnotation(Module.class);
 
     Objects.requireNonNull(
-        managerAnnotation,
+            moduleAnnotation,
         () ->
-            "Manager annotation is not assigned to this class "
+            "Module annotation is not assigned to this class "
                 + manager.getClass().getSimpleName());
 
-    assert !managers.containsKey(managerAnnotation.name())
-        : "Manager with this name is already registered.";
+    assert !modules.containsKey(moduleAnnotation.name())
+        : "Module with this name is already registered.";
 
-    String managerName = managerAnnotation.name();
+    String managerName = moduleAnnotation.name();
     Timer managerTimer = new Timer("Startup of " + managerName, false);
     managerTimer.start();
 
     LOGGER.info("Loading manager class %s...", managerName);
 
-    manager.setSchedulerManager(server.getSchedulerManager());
+    manager.setSchedulerManager(server.getSchedulerModule());
     manager.setManagerName(managerName);
-    server.getConcurrentManager().assignTaskExecutor(manager);
-    managers.put(manager.getManagerName(), manager);
+    server.getConcurrentModule().assignTaskExecutor(manager);
+    modules.put(manager.getManagerName(), manager);
 
     manager.enable();
 
     managerTimer.stop();
-    LOGGER.info("Manager class has been enabled in %s", (double) (managerTimer.elapsed() / 1000));
+    LOGGER.info("Module class has been enabled in %s", (double) (managerTimer.elapsed() / 1000));
 
     return manager;
   }
 
   public void shutdown() {
-    managers.forEach(
+    modules.forEach(
         (name, abstractManager) -> {
           abstractManager.disable();
           if (abstractManager.getTaskExecutor() != null) {
@@ -63,11 +63,11 @@ public class InitializationManager {
         });
   }
 
-  public AbstractManager<?> getManager(String managerName) {
-    return managers.get(managerName);
+  public AbstractModule<?> getModule(String managerName) {
+    return modules.get(managerName);
   }
 
-  public Map<String, AbstractManager<?>> getManagers() {
-    return managers;
+  public Map<String, AbstractModule<?>> getModules() {
+    return modules;
   }
 }

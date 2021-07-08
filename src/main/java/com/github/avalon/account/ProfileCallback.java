@@ -98,7 +98,7 @@ public class ProfileCallback implements HttpCallback, JsonDeserializer<PlayerPro
 
     player
         .getServer()
-        .getSchedulerManager()
+        .getSchedulerModule()
         .runTask(() -> player.getActionHandler().handleLogin(profile));
   }
 

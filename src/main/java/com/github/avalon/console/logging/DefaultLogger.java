@@ -1,6 +1,6 @@
 package com.github.avalon.console.logging;
 
-import com.github.avalon.console.ConsoleManager;
+import com.github.avalon.console.ConsoleModule;
 import com.github.avalon.player.IPlayer;
 import com.github.avalon.player.attributes.Status;
 import com.github.avalon.server.Bootstrap;
@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 
 public class DefaultLogger {
 
-  private final Logger logger = ConsoleManager.LOGGER;
+  private final Logger logger = ConsoleModule.LOGGER;
 
   public DefaultLogger(String name) {
     //logger = LogManager.getLogManager().getLogger(name);

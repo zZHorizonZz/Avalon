@@ -1,13 +1,14 @@
-package com.github.avalon.manager;
+package com.github.avalon.module;
+
+import com.github.avalon.scheduler.SchedulerModule;
 
 /**
- * Provides an methods that are in {@link com.github.avalon.scheduler.SchedulerManager} with
- * same functionality.
+ * Provides an methods that are in {@link SchedulerModule} with same functionality.
  *
  * @version 1.0
  * @author Horizon
  */
-public interface TaskManager {
+public interface TaskExecutor {
 
   void runTask(Runnable task);
 

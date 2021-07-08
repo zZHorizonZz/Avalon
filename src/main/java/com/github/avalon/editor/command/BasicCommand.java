@@ -6,16 +6,16 @@ import com.github.avalon.chat.command.annotation.CommandPerformer;
 import com.github.avalon.common.math.Vector3;
 import com.github.avalon.common.text.Format;
 import com.github.avalon.data.Material;
-import com.github.avalon.editor.EditManager;
+import com.github.avalon.editor.EditModule;
 import com.github.avalon.editor.tools.EditorSession;
 import com.github.avalon.editor.tools.basic.FillOperation;
 import com.github.avalon.player.IPlayer;
 
 public class BasicCommand extends CommandListener {
 
-  private final EditManager editManager;
+  private final EditModule editManager;
 
-  public BasicCommand(EditManager editManager) {
+  public BasicCommand(EditModule editManager) {
     this.editManager = editManager;
 
     register("pos1", this::cornerA);
@@ -126,7 +126,7 @@ public class BasicCommand extends CommandListener {
     }
   }
 
-  public EditManager getEditManager() {
+  public EditModule getEditManager() {
     return editManager;
   }
 }

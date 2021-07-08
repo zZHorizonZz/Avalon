@@ -1,13 +1,14 @@
-package com.github.avalon.manager;
+package com.github.avalon.module;
 
+import com.github.avalon.annotation.annotation.Module;
 import com.github.avalon.concurrent.NetworkTaskExecutor;
 import com.github.avalon.console.logging.DefaultLogger;
-import com.github.avalon.scheduler.SchedulerManager;
+import com.github.avalon.scheduler.SchedulerModule;
 
 /**
- * Abstract manager contains all necessary methods, fields, etc for main class of some module. We
- * have currently two types of managers first is Parent Manager that is annotated with {@link
- * com.github.avalon.annotation.annotation.Manager} annotation. Second is child manager that
+ * Abstract module contains all necessary methods, fields, etc for main class of some module. We
+ * have currently two types of modules first is Parent module that is annotated with {@link
+ * Module} annotation. Second is child module that
  * doesn't have any annotation. If manager has annotation then it will should be registered with
  * {@link com.github.avalon.initialization.InitializationManager} because this manager
  * automatically assign the {@link NetworkTaskExecutor} if manager in it's annotation has {@code
@@ -18,35 +19,37 @@ import com.github.avalon.scheduler.SchedulerManager;
  * @author Horizon
  * @version 1.1
  */
-public abstract class AbstractManager<H> {
+public abstract class AbstractModule<H> {
 
-  public static final DefaultLogger LOGGER = new DefaultLogger(AbstractManager.class);
+  public static final DefaultLogger LOGGER = new DefaultLogger(AbstractModule.class);
 
   private String managerName;
   private H host;
-  private Class<? extends AbstractManager<?>>[] dependencies;
+  private Class<? extends AbstractModule<?>>[] dependencies;
 
   private NetworkTaskExecutor taskExecutor;
-  private SchedulerManager schedulerManager;
+  private SchedulerModule schedulerManager;
 
-  public AbstractManager(H host) {
-    this(host, null, (Class<? extends AbstractManager<?>>) null);
+  protected AbstractModule(H host) {
+    this(host, null, (Class<? extends AbstractModule<?>>) null);
   }
 
-  public AbstractManager(String managerName, H host) {
-    this(host, null, (Class<? extends AbstractManager<?>>) null);
+  protected AbstractModule(String managerName, H host) {
+    this(host, null, (Class<? extends AbstractModule<?>>) null);
 
     this.managerName = managerName;
   }
 
   @SafeVarargs
-  public AbstractManager(
-          H host, NetworkTaskExecutor executor, Class<? extends AbstractManager<?>>... dependencies) {
+  protected AbstractModule(
+          H host, NetworkTaskExecutor executor, Class<? extends AbstractModule<?>>... dependencies) {
 
     this.host = host;
     taskExecutor = executor;
 
-    if (dependencies != null && dependencies.length != 0) this.dependencies = dependencies;
+    if (dependencies != null && dependencies.length != 0) {
+      this.dependencies = dependencies;
+    }
   }
 
   /**
@@ -81,11 +84,11 @@ public abstract class AbstractManager<H> {
     this.host = host;
   }
 
-  public Class<? extends AbstractManager<?>>[] getDependencies() {
+  public Class<? extends AbstractModule<?>>[] getDependencies() {
     return dependencies;
   }
 
-  public void setDependencies(Class<? extends AbstractManager<?>>[] dependencies) {
+  public void setDependencies(Class<? extends AbstractModule<?>>[] dependencies) {
     this.dependencies = dependencies;
   }
 
@@ -97,11 +100,11 @@ public abstract class AbstractManager<H> {
     this.taskExecutor = taskExecutor;
   }
 
-  public SchedulerManager getSchedulerManager() {
+  public SchedulerModule getSchedulerManager() {
     return schedulerManager;
   }
 
-  public void setSchedulerManager(SchedulerManager schedulerManager) {
+  public void setSchedulerManager(SchedulerModule schedulerManager) {
     this.schedulerManager = schedulerManager;
   }
 }

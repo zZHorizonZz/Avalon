@@ -1,6 +1,6 @@
 package com.github.avalon.scheduler.task;
 
-import com.github.avalon.scheduler.SchedulerManager;
+import com.github.avalon.scheduler.SchedulerModule;
 import com.github.avalon.server.ServerThread;
 
 public class DelayedTask extends Task {
@@ -13,7 +13,7 @@ public class DelayedTask extends Task {
           Runnable task,
           long timer,
           boolean asynchronous,
-          SchedulerManager schedulerManager) {
+          SchedulerModule schedulerManager) {
     super(taskID, task, asynchronous, schedulerManager);
 
     this.timer = timer;

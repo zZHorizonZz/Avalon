@@ -130,7 +130,7 @@ public class NetworkSession {
 
    @Override
    public void sendPacket(LegacyPacket<?> packet) {
-     ConsoleManager.logInfo("Sending LegacyPacket: %s", packet.getClass().getSimpleName());
+     ConsoleModule.logInfo("Sending LegacyPacket: %s", packet.getClass().getSimpleName());
      playerConnection.send(packet);
    }
 

@@ -1,12 +1,12 @@
 package com.github.avalon.server;
 
-import com.github.avalon.chat.ChatManager;
-import com.github.avalon.concurrent.ConcurrentManager;
+import com.github.avalon.chat.ChatModule;
+import com.github.avalon.concurrent.ConcurrentModule;
 import com.github.avalon.network.SocketServer;
 import com.github.avalon.network.PlayerSessionContainer;
 import com.github.avalon.network.protocol.ProtocolContainer;
-import com.github.avalon.packet.PacketManager;
-import com.github.avalon.scheduler.SchedulerManager;
+import com.github.avalon.packet.PacketModule;
+import com.github.avalon.scheduler.SchedulerModule;
 
 import java.net.InetSocketAddress;
 
@@ -77,23 +77,23 @@ public interface IServer {
   /** @return Container of the players. */
   PlayerSessionContainer getPlayerSessionRegistry();
 
-  /** @return Concurrent manager. */
-  ConcurrentManager getConcurrentManager();
+  /** @return Concurrent module. */
+  ConcurrentModule getConcurrentModule();
 
-  /** @return Manager for scheduling tasks. */
-  SchedulerManager getSchedulerManager();
+  /** @return Module for scheduling tasks. */
+  SchedulerModule getSchedulerModule();
 
-  /** @return Returns the parent manager of server. */
-  Bootstrap getServerManager();
+  /** @return Returns the parent module of server. */
+  Bootstrap getBootstrap();
 
   /**
-   * @return Returns the manager that manages and handle the packets and {@link
+   * @return Returns the module that manages and handle the packets and {@link
    *     com.github.avalon.packet.PacketListener}s.
    */
-  PacketManager getPacketManager();
+  PacketModule getPacketModule();
 
-  /** @return Returns the manager that manages the chat. */
-  ChatManager getChatManager();
+  /** @return Returns the module that manages the chat. */
+  ChatModule getChatModule();
 
   /** @return We have 2 classes for server one is for server itself and one is for connection. */
   SocketServer getSocketServer();

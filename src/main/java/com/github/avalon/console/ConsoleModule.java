@@ -6,13 +6,13 @@ import java.util.logging.ConsoleHandler;
 import java.util.logging.Formatter;
 import java.util.logging.Logger;
 
-public class ConsoleManager {
+public class ConsoleModule {
 
   public static final Logger LOGGER = Logger.getGlobal();
 
   private final Bootstrap bootstrap;
 
-  public ConsoleManager(Bootstrap bootstrap) {
+  public ConsoleModule(Bootstrap bootstrap) {
     this.bootstrap = bootstrap;
     ConsoleHandler handler = new ConsoleHandler();
 

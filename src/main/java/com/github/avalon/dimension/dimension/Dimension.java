@@ -4,7 +4,7 @@ import com.github.avalon.block.block.Block;
 import com.github.avalon.character.character.CharacterLiving;
 import com.github.avalon.common.system.TripleMap;
 import com.github.avalon.data.Transform;
-import com.github.avalon.dimension.DimensionManager;
+import com.github.avalon.dimension.DimensionModule;
 import com.github.avalon.dimension.biome.Biome;
 import com.github.avalon.dimension.biome.BiomeContainer;
 import com.github.avalon.dimension.chunk.ChunkService;
@@ -72,8 +72,8 @@ public interface Dimension extends NamedBinarySerializer {
    */
   void setDimensionData(DimensionData dimensionData);
 
-  /** @return Manager of the dimension. */
-  DimensionManager getDimensionManager();
+  /** @return Module of the dimension. */
+  DimensionModule getDimensionManager();
 
   /** @return Container of the {@link Biome} */
   BiomeContainer getBiomeRegistry();

@@ -1,8 +1,8 @@
 package com.github.avalon.packet;
 
-import com.github.avalon.annotation.annotation.Manager;
+import com.github.avalon.annotation.annotation.Module;
 import com.github.avalon.console.logging.DefaultLogger;
-import com.github.avalon.manager.ServerManager;
+import com.github.avalon.module.ServerModule;
 import com.github.avalon.packet.annotation.PacketHandler;
 import com.github.avalon.packet.packet.Packet;
 import com.github.avalon.player.PlayerConnection;
@@ -13,14 +13,14 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 
-@Manager(name = "Packet Manager", asynchronous = true)
-public class PacketManager extends ServerManager {
+@Module(name = "Packet Module", asynchronous = true)
+public class PacketModule extends ServerModule {
 
-  public static final DefaultLogger LOGGER = new DefaultLogger(PacketManager.class);
+  public static final DefaultLogger LOGGER = new DefaultLogger(PacketModule.class);
 
   private final Map<PacketListener, Map<Class<? extends Packet<?>>, List<Method>>> packetListeners;
 
-  public PacketManager(IServer host) {
+  public PacketModule(IServer host) {
     super(host);
     packetListeners = new HashMap<>();
   }

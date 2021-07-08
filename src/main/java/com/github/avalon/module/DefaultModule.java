@@ -1,19 +1,19 @@
-package com.github.avalon.manager;
+package com.github.avalon.module;
 
 import com.github.avalon.concurrent.NetworkTaskExecutor;
 
-public abstract class DefaultManager<T> extends AbstractManager<T> implements TaskManager {
+public abstract class DefaultModule<T> extends AbstractModule<T> implements TaskExecutor {
 
-  protected DefaultManager(T host) {
+  protected DefaultModule(T host) {
     super(host);
   }
 
-  protected DefaultManager(String managerName, T host) {
+  protected DefaultModule(String managerName, T host) {
     super(managerName, host);
   }
 
-  protected DefaultManager(
-      T host, NetworkTaskExecutor executor, Class<? extends AbstractManager<?>>... dependencies) {
+  protected DefaultModule(
+      T host, NetworkTaskExecutor executor, Class<? extends AbstractModule<?>>... dependencies) {
     super(host, executor, dependencies);
   }
 
@@ -32,7 +32,7 @@ public abstract class DefaultManager<T> extends AbstractManager<T> implements Ta
       if (getTaskExecutor() != null) {
         getTaskExecutor().executeTask(task);
       } else {
-        AbstractManager.LOGGER.error(
+        AbstractModule.LOGGER.error(
             "Task can not be executed. Because there is not any assigned thread.",
             new NullPointerException("Task executor is not assigned."));
       }
@@ -47,7 +47,7 @@ public abstract class DefaultManager<T> extends AbstractManager<T> implements Ta
       getSchedulerManager().runRepeatingTask(task, delay);
     } else {
       LOGGER.error(
-          "Task can not be executed. Because Scheduler Manager is not assigned.",
+          "Task can not be executed. Because Scheduler Module is not assigned.",
           new NullPointerException("Scheduler manager is not assigned."));
     }
   }
@@ -58,7 +58,7 @@ public abstract class DefaultManager<T> extends AbstractManager<T> implements Ta
       getSchedulerManager().runRepeatingTaskAsynchronously(task, delay);
     } else {
       LOGGER.error(
-          "Task can not be executed. Because Scheduler Manager is not assigned.",
+          "Task can not be executed. Because Scheduler Module is not assigned.",
           new NullPointerException("Scheduler manager is not assigned."));
     }
   }
@@ -69,7 +69,7 @@ public abstract class DefaultManager<T> extends AbstractManager<T> implements Ta
       getSchedulerManager().runDelayedTask(task, delay);
     } else {
       LOGGER.error(
-          "Task can not be executed. Because Scheduler Manager is not assigned.",
+          "Task can not be executed. Because Scheduler Module is not assigned.",
           new NullPointerException("Scheduler manager is not assigned."));
     }
   }
@@ -80,7 +80,7 @@ public abstract class DefaultManager<T> extends AbstractManager<T> implements Ta
       getSchedulerManager().runDelayedTaskAsynchronously(task, delay);
     } else {
       LOGGER.error(
-          "Task can not be executed. Because Scheduler Manager is not assigned.",
+          "Task can not be executed. Because Scheduler Module is not assigned.",
           new NullPointerException("Scheduler manager is not assigned."));
     }
   }

@@ -38,7 +38,7 @@ public final class CodecsHandler extends MessageToMessageCodec<ByteBuf, Message>
     ByteBufUtils.writeVarInt(headerBuf, registration.getOpcode());
 
     PacketBuffer packetBuffer =
-        new PacketBuffer(server.getDescriptorManager(), context.alloc().buffer());
+        new PacketBuffer(server.getDescriptorModule(), context.alloc().buffer());
     packetBuffer = (PacketBuffer) registration.getCodec().encode(packetBuffer, message);
 
     out.add(Unpooled.wrappedBuffer(headerBuf, packetBuffer));
@@ -49,7 +49,7 @@ public final class CodecsHandler extends MessageToMessageCodec<ByteBuf, Message>
       throws java.io.IOException, com.flowpowered.network.exception.IllegalOpcodeException {
     Codec<?> codecs = protocol.newReadHeader(byteBuf);
 
-    Message decoded = codecs.decode(new PacketBuffer(server.getDescriptorManager(), byteBuf));
+    Message decoded = codecs.decode(new PacketBuffer(server.getDescriptorModule(), byteBuf));
     if (byteBuf.readableBytes() > 0) {}
 
     out.add(decoded);

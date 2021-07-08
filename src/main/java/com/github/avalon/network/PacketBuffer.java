@@ -6,7 +6,7 @@ import com.github.avalon.common.bytes.BitField;
 import com.github.avalon.common.data.Array;
 import com.github.avalon.data.Material;
 import com.github.avalon.descriptor.ClassDescriptor;
-import com.github.avalon.descriptor.DescriptorManager;
+import com.github.avalon.descriptor.DescriptorModule;
 import com.github.avalon.item.Item;
 import com.github.avalon.nbt.stream.NamedBinaryOutputStream;
 import com.github.avalon.nbt.tag.TagCompound;
@@ -49,10 +49,10 @@ public class PacketBuffer extends ByteBuf {
           .registerTypeAdapter(Text.class, new Text())
           .create();
 
-  private final DescriptorManager descriptorManager;
+  private final DescriptorModule descriptorManager;
   private final ByteBuf buffer;
 
-  public PacketBuffer(DescriptorManager descriptorManager, ByteBuf buffer) {
+  public PacketBuffer(DescriptorModule descriptorManager, ByteBuf buffer) {
     this.buffer = buffer;
     this.descriptorManager = descriptorManager;
   }
@@ -1081,7 +1081,7 @@ public class PacketBuffer extends ByteBuf {
     return buffer.retain();
   }
 
-  public DescriptorManager getDescriptorManager() {
+  public DescriptorModule getDescriptorManager() {
     return descriptorManager;
   }
 

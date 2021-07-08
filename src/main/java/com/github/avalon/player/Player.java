@@ -76,7 +76,7 @@ public class Player implements IPlayer {
     playerConnection = new PlayerConnection(this, channel);
     this.connectionManager = connectionManager;
 
-    dimension = getServer().getDimensionManager().getMainDimension();
+    dimension = getServer().getDimensionModule().getMainDimension();
     currentLocation = new Transform(getDimension(), 0, 100, 0);
     chunkView = new ArrayList<>();
 

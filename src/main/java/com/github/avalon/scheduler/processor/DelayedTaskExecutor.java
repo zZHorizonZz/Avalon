@@ -1,6 +1,6 @@
 package com.github.avalon.scheduler.processor;
 
-import com.github.avalon.scheduler.SchedulerManager;
+import com.github.avalon.scheduler.SchedulerModule;
 import com.github.avalon.scheduler.task.DelayedTask;
 import com.github.avalon.scheduler.task.TaskStatus;
 
@@ -25,7 +25,7 @@ public class DelayedTaskExecutor implements TaskExecutor<DelayedTask> {
           taskIterator.remove();
         }
       } catch (RuntimeException exception) {
-        SchedulerManager.LOGGER.error(
+        SchedulerModule.LOGGER.error(
             "[Task #%s] Execution of delayed task failed.", exception, delayedTask.getTaskId());
       }
     }

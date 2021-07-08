@@ -1,5 +1,6 @@
 package com.github.avalon.scheduler.processor;
 
+import com.github.avalon.scheduler.SchedulerModule;
 import com.github.avalon.scheduler.task.Task;
 
 import java.util.Iterator;
@@ -7,7 +8,7 @@ import java.util.Map;
 
 /**
  * This class provides basic method for processing of the tasks in {@link
- * com.github.avalon.scheduler.SchedulerManager} class. Usually method in this class validate,
+ * SchedulerModule} class. Usually method in this class validate,
  * run and if necessary remove the {@link Task}.
  *
  * @author Horizon

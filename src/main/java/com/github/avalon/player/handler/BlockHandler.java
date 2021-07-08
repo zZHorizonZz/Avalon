@@ -45,9 +45,9 @@ public class BlockHandler implements PacketListener {
 
     player
         .getServer()
-        .getChatManager()
+        .getChatModule()
         .broadcastMessage(
-            "%#f01f23%%bold%Manager %#7cedf2%Avalon %gray%> Player digging block is now "
+            "%#f01f23%%bold%Module %#7cedf2%Avalon %gray%> Player digging block is now "
                 + placeLocation.getChunk().getProvider().getMaterial(placeLocation));
   }
 }

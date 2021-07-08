@@ -1,12 +1,12 @@
 package com.github.avalon.scheduler.task;
 
-import com.github.avalon.scheduler.SchedulerManager;
+import com.github.avalon.scheduler.SchedulerModule;
 import com.github.avalon.scheduler.exception.TaskExecutionException;
 
 /**
  * This class provides and basic implementation of the task execution logic based on execution of
  * the {@link Runnable}. Also we can set if task should be executed asynchronously or not. This is
- * handled by {@link SchedulerManager}. {@link SchedulerManager} handles status of this task.
+ * handled by {@link SchedulerModule}. {@link SchedulerModule} handles status of this task.
  *
  * @version 1.0
  * @author Horizon
@@ -20,9 +20,9 @@ public class Task {
 
   private boolean asynchronous;
 
-  private SchedulerManager schedulerManager;
+  private SchedulerModule schedulerManager;
 
-  public Task(long taskId, Runnable task, boolean asynchronous, SchedulerManager schedulerManager) {
+  public Task(long taskId, Runnable task, boolean asynchronous, SchedulerModule schedulerManager) {
     this.taskId = taskId;
     this.task = task;
     this.asynchronous = asynchronous;
@@ -54,7 +54,7 @@ public class Task {
         }
       }
     } catch (RuntimeException exception) {
-      SchedulerManager.LOGGER.error("[Task #%s] Execution of task failed.", exception, taskId);
+      SchedulerModule.LOGGER.error("[Task #%s] Execution of task failed.", exception, taskId);
     }
   }
 
@@ -78,12 +78,12 @@ public class Task {
     return asynchronous;
   }
 
-  public void setAsynchronous(boolean asynchronous, SchedulerManager schedulerManager) {
+  public void setAsynchronous(boolean asynchronous, SchedulerModule schedulerManager) {
     this.asynchronous = asynchronous;
     this.schedulerManager = schedulerManager;
   }
 
-  public SchedulerManager getSchedulerManager() {
+  public SchedulerModule getSchedulerManager() {
     return schedulerManager;
   }
 }

@@ -45,7 +45,7 @@ public class PacketLoginIn extends Packet<PacketLoginIn> {
 
   @Override
   public void handle(PlayerConnection connection, PacketLoginIn packet) {
-    connection.getPlayer().getServer().getPacketManager().handle(packet, connection);
+    connection.getPlayer().getServer().getPacketModule().handle(packet, connection);
   }
 
   @Override
