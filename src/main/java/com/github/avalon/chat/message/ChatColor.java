@@ -42,10 +42,6 @@ public final class ChatColor {
     BY_NAME.put(name, this);
   }
 
-  public static Message toChat(String text) {
-    return new MessageFactory(text).toChat();
-  }
-
   public static ChatColor fromHex(String hex) {
     Color color = Color.decode(hex);
     return new ChatColor(hex, color);

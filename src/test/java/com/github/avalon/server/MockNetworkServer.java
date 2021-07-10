@@ -7,6 +7,7 @@ import com.github.avalon.network.PlayerSessionContainer;
 import com.github.avalon.network.protocol.ProtocolContainer;
 import com.github.avalon.packet.PacketModule;
 import com.github.avalon.scheduler.SchedulerModule;
+import com.github.avalon.translation.TranslationModule;
 
 import java.net.InetSocketAddress;
 
@@ -79,6 +80,11 @@ public class MockNetworkServer implements IServer{
 
     @Override
     public ChatModule getChatModule() {
+        return null;
+    }
+
+    @Override
+    public TranslationModule getTranslationModule() {
         return null;
     }
 

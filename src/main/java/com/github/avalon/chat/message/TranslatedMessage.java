@@ -3,6 +3,8 @@ package com.github.avalon.chat.message;
 import com.github.avalon.language.Language;
 import com.github.avalon.server.Bootstrap;
 
+import java.text.MessageFormat;
+
 /**
  * This message is implementation of {@link Message} and also extends it by automatically message
  * translation handling.
@@ -11,17 +13,26 @@ import com.github.avalon.server.Bootstrap;
  */
 public class TranslatedMessage extends Message {
 
-  private String path;
+  private final String path;
+  private final Object[] arguments;
 
-  public TranslatedMessage(String message) {
-    super(message);
+  private Language language = Language.EN_US;
+
+  public TranslatedMessage(String path, Language language, Object... arguments) {
+    this.path = path;
+    this.arguments = arguments;
+
+    setText(new MessageFormat(getTranslated(language)).format(arguments));
   }
 
-  public TranslatedMessage getMessage(Language language) {
-    return new TranslatedMessage(getTranslated(language));
+  public TranslatedMessage(String path, Object... arguments) {
+    this.path = path;
+    this.arguments = arguments;
+
+    setText(new MessageFormat(getTranslated(language)).format(arguments));
   }
 
-  public String getTranslated(Language language) {
+  private String getTranslated(Language language) {
     String message =
         Bootstrap.INSTANCE
             .getServer()
@@ -40,5 +51,18 @@ public class TranslatedMessage extends Message {
     }
 
     return message;
+  }
+
+  public String getPath() {
+    return path;
+  }
+
+  public Language getLanguage() {
+    return language;
+  }
+
+  public void setLanguage(Language language) {
+    this.language = language;
+    setText(new MessageFormat(getTranslated(language)).format(arguments));
   }
 }

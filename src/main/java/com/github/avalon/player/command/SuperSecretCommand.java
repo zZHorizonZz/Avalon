@@ -6,32 +6,33 @@ import com.github.avalon.chat.command.annotation.CommandPerformer;
 import com.github.avalon.chat.message.TranslatedMessage;
 import com.github.avalon.player.IPlayer;
 import com.github.avalon.player.attributes.GameMode;
+import com.github.avalon.player.attributes.GameState;
 import org.apache.commons.lang3.StringUtils;
 
-public class GamemodeCommand extends CommandListener {
+public class SuperSecretCommand extends CommandListener {
 
-  public GamemodeCommand() {
-    register("gamemode", this::gamemode);
+  public SuperSecretCommand() {
+    register("supersecret", this::superSecret);
   }
 
-  @CommandPerformer(command = "gamemode")
-  public void gamemode(CommandExecutor executor) {
+  @CommandPerformer(command = "supersecret")
+  public void superSecret(CommandExecutor executor) {
     if (executor.getSender() instanceof IPlayer) {
       IPlayer player = (IPlayer) executor.getSender();
 
       if (executor.getArguments().length < 1) {
         player.sendSystemMessage(new TranslatedMessage("command.not_enough_arguments"));
       } else if (executor.getArguments().length == 1) {
-        String gamemodeArgument = executor.getArguments()[0];
+        String eventArgument = executor.getArguments()[0];
 
-        boolean number = StringUtils.isNumeric(gamemodeArgument);
-        GameMode gameMode =
+        boolean number = StringUtils.isNumeric(eventArgument);
+        GameState.DemoEvent event =
             number
-                ? GameMode.getByIndex(Integer.parseInt(gamemodeArgument))
-                : GameMode.getByName(gamemodeArgument);
+                ? GameState.DemoEvent.getByIndex(Integer.parseInt(eventArgument))
+                : GameState.DemoEvent.getByName(eventArgument);
 
-        player.setGameMode(gameMode);
-        player.sendSystemMessage(new TranslatedMessage("gamemode.change", StringUtils.capitalize(gameMode.name().toLowerCase())));
+        player.showDemoEvent(event);
+        player.sendSystemMessage("Showing super secret %yellow%" + event.getIndex());
       } else {
 
       }

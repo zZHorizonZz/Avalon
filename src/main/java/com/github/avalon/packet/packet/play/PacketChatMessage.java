@@ -1,6 +1,7 @@
 package com.github.avalon.packet.packet.play;
 
 import com.github.avalon.chat.message.Message;
+import com.github.avalon.chat.message.TranslatedMessage;
 import com.github.avalon.common.data.DataType;
 import com.github.avalon.network.ProtocolType;
 import com.github.avalon.packet.annotation.PacketRegister;

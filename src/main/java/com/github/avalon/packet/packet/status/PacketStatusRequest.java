@@ -1,6 +1,7 @@
 package com.github.avalon.packet.packet.status;
 
 import com.github.avalon.chat.message.ChatColor;
+import com.github.avalon.chat.message.TextMessage;
 import com.github.avalon.common.status.ServerStatusFactory;
 import com.github.avalon.network.ProtocolType;
 import com.github.avalon.packet.annotation.PacketRegister;
@@ -48,7 +49,7 @@ public class PacketStatusRequest extends Packet<PacketStatusRequest> {
     statusFactory.setCurrentPlayers(64);
     statusFactory.setPlayerSample(null);
 
-    statusFactory.setMotd(ChatColor.toChat("%#42e362%%bold%Toast %reset%%#2abd47%is best... and kinda fun"));
+    statusFactory.setMotd(new TextMessage("%#42e362%%bold%Toast %reset%%#2abd47%is best... and kinda fun"));
     statusFactory.setFavicon(null);
 
     player.sendPacket(new PacketStatusResponse(statusFactory));

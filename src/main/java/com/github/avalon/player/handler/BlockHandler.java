@@ -42,12 +42,5 @@ public class BlockHandler implements PacketListener {
     Dimension dimension = player.getDimension();
     Transform placeLocation = new Transform(dimension, packet.getPosition());
     placeLocation.getChunk().getProvider().placeBlockAsPlayer(player, placeLocation, Material.AIR);
-
-    player
-        .getServer()
-        .getChatModule()
-        .broadcastMessage(
-            "%#f01f23%%bold%Module %#7cedf2%Avalon %gray%> Player digging block is now "
-                + placeLocation.getChunk().getProvider().getMaterial(placeLocation));
   }
 }

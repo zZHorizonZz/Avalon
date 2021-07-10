@@ -1,12 +1,15 @@
 package com.github.avalon.translation;
 
+import com.github.avalon.annotation.annotation.Module;
 import com.github.avalon.language.Language;
 import com.github.avalon.module.ServerModule;
+import com.github.avalon.resource.data.Resource;
 import com.github.avalon.resource.data.ResourceJson;
 import com.github.avalon.server.IServer;
 
 import java.util.EnumMap;
 
+@Module(name = "Translation Module", asynchronous = false)
 public class TranslationModule extends ServerModule {
 
   private final EnumMap<Language, ResourceJson> translations;
@@ -21,7 +24,8 @@ public class TranslationModule extends ServerModule {
   public void enable() {
     super.enable();
 
-
+    registerLanguageResource(
+        Language.EN_US, new ResourceJson(new Resource(null, "en_us.json").getResourceContent()));
   }
 
   /**

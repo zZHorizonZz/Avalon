@@ -3,15 +3,20 @@ package com.github.avalon.editor.command;
 import com.github.avalon.chat.command.CommandExecutor;
 import com.github.avalon.chat.command.CommandListener;
 import com.github.avalon.chat.command.annotation.CommandPerformer;
+import com.github.avalon.chat.message.TranslatedMessage;
 import com.github.avalon.common.math.Vector3;
 import com.github.avalon.common.text.Format;
 import com.github.avalon.data.Material;
+import com.github.avalon.data.Transform;
 import com.github.avalon.editor.EditModule;
 import com.github.avalon.editor.tools.EditorSession;
 import com.github.avalon.editor.tools.basic.FillOperation;
 import com.github.avalon.player.IPlayer;
+import org.apache.commons.lang3.StringUtils;
 
 public class BasicCommand extends CommandListener {
+
+  public static final Material DEFAULT_BLOCK = Material.STONE;
 
   private final EditModule editManager;
 
@@ -30,23 +35,17 @@ public class BasicCommand extends CommandListener {
       EditorSession session = editManager.getSession((IPlayer) executor.getSender());
 
       if (session == null) {
-        executor
-            .getSender()
-            .sendSystemMessage(
-                "%red%Something went wrong and we can not move you into editor session.");
+        executor.getSender().sendSystemMessage(new TranslatedMessage("generics.error"));
       } else {
         Vector3 corner = ((IPlayer) executor.getSender()).getLocation().toVector();
         executor
             .getSender()
             .sendSystemMessage(
-                Format.defaultMessage(
-                    "Editor",
-                    "%green%Corner A was been successfully set to X: "
-                        + corner.getXAsInteger()
-                        + " Y: "
-                        + corner.getYAsInteger()
-                        + " Z: "
-                        + corner.getZAsInteger()));
+                new TranslatedMessage(
+                    "editor.pos1",
+                    corner.getXAsInteger(),
+                    corner.getYAsInteger(),
+                    corner.getZAsInteger()));
 
         session.setPosition1(corner);
       }
@@ -59,23 +58,17 @@ public class BasicCommand extends CommandListener {
       EditorSession session = editManager.getSession((IPlayer) executor.getSender());
 
       if (session == null) {
-        executor
-            .getSender()
-            .sendSystemMessage(
-                "%red%Something went wrong and we can not move you into editor session.");
+        executor.getSender().sendSystemMessage(new TranslatedMessage("generics.error"));
       } else {
         Vector3 corner = ((IPlayer) executor.getSender()).getLocation().toVector();
         executor
             .getSender()
             .sendSystemMessage(
-                Format.defaultMessage(
-                    "Editor",
-                    "%green%Corner B was been successfully set to X: "
-                        + corner.getXAsInteger()
-                        + " Y: "
-                        + corner.getYAsInteger()
-                        + " Z: "
-                        + corner.getZAsInteger()));
+                new TranslatedMessage(
+                    "editor.pos2",
+                    corner.getXAsInteger(),
+                    corner.getYAsInteger(),
+                    corner.getZAsInteger()));
 
         session.setPosition2(corner);
       }
@@ -88,10 +81,7 @@ public class BasicCommand extends CommandListener {
       EditorSession session = editManager.getSession((IPlayer) executor.getSender());
 
       if (session == null) {
-        executor
-            .getSender()
-            .sendSystemMessage(
-                "%red%Something went wrong and we can not move you into editor session.");
+        executor.getSender().sendSystemMessage(new TranslatedMessage("generics.error"));
       } else {
         Material material = Material.getByName(executor.getArguments()[0]);
         FillOperation operation =
@@ -103,9 +93,7 @@ public class BasicCommand extends CommandListener {
         operation.setNewMaterial(material);
 
         editManager.submitOperation(operation);
-        executor
-            .getSender()
-            .sendSystemMessage(Format.defaultMessage("Editor", "Operation submitted..."));
+        executor.getSender().sendSystemMessage(new TranslatedMessage("editor.operation_start"));
       }
     }
   }
@@ -114,15 +102,27 @@ public class BasicCommand extends CommandListener {
   public void up(CommandExecutor executor) {
     if (executor.getSender() instanceof IPlayer) {
       IPlayer player = (IPlayer) executor.getSender();
-      player
-          .getCurrentChunk()
-          .getProvider()
-          .placeBlockAsSystem(
-              player.getLocation().setY(player.getLocation().getBlockY() - 1), Material.STONE);
+      if (executor.getArguments().length == 0) {
+        player
+            .getCurrentChunk()
+            .getProvider()
+            .placeBlockAsSystem(
+                player.getLocation().setY(player.getLocation().getBlockY() - 1), DEFAULT_BLOCK);
 
-      executor
-          .getSender()
-          .sendSystemMessage(Format.defaultMessage("Editor", "Block under you is now solid."));
+        executor.getSender().sendSystemMessage(new TranslatedMessage("editor.up_one"));
+      } else {
+        int blocks = Integer.parseInt(executor.getArguments()[0]);
+        Transform transform = player.getLocation();
+        transform = transform.setY(transform.getY() + blocks);
+
+        player.teleport(transform);
+        player
+            .getCurrentChunk()
+            .getProvider()
+            .placeBlockAsSystem(transform.setY(transform.getBlockY() - 1), DEFAULT_BLOCK);
+
+        executor.getSender().sendSystemMessage(new TranslatedMessage("editor.up_multiple", blocks));
+      }
     }
   }
 

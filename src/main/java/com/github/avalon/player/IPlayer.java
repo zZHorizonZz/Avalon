@@ -9,9 +9,7 @@ import com.github.avalon.dimension.chunk.IChunk;
 import com.github.avalon.dimension.dimension.Dimension;
 import com.github.avalon.inventory.Inventory;
 import com.github.avalon.inventory.inventory.PlayerInventory;
-import com.github.avalon.player.attributes.PlayerAttributes;
-import com.github.avalon.player.attributes.PlayerSettings;
-import com.github.avalon.player.attributes.Status;
+import com.github.avalon.player.attributes.*;
 import com.github.avalon.server.Server;
 
 import java.util.List;
@@ -91,25 +89,20 @@ public interface IPlayer extends IPlayerSession, ChatOperator {
 
   Queue<Transform> getIncomingMovements();
 
-  /** @return Current player location handled by the server. */
   Transform getLocation();
 
-  /** @return Returns the current players {@link Dimension}. */
   Dimension getDimension();
 
   @Override
   Server getServer();
 
-  /** @return Returns the profile of player with his uuid, skin data, etc. */
   PlayerProfile getPlayerProfile();
 
-  /** @return Current settings of the client. */
   PlayerSettings getSettings();
 
-  /**
-   * Returns the player's attributes. These are final and should be edited in the class.
-   *
-   * @return Returns the player's attributes.
-   */
   PlayerAttributes getPlayerAttributes();
+
+  void setGameMode(GameMode gameMode);
+
+  void showDemoEvent(GameState.DemoEvent demoEvent);
 }

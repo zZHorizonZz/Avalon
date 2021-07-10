@@ -45,7 +45,7 @@ public class PacketBuffer extends ByteBuf {
 
   public static final Gson CHAT_SERIALIZER =
       new GsonBuilder()
-          .registerTypeAdapter(Message.class, new Message())
+          .registerTypeAdapter(Message.class, new Message.Serialization())
           .registerTypeAdapter(Text.class, new Text())
           .create();
 
@@ -347,7 +347,7 @@ public class PacketBuffer extends ByteBuf {
   }
 
   public void writeChat(Message message) {
-    writeUTF8(CHAT_SERIALIZER.toJson(message));
+    writeUTF8(CHAT_SERIALIZER.toJson(message, Message.class));
   }
 
   public Message readChat() {

@@ -37,7 +37,7 @@ public class PacketStatusResponse extends Packet<PacketStatusResponse> {
       new GsonBuilder()
           .registerTypeAdapter(ServerStatusFactory.class, new ServerStatusFactory())
           .registerTypeAdapter(Text.class, new Text())
-          .registerTypeAdapter(Message.class, new Message())
+          .registerTypeAdapter(Message.class, new Message.Serialization())
           .create();
 
   public PacketStrategy strategy =

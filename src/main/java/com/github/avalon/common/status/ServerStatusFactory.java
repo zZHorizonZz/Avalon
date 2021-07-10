@@ -23,22 +23,22 @@ public class ServerStatusFactory extends ObjectSerializer<ServerStatusFactory> {
   public ServerStatusFactory() {}
 
   public ServerStatusFactory(
-          String gameVersion, int protocolVersion, Message motd, String favicon) {
+      String gameVersion, int protocolVersion, Message motd, String favicon) {
     this.gameVersion = gameVersion;
     this.protocolVersion = protocolVersion;
     this.motd = motd;
     this.favicon = favicon;
-      hidePlayers = true;
+    hidePlayers = true;
   }
 
   public ServerStatusFactory(
-          String gameVersion,
-          int protocolVersion,
-          Message motd,
-          String favicon,
-          int maximumPlayers,
-          int currentPlayers,
-          List<String> playerSample) {
+      String gameVersion,
+      int protocolVersion,
+      Message motd,
+      String favicon,
+      int maximumPlayers,
+      int currentPlayers,
+      List<String> playerSample) {
     this.gameVersion = gameVersion;
     this.protocolVersion = protocolVersion;
     this.motd = motd;
@@ -50,38 +50,42 @@ public class ServerStatusFactory extends ObjectSerializer<ServerStatusFactory> {
 
   @Override
   public ServerStatusFactory deserialize(
-          JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext)
+      JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext)
       throws JsonParseException {
     JsonObject json = jsonElement.getAsJsonObject();
     if (json.has("description")) {
-        motd = jsonDeserializationContext.deserialize(json.get("description"), String.class);
+      motd = jsonDeserializationContext.deserialize(json.get("description"), String.class);
     }
 
     if (json.has("players")) {
       JsonObject playerObject = json.getAsJsonObject("players");
 
-      if (playerObject.has("max"))
-          maximumPlayers =
+      if (playerObject.has("max")) {
+        maximumPlayers =
             jsonDeserializationContext.deserialize(playerObject.get("max"), Integer.class);
-      if (playerObject.has("online"))
-          currentPlayers =
+      }
+      if (playerObject.has("online")) {
+        currentPlayers =
             jsonDeserializationContext.deserialize(playerObject.get("online"), Integer.class);
+      }
 
       // TODO player sample.
     }
 
     if (json.has("version")) {
       JsonObject versionObject = json.getAsJsonObject("version");
-      if (versionObject.has("name"))
-          gameVersion =
+      if (versionObject.has("name")) {
+        gameVersion =
             jsonDeserializationContext.deserialize(versionObject.get("name"), String.class);
-      if (versionObject.has("protocol"))
-          protocolVersion =
+      }
+      if (versionObject.has("protocol")) {
+        protocolVersion =
             jsonDeserializationContext.deserialize(versionObject.get("protocol"), Integer.class);
+      }
     }
 
     if (json.has("favicon")) {
-        motd = jsonDeserializationContext.deserialize(json.get("favicon"), String.class);
+      motd = jsonDeserializationContext.deserialize(json.get("favicon"), String.class);
     }
 
     return this;
@@ -89,16 +93,16 @@ public class ServerStatusFactory extends ObjectSerializer<ServerStatusFactory> {
 
   @Override
   public JsonElement serialize(
-          ServerStatusFactory serverStatusFactory,
-          Type type,
-          JsonSerializationContext jsonSerializationContext) {
+      ServerStatusFactory serverStatusFactory,
+      Type type,
+      JsonSerializationContext jsonSerializationContext) {
 
     JsonObject json = new JsonObject();
     if (serverStatusFactory.getMotd() != null) {
-      json.add("description", jsonSerializationContext.serialize(serverStatusFactory.getMotd()));
+      json.add(
+          "description",
+          jsonSerializationContext.serialize(serverStatusFactory.getMotd(), Message.class));
     }
-    if (serverStatusFactory.getPlayerSample() != null
-        && serverStatusFactory.getPlayerSample().size() > 0) {}
 
     if (serverStatusFactory.getGameVersion() != null) {
       JsonObject versionObject;

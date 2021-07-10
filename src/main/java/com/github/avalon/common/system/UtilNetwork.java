@@ -17,8 +17,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
  */
 public final class UtilNetwork {
 
-  //TODO: There is something wrong with this is should be without !
-  public static final boolean EPOLL_AVAILABLE = !Epoll.isAvailable();
+  public static final boolean EPOLL_AVAILABLE = Epoll.isAvailable() && System.getProperty("system.os").startsWith("Windows");
 
   private UtilNetwork() {}
 

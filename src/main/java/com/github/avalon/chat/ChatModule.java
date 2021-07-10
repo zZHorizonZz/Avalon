@@ -9,12 +9,14 @@ import com.github.avalon.chat.command.annotation.CommandPerformer;
 import com.github.avalon.console.logging.DefaultLogger;
 import com.github.avalon.module.ServerModule;
 import com.github.avalon.player.IPlayer;
+import com.github.avalon.player.command.GamemodeCommand;
+import com.github.avalon.player.command.SuperSecretCommand;
 import com.github.avalon.server.IServer;
 
 import java.util.*;
 import java.util.function.Consumer;
 
-@Module(name = "ChatOperator Module", asynchronous = true)
+@Module(name = "Chat Module", asynchronous = true)
 public class ChatModule extends ServerModule {
 
   public static final DefaultLogger LOGGER = new DefaultLogger(ChatModule.class);
@@ -27,6 +29,18 @@ public class ChatModule extends ServerModule {
 
     registeredPrefixes = new ArrayList<>();
     commandMap = new HashMap<>();
+  }
+
+  @Override
+  public void enable() {
+    super.enable();
+
+    registerBasicCommands();
+  }
+
+  public void registerBasicCommands() {
+    registerCommands(new GamemodeCommand());
+    registerCommands(new SuperSecretCommand());
   }
 
   public void registerCommands(CommandListener listener) {

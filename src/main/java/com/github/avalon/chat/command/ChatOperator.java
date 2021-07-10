@@ -1,8 +1,8 @@
 package com.github.avalon.chat.command;
 
 import com.github.avalon.chat.ChatModule;
-import com.github.avalon.chat.message.ChatColor;
 import com.github.avalon.chat.message.Message;
+import com.github.avalon.chat.message.TextMessage;
 import com.github.avalon.player.attributes.MessageType;
 import com.github.avalon.server.Server;
 
@@ -23,7 +23,7 @@ public interface ChatOperator {
    * @param message Message to send.
    */
   default void sendMessage(String message) {
-    sendMessage(MessageType.CHAT, ChatColor.toChat(message));
+    sendMessage(MessageType.CHAT, new TextMessage(message));
   }
 
   /**
@@ -35,7 +35,7 @@ public interface ChatOperator {
    * @param message Message to send.
    */
   default void sendSystemMessage(String message) {
-    sendMessage(MessageType.CHAT, ChatColor.toChat(message));
+    sendMessage(MessageType.CHAT, new TextMessage(message));
   }
 
   /**
@@ -46,7 +46,7 @@ public interface ChatOperator {
    * @param message Message to send.
    */
   default void sendGameInfo(String message) {
-    sendMessage(MessageType.CHAT, ChatColor.toChat(message));
+    sendMessage(MessageType.CHAT, new TextMessage(message));
   }
 
   /**

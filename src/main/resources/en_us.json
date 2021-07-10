@@ -1,0 +1,22 @@
+{
+  "generics": {
+    "error": "%red%Something went wrong. Please contact server administrator."
+  },
+  "command": {
+    "not_enough_arguments": "%red%Not enough arguments. Try %s"
+  },
+  "gamemode": {
+    "change": "%bold%Your gamemode has been changed to %yellow%{0}"
+  },
+  "editor": {
+    "pos1": "%gray%First corner has been set to %yellow%X: {0}%gray%,%yellow%Y: {1}%gray%,%yellow%Z: {2}",
+    "pos2": "%gray%Second corner has been set to %yellow%X: {0}%gray%,%yellow%Y: {1}%gray%,%yellow%Z: {2}",
+    "operation_start": "%gray%Operation has been submitted to process...",
+    "operation_finished": "%bold%Operation was successful and %yellow%{0} blocks %white%has been changed.",
+    "up_one": "%bold%Block under you is now solid.",
+    "up_multiple": "%bold%You were teleported by %yellow%{0} %white%blocks and block under you is now solid."
+  },
+  "item": {
+    "give": "%bold%You received %yellow%{0}x %white%of %yellow%{1}"
+  }
+}

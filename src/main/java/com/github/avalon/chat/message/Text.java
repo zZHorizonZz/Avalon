@@ -8,7 +8,7 @@ import java.util.EnumSet;
 public class Text implements JsonSerializer<Text>, JsonDeserializer<Text> {
 
   private ChatColor chatColor = ChatColor.WHITE;
-  private final EnumSet<ChatEffect> effects = EnumSet.noneOf(ChatEffect.class);
+  private EnumSet<ChatEffect> effects = EnumSet.noneOf(ChatEffect.class);
 
   private String text;
 
@@ -75,19 +75,6 @@ public class Text implements JsonSerializer<Text>, JsonDeserializer<Text> {
     return jsonObject;
   }
 
-  @Override
-  public String toString() {
-    return "Text{"
-        + "chatColor="
-        + chatColor
-        + ", effects="
-        + effects
-        + ", text='"
-        + text
-        + '\''
-        + '}';
-  }
-
   public ChatColor getColor() {
     return chatColor;
   }
@@ -108,7 +95,34 @@ public class Text implements JsonSerializer<Text>, JsonDeserializer<Text> {
     return effects;
   }
 
+  public void setEffects(EnumSet<ChatEffect> effects) {
+    this.effects = effects;
+  }
+
   public void addEffect(ChatEffect effect) {
     effects.add(effect);
+  }
+
+  @Override
+  public String toString() {
+    return "Text{"
+            + "chatColor="
+            + chatColor
+            + ", effects="
+            + effects
+            + ", text='"
+            + text
+            + '\''
+            + '}';
+  }
+
+  @Override
+  public Text clone() {
+    Text text = new Text();
+    text.setText(this.text);
+    text.setColor(chatColor);
+    text.setEffects(effects);
+
+    return text;
   }
 }

@@ -3,8 +3,8 @@ package com.github.avalon.player;
 import com.flowpowered.network.ConnectionManager;
 import com.github.avalon.account.PlayerProfile;
 import com.github.avalon.character.character.CharacterLiving;
-import com.github.avalon.chat.message.ChatColor;
 import com.github.avalon.chat.message.Message;
+import com.github.avalon.chat.message.TranslatedMessage;
 import com.github.avalon.common.math.Vector2;
 import com.github.avalon.data.Transform;
 import com.github.avalon.dimension.chunk.IChunk;
@@ -15,13 +15,8 @@ import com.github.avalon.network.ProtocolType;
 import com.github.avalon.network.protocol.ProtocolRegistry;
 import com.github.avalon.packet.PacketBatch;
 import com.github.avalon.packet.packet.Packet;
-import com.github.avalon.packet.packet.play.PacketChatMessage;
-import com.github.avalon.packet.packet.play.PacketKeepAliveClient;
-import com.github.avalon.packet.packet.play.PacketPositionAndLook;
-import com.github.avalon.player.attributes.MessageType;
-import com.github.avalon.player.attributes.PlayerAttributes;
-import com.github.avalon.player.attributes.PlayerSettings;
-import com.github.avalon.player.attributes.Status;
+import com.github.avalon.packet.packet.play.*;
+import com.github.avalon.player.attributes.*;
 import com.github.avalon.player.handler.PlayerChunkProvider;
 import com.github.avalon.server.Server;
 import io.netty.channel.Channel;
@@ -229,6 +224,10 @@ public class Player implements IPlayer {
   @Override
   public void sendMessage(MessageType type, Message message) {
     // TODO: Maybe implement players uuids.
+    if (message instanceof TranslatedMessage) {
+      ((TranslatedMessage) message).setLanguage(getSettings().getLocale());
+    }
+
     PacketChatMessage packet = new PacketChatMessage(message, type.getType(), UUID.randomUUID());
     sendPacket(packet);
   }
@@ -306,6 +305,28 @@ public class Player implements IPlayer {
   @Override
   public PlayerAttributes getPlayerAttributes() {
     return attributes;
+  }
+
+  @Override
+  public void setGameMode(GameMode gameMode) {
+    assert gameMode != GameMode.UNKNOWN : "Player can not have unknown gamemode.";
+
+    attributes.setPreviousGameMode(attributes.getGameMode());
+    attributes.setGameMode(gameMode);
+
+    PacketPlayerAbilities abilities = new PacketPlayerAbilities(this);
+    PacketChangeGameState gameState =
+        new PacketChangeGameState(GameState.CHANGE_GAMEMODE, gameMode.ordinal());
+
+    sendPacket(new PacketBatch(abilities, gameState));
+  }
+
+  @Override
+  public void showDemoEvent(GameState.DemoEvent demoEvent) {
+    PacketChangeGameState packet =
+        new PacketChangeGameState(GameState.DEMO_EVENT, demoEvent.getIndex());
+
+    sendPacket(packet);
   }
 
   @Override

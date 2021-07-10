@@ -1,6 +1,7 @@
 package com.github.avalon.player;
 
 import com.github.avalon.chat.message.ChatColor;
+import com.github.avalon.chat.message.TextMessage;
 import com.github.avalon.network.Connection;
 import com.github.avalon.network.ProtocolType;
 import com.github.avalon.packet.packet.play.PacketKick;
@@ -27,16 +28,15 @@ public class PlayerConnection extends Connection {
   public void disconnect(String reason) {
     if (isActive()
         && (protocolType.equals(ProtocolType.LOGIN) || protocolType.equals(ProtocolType.PLAY))) {
-      Connection.LOGGER.info("[%s] Session was been closed. Reason: %s", this, reason);
+      Connection.LOGGER.info("[%s] Session has been closed. Reason: %s", this, reason);
 
       ChannelFuture future;
       if (protocolType.equals(ProtocolType.LOGIN)) {
         future =
             sendWithFuture(
-                new com.github.avalon.packet.packet.login.PacketKick(
-                    ChatColor.toChat(reason)));
+                new com.github.avalon.packet.packet.login.PacketKick(new TextMessage(reason)));
       } else {
-        future = sendWithFuture(new PacketKick(ChatColor.toChat(reason)));
+        future = sendWithFuture(new PacketKick(new TextMessage(reason)));
       }
 
       if (future != null) {

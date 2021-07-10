@@ -1,5 +1,6 @@
 package com.github.avalon.editor;
 
+import com.github.avalon.chat.message.TranslatedMessage;
 import com.github.avalon.common.text.Format;
 import com.github.avalon.concurrent.NetworkTaskExecutor;
 import com.github.avalon.editor.tools.basic.Operation;
@@ -45,15 +46,10 @@ public class OperationExecutor {
             operation
                 .getInform()
                 .sendSystemMessage(
-                    Format.defaultMessage(
-                        "Editor",
-                        "%green%Operation was successful and %yellow%" + blockQueue.size() + " blocks %green% was changed."));
+                    new TranslatedMessage("editor.operation_finished", blockQueue.size()));
           } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
-            operation
-                .getInform()
-                .sendSystemMessage(
-                    "%red%Something went wrong. Please contact server administrator.");
+            operation.getInform().sendSystemMessage(new TranslatedMessage("generics.error"));
           }
         });
   }

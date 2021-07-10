@@ -3,6 +3,7 @@ package com.github.avalon.item.command;
 import com.github.avalon.chat.command.CommandExecutor;
 import com.github.avalon.chat.command.CommandListener;
 import com.github.avalon.chat.command.annotation.CommandPerformer;
+import com.github.avalon.chat.message.TranslatedMessage;
 import com.github.avalon.common.text.Format;
 import com.github.avalon.data.Material;
 import com.github.avalon.item.Item;
@@ -29,7 +30,7 @@ public class ItemCommand extends CommandListener {
       String[] arguments = executor.getArguments();
 
       if (arguments.length == 0) {
-        player.sendSystemMessage("%red%Not enough arguments.");
+        player.sendSystemMessage(new TranslatedMessage("command.not_enough_arguments"));
         return;
       }
 
@@ -52,9 +53,7 @@ public class ItemCommand extends CommandListener {
       }
 
       player.getInventory().setCurrentHeldItem(new Item(material, size));
-      player.sendSystemMessage(
-          Format.defaultMessage(
-              "Item", "You received %yellow%" + size + "x %gray%of%yellow% " + material.getName()));
+      player.sendSystemMessage(new TranslatedMessage("item.give", size, material.getName()));
     }
   }
 }

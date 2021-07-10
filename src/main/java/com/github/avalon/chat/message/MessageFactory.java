@@ -6,7 +6,7 @@ public class MessageFactory {
 
   private String text;
 
-  private Message message = new Message();
+  private Message message;
   private Text segment = new Text();
   private StringBuilder currentText = new StringBuilder();
 
@@ -18,13 +18,14 @@ public class MessageFactory {
 
   private int currentColorLength;
 
-  public MessageFactory(String text) {
-    this.text = text;
-
-    chars = text.toCharArray();
+  public MessageFactory(Message message) {
+    this.message = message;
   }
 
-  public Message toChat() {
+  public void convert(String text) {
+    this.text = text;
+    chars = text.toCharArray();
+
     for (int i = 0; i < chars.length; i++) {
       char currentChar = chars[i];
       if (currentChar == '%' && (i == 0 || (i - 1 > 0 && chars[i - 1] != '\\'))) {
@@ -50,7 +51,6 @@ public class MessageFactory {
     }
 
     reset();
-    return message;
   }
 
   private void validateIdentifier() {
@@ -83,7 +83,10 @@ public class MessageFactory {
   private void reset() {
     segment.setText(currentText.toString());
     message.append(segment);
-    segment = new Text();
+
+    segment = segment.clone();
+    segment.setText(null);
+
     currentText = new StringBuilder();
     textLocked = false;
     currentColor = new StringBuilder();
