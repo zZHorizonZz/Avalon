@@ -20,11 +20,13 @@ run [BootLoader](https://github.com/Avalon-Minecraft/Avalon/blob/main/src/main/j
 
 * If we want to fill some area we can use /pos1 and /pos2 for selection of box that we want to fill and then we can send
   /fill [Material]
-* If we want to create block under us we can use /up.
+* If we want to create block under us we can use /up [Optional height].
 
 ### Miscellaneous Commands:
 
 * To give ourselves item we can use /item give [Material]
+* To give ourselves item we can use /gamemode [creative/survival/spectator/adventure]
+* To give ourselves item we can use /supersecret [Magic Number]
 
 ### Server Commands:
 
