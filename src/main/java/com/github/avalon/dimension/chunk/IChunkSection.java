@@ -1,7 +1,11 @@
 package com.github.avalon.dimension.chunk;
 
+import com.github.avalon.common.data.CompactLongArray;
 import com.github.avalon.data.Material;
+import com.github.avalon.network.PacketBuffer;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,6 +32,7 @@ public interface IChunkSection {
 
   void setEmpty(boolean empty);
 
+  // TODO:
   Map<Integer, Integer> getBlocks();
 
   default Material getMaterialAt(int x, int y, int z) {
@@ -81,6 +86,49 @@ public interface IChunkSection {
 
       state = state | (currentMaterial << 0x08);
       getBlocks().replace(location, state);
+    }
+  }
+
+  default void write(PacketBuffer buffer) {
+    List<Integer> blocks = new LinkedList<>();
+    int[] references = new int[4096];
+    int nonAirBlock = 0;
+
+    int index = 0;
+
+    for (int x = 0; x <= 15; x++) {
+      for (int y = 0; y <= 15; y++) {
+        for (int z = 0; z <= 15; z++) {
+          int location = x | (y << 0x08) | (z << 0x10);
+
+          if (getBlocks().containsKey(location)) {
+            int identifier = getBlocks().get(location);
+
+            if (!blocks.contains(identifier)) {
+              blocks.add(identifier);
+            }
+
+            references[index] = blocks.indexOf(identifier);
+            nonAirBlock++;
+          } else {
+            references[index] = 0;
+          }
+
+          index++;
+        }
+      }
+    }
+
+    CompactLongArray longArray = new CompactLongArray((Long.SIZE / 5), 4096 / (Long.SIZE / 5));
+    long[] array = longArray.toArray(references);
+
+    buffer.writeShort(nonAirBlock);
+    buffer.writeByte(5);
+    buffer.writeVarInt(blocks.size());
+    blocks.forEach(buffer::writeVarInt);
+    buffer.writeVarInt(array.length);
+    for (long compactedReferences : array) {
+      buffer.writeLong(compactedReferences);
     }
   }
 }

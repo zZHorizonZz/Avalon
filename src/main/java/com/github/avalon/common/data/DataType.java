@@ -2,6 +2,7 @@ package com.github.avalon.common.data;
 
 import com.github.avalon.chat.message.Message;
 import com.github.avalon.common.bytes.BitField;
+import com.github.avalon.dimension.chunk.IChunkSection;
 import com.github.avalon.item.Item;
 import com.github.avalon.nbt.tag.TagCompound;
 import com.github.avalon.network.PacketBuffer;
@@ -42,6 +43,7 @@ public class DataType<T> {
   public static final DataType<Enum<?>> ENUM;
   public static final DataType<byte[]> BYTE_ARRAY;
   public static final DataType<BitField> BIT_FIELD;
+  public static final DataType<IChunkSection[]> CHUNK_SECTION;
 
   static {
     BOOLEAN = new DataType<>(PacketBuffer::writeBoolean, PacketBuffer::readBoolean);
@@ -74,6 +76,7 @@ public class DataType<T> {
     ENUM = new DataType<>();
     BYTE_ARRAY = new DataType<>(PacketBuffer::writeByteArray, PacketBuffer::readByteArray);
     BIT_FIELD = new DataType<>(PacketBuffer::writeField, null);
+    CHUNK_SECTION = new DataType<>(PacketBuffer::writeChunkSections, null);
   }
 
   @Nullable private final BiConsumer<PacketBuffer, T> writeMethod;

@@ -189,4 +189,8 @@ public class ChunkSectionProvider {
   public IChunk getChunk() {
     return chunk;
   }
+
+  public IChunkSection[] getSections() {
+    return sections;
+  }
 }

@@ -7,6 +7,7 @@ import com.github.avalon.nbt.serialization.NamedBinarySerializer;
 import com.github.avalon.nbt.tag.Tag;
 import com.github.avalon.nbt.tag.TagCompound;
 import com.github.avalon.nbt.tag.array.TagLongArray;
+import com.github.avalon.network.PacketBuffer;
 
 import java.util.Arrays;
 import java.util.Collection;

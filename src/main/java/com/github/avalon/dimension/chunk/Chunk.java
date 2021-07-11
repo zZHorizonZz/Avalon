@@ -1,6 +1,8 @@
 package com.github.avalon.dimension.chunk;
 
 import com.github.avalon.common.math.Vector2;
+import com.github.avalon.data.Material;
+import com.github.avalon.data.Transform;
 
 import java.util.Collection;
 import java.util.Map;
@@ -22,6 +24,16 @@ public class Chunk implements IChunk {
     sectionProvider = new ChunkSectionProvider(this);
 
     status = ChunkStatus.UNLOADED;
+    loadDebugLayer();
+  }
+
+  public void loadDebugLayer() {
+    for (int x = 0; x <= 15; x++) {
+      for (int z = 0; z <= 15; z++) {
+        sectionProvider.placeBlockAsSystem(
+            new Transform(chunkBatch.getDimension(), x, 65, z), Material.STONE);
+      }
+    }
   }
 
   @Override
@@ -70,8 +82,7 @@ public class Chunk implements IChunk {
   }
 
   @Override
-  public com.github.avalon.character.character.Character getCharacter(
-      int characterIdentifier) {
+  public com.github.avalon.character.character.Character getCharacter(int characterIdentifier) {
     return characters.get(characterIdentifier);
   }
 
@@ -111,12 +122,6 @@ public class Chunk implements IChunk {
 
   @Override
   public String toString() {
-    return "Chunk:"
-        + " X: "
-        + position.getX()
-        + ", Z: "
-        + position.getZ()
-        + ", Status: "
-        + status;
+    return "Chunk:" + " X: " + position.getX() + ", Z: " + position.getZ() + ", Status: " + status;
   }
 }

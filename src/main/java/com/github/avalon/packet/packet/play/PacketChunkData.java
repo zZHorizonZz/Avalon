@@ -2,7 +2,9 @@ package com.github.avalon.packet.packet.play;
 
 import com.github.avalon.common.data.DataType;
 import com.github.avalon.dimension.chunk.IChunk;
+import com.github.avalon.dimension.chunk.IChunkSection;
 import com.github.avalon.nbt.tag.TagCompound;
+import com.github.avalon.network.PacketBuffer;
 import com.github.avalon.network.ProtocolType;
 import com.github.avalon.packet.annotation.PacketRegister;
 import com.github.avalon.packet.packet.Packet;
@@ -10,6 +12,8 @@ import com.github.avalon.packet.schema.ArrayScheme;
 import com.github.avalon.packet.schema.FunctionScheme;
 import com.github.avalon.packet.schema.PacketStrategy;
 import com.github.avalon.player.PlayerConnection;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +36,7 @@ import java.util.List;
  *   <li>8. Block entities in chunk.
  * </ul>
  *
- * @version 1.1
+ * @version 1.2
  */
 @PacketRegister(
     operationCode = 0x20,
@@ -67,13 +71,18 @@ public class PacketChunkData extends Packet<PacketChunkData> {
     z = chunk.getZ();
 
     fullChunk = true;
-    bitMask = 0;
+    bitMask = getChunkSize();
     heightMap = (TagCompound) chunk.serialize(chunk);
     biomes = new ArrayList<>();
     for (int i = 1; i <= 1024; i++) {
       biomes.add(0);
     }
-    data = new byte[0];
+
+    data = new byte[getChunkSize()];
+    ByteBuf bytebuf = Unpooled.wrappedBuffer(data);
+    bytebuf.writerIndex(0);
+    new PacketBuffer(bytebuf).writeChunkSections(chunk.getProvider().getSections());
+
     blockEntities = new ArrayList<>();
   }
 
@@ -88,6 +97,10 @@ public class PacketChunkData extends Packet<PacketChunkData> {
   @Override
   public PacketStrategy getStrategy() {
     return strategy;
+  }
+
+  private int getChunkSize() {
+    return 65535; // TODO Only for testing
   }
 
   public int getX() {

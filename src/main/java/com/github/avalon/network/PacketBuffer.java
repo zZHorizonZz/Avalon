@@ -7,6 +7,8 @@ import com.github.avalon.common.data.Array;
 import com.github.avalon.data.Material;
 import com.github.avalon.descriptor.ClassDescriptor;
 import com.github.avalon.descriptor.DescriptorModule;
+import com.github.avalon.dimension.chunk.IChunk;
+import com.github.avalon.dimension.chunk.IChunkSection;
 import com.github.avalon.item.Item;
 import com.github.avalon.nbt.stream.NamedBinaryOutputStream;
 import com.github.avalon.nbt.tag.TagCompound;
@@ -49,12 +51,16 @@ public class PacketBuffer extends ByteBuf {
           .registerTypeAdapter(Text.class, new Text())
           .create();
 
-  private final DescriptorModule descriptorManager;
   private final ByteBuf buffer;
+  private DescriptorModule descriptorManager;
 
   public PacketBuffer(DescriptorModule descriptorManager, ByteBuf buffer) {
     this.buffer = buffer;
     this.descriptorManager = descriptorManager;
+  }
+
+  public PacketBuffer(ByteBuf buffer) {
+    this.buffer = buffer;
   }
 
   /**
@@ -353,6 +359,12 @@ public class PacketBuffer extends ByteBuf {
   public Message readChat() {
     String json = readUTF8();
     return CHAT_SERIALIZER.fromJson(json, Message.class);
+  }
+
+  public void writeChunkSections(IChunkSection[] section) {
+    for (IChunkSection chunkSection : section) {
+      chunkSection.write(this);
+    }
   }
 
   @Override
