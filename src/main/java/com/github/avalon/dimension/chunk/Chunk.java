@@ -28,10 +28,10 @@ public class Chunk implements IChunk {
   }
 
   public void loadDebugLayer() {
-    for (int x = 0; x <= 15; x++) {
-      for (int z = 0; z <= 15; z++) {
+    for (int x = 1; x <= 16; x++) {
+      for (int z = 1; z <= 16; z++) {
         sectionProvider.placeBlockAsSystem(
-            new Transform(chunkBatch.getDimension(), x, 65, z), Material.STONE);
+            new Transform(chunkBatch.getDimension(), (getX() == 0 ? 0 : getX() * 16) + x, 128, (getZ() == 0 ? 0 : getZ() * 16) + z), Material.STONE);
       }
     }
   }

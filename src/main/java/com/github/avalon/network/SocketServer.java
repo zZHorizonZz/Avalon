@@ -112,6 +112,7 @@ public class SocketServer implements ConnectionManager {
   }
 
   public void onBindFailure(InetSocketAddress address, Throwable t) {
+    LOGGER.error("Something went wrong with binding of address %s", t, address.getHostString() + ':' + address.getPort());
     System.exit(1);
   }
 

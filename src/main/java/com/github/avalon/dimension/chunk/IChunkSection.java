@@ -95,15 +95,19 @@ public interface IChunkSection {
     int nonAirBlock = 0;
 
     int index = 0;
+    blocks.add(0);
 
     for (int x = 0; x <= 15; x++) {
       for (int y = 0; y <= 15; y++) {
         for (int z = 0; z <= 15; z++) {
           int location = x | (y << 0x08) | (z << 0x10);
+          int identifier = getBlocks().getOrDefault(location, 0);
+          int state = identifier & 0xFF;
 
-          if (getBlocks().containsKey(location)) {
-            int identifier = getBlocks().get(location);
+          identifier = (identifier >> 0x08) & 0xFF;
+          identifier = state + identifier;
 
+          if (identifier != 0) {
             if (!blocks.contains(identifier)) {
               blocks.add(identifier);
             }

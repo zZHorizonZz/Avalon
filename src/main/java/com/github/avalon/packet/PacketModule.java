@@ -37,7 +37,7 @@ public class PacketModule extends ServerModule {
       }
     }
 
-    LOGGER.info("%s was been successfully registered.", listener.getClass().getSimpleName());
+    LOGGER.info("%s has been successfully registered.", listener.getClass().getSimpleName());
   }
 
   public void registerPacketHandler(PacketListener listener, Method handler) {
