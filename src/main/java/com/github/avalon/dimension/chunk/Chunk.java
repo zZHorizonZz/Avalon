@@ -30,8 +30,36 @@ public class Chunk implements IChunk {
   public void loadDebugLayer() {
     for (int x = 1; x <= 16; x++) {
       for (int z = 1; z <= 16; z++) {
-        sectionProvider.placeBlockAsSystem(
-            new Transform(chunkBatch.getDimension(), (getX() == 0 ? 0 : getX() * 16) + x, 128, (getZ() == 0 ? 0 : getZ() * 16) + z), Material.STONE);
+        if(x == 16 && z == 16) {
+          sectionProvider.placeBlockAsSystem(
+                  new Transform(
+                          chunkBatch.getDimension(),
+                          (getX() == 0 ? 0 : getX() * 16) + x,
+                          32,
+                          (getZ() == 0 ? 0 : getZ() * 16) + z),
+                  Material.COARSE_DIRT);
+          continue;
+        }
+        if (x != 1 && x != 16 && z != 1 && z != 16) {
+          sectionProvider.placeBlockAsSystem(
+              new Transform(
+                  chunkBatch.getDimension(),
+                  (getX() == 0 ? 0 : getX() * 16) + x,
+                      32,
+                  (getZ() == 0 ? 0 : getZ() * 16) + z),
+              Material.POLISHED_ANDESITE);
+
+        } else {
+          sectionProvider.placeBlockAsSystem(
+              new Transform(
+                  chunkBatch.getDimension(),
+                  (getX() == 0 ? 0 : getX() * 16) + x,
+                      32,
+                  (getZ() == 0 ? 0 : getZ() * 16) + z),
+              Material.GRANITE);
+        }
+        /*sectionProvider.placeBlockAsSystem(
+        new Transform(chunkBatch.getDimension(), (getX() == 0 ? 0 : getX() * 16) + x, 0, (getZ() == 0 ? 0 : getZ() * 16) + z), Material.STONE);*/
       }
     }
   }

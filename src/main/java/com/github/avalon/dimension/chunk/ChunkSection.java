@@ -45,11 +45,8 @@ public class ChunkSection implements IChunkSection {
 
   @Override
   public boolean isEmpty() {
-    return false;
+    return blocks.isEmpty();
   }
-
-  @Override
-  public void setEmpty(boolean empty) {}
 
   @Override
   public Map<Integer, Integer> getBlocks() {

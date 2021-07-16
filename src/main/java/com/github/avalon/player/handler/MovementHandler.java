@@ -21,21 +21,18 @@ public class MovementHandler implements PacketListener {
     float yaw = packet.getYaw();
     float pitch = packet.getPitch();
 
-    player.setLocation(player.getLocation().setTransform(x, y, z, yaw, pitch));
     Transform moveTransform = new Transform(player.getDimension(), x, y, z, yaw, pitch);
     player.getIncomingMovements().offer(moveTransform);
   }
 
   @PacketHandler
-  public void handlePlayerPosition(
-          PacketPlayerPosition packet, PlayerConnection connection) {
+  public void handlePlayerPosition(PacketPlayerPosition packet, PlayerConnection connection) {
     IPlayer player = connection.getPlayer();
 
     double x = packet.getX();
     double y = packet.getY();
     double z = packet.getZ();
 
-    player.setLocation(player.getLocation().setTransform(x, y, z));
     Transform moveTransform = new Transform(player.getDimension(), x, y, z);
     player.getIncomingMovements().offer(moveTransform);
   }

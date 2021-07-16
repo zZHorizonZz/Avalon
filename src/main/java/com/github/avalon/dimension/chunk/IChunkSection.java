@@ -30,8 +30,6 @@ public interface IChunkSection {
 
   boolean isEmpty();
 
-  void setEmpty(boolean empty);
-
   // TODO:
   Map<Integer, Integer> getBlocks();
 
@@ -95,35 +93,34 @@ public interface IChunkSection {
     int nonAirBlock = 0;
 
     int index = 0;
-    blocks.add(0);
 
-    for (int x = 0; x <= 15; x++) {
-      for (int y = 0; y <= 15; y++) {
+    for (int y = 0; y <= 15; y++) {
+      for (int x = 0; x <= 15; x++) {
         for (int z = 0; z <= 15; z++) {
           int location = x | (y << 0x08) | (z << 0x10);
           int identifier = getBlocks().getOrDefault(location, 0);
-          int state = identifier & 0xFF;
+          int state = 0;
+
+          if (identifier != 0) {
+            state = identifier & 0xFF;
+            nonAirBlock++;
+          }
 
           identifier = (identifier >> 0x08) & 0xFF;
           identifier = state + identifier;
 
-          if (identifier != 0) {
-            if (!blocks.contains(identifier)) {
-              blocks.add(identifier);
-            }
-
-            references[index] = blocks.indexOf(identifier);
-            nonAirBlock++;
-          } else {
-            references[index] = 0;
+          if (!blocks.contains(identifier)) {
+            blocks.add(identifier);
           }
+
+          references[index] = blocks.indexOf(identifier);
 
           index++;
         }
       }
     }
 
-    CompactLongArray longArray = new CompactLongArray((Long.SIZE / 5), 4096 / (Long.SIZE / 5));
+    CompactLongArray longArray = new CompactLongArray(Long.SIZE / 5);
     long[] array = longArray.toArray(references);
 
     buffer.writeShort(nonAirBlock);

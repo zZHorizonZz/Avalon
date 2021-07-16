@@ -7,7 +7,6 @@ import com.github.avalon.common.data.Array;
 import com.github.avalon.data.Material;
 import com.github.avalon.descriptor.ClassDescriptor;
 import com.github.avalon.descriptor.DescriptorModule;
-import com.github.avalon.dimension.chunk.IChunk;
 import com.github.avalon.dimension.chunk.IChunkSection;
 import com.github.avalon.item.Item;
 import com.github.avalon.nbt.stream.NamedBinaryOutputStream;
@@ -306,10 +305,9 @@ public class PacketBuffer extends ByteBuf {
   public void writeNamedBinaryTag(TagCompound compound) {
     try {
       NamedBinaryOutputStream stream = new NamedBinaryOutputStream(new ByteBufOutputStream(this));
-      // stream.writeByte(10);
       compound.writeNamedTag(stream);
-    } catch (IOException exception) {
-      exception.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
     }
   }
 
@@ -361,10 +359,18 @@ public class PacketBuffer extends ByteBuf {
     return CHAT_SERIALIZER.fromJson(json, Message.class);
   }
 
-  public void writeChunkSections(IChunkSection[] section) {
-    for (IChunkSection chunkSection : section) {
-      chunkSection.write(this);
+  public void writeChunkSections(IChunkSection[] sections) {
+    for (IChunkSection section : sections) {
+      if (!section.isEmpty()) {
+        section.write(this);
+      }
     }
+  }
+
+  public void writeBuffer(ByteBuf buffer) {
+    writeVarInt(buffer.writerIndex());
+    writeBytes(buffer);
+    buffer.release();
   }
 
   @Override

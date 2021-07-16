@@ -7,6 +7,7 @@ import com.github.avalon.item.Item;
 import com.github.avalon.nbt.tag.TagCompound;
 import com.github.avalon.network.PacketBuffer;
 import com.github.avalon.resource.data.ResourceIdentifier;
+import io.netty.buffer.ByteBuf;
 
 import javax.annotation.Nullable;
 import java.util.function.BiConsumer;
@@ -42,6 +43,7 @@ public class DataType<T> {
   public static final DataType<Array<?>> ARRAY;
   public static final DataType<Enum<?>> ENUM;
   public static final DataType<byte[]> BYTE_ARRAY;
+  public static final DataType<ByteBuf> BUFFER;
   public static final DataType<BitField> BIT_FIELD;
   public static final DataType<IChunkSection[]> CHUNK_SECTION;
 
@@ -75,6 +77,7 @@ public class DataType<T> {
     ARRAY = new DataType<>();
     ENUM = new DataType<>();
     BYTE_ARRAY = new DataType<>(PacketBuffer::writeByteArray, PacketBuffer::readByteArray);
+    BUFFER = new DataType<>(PacketBuffer::writeBuffer, null);
     BIT_FIELD = new DataType<>(PacketBuffer::writeField, null);
     CHUNK_SECTION = new DataType<>(PacketBuffer::writeChunkSections, null);
   }

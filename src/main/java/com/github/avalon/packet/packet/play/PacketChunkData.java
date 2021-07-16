@@ -44,6 +44,12 @@ import java.util.List;
     direction = PacketRegister.Direction.CLIENT)
 public class PacketChunkData extends Packet<PacketChunkData> {
 
+
+  private static final byte CHUNK_SECTION_COUNT = 16;
+  private static final int MAX_BITS_PER_ENTRY = 16;
+  private static final int MAX_BUFFER_SIZE = (Short.BYTES + Byte.BYTES + 5 * Byte.BYTES + (4096 * MAX_BITS_PER_ENTRY / Long.SIZE * Long.BYTES)) * CHUNK_SECTION_COUNT + 256 * Integer.BYTES;
+
+
   public PacketStrategy strategy =
       new PacketStrategy(
           new FunctionScheme<>(DataType.INTEGER, this::getX, this::setX),
@@ -52,7 +58,7 @@ public class PacketChunkData extends Packet<PacketChunkData> {
           new FunctionScheme<>(DataType.VARINT, this::getBitMask, this::setBitMask),
           new FunctionScheme<>(DataType.NBT_TAG, this::getHeightMap, this::setHeightMap),
           new ArrayScheme<>(DataType.VARINT, this::getBiomes, this::setBiomes),
-          new FunctionScheme<>(DataType.BYTE_ARRAY, this::getData, this::setData),
+          new FunctionScheme<>(DataType.BUFFER, this::getData, this::setData),
           new ArrayScheme<>(DataType.NBT_TAG, this::getBlockEntities, this::setBlockEntities));
 
   private int x;
@@ -61,7 +67,7 @@ public class PacketChunkData extends Packet<PacketChunkData> {
   private int bitMask;
   private TagCompound heightMap;
   private List<Integer> biomes;
-  private byte[] data;
+  private ByteBuf data;
   private List<TagCompound> blockEntities;
 
   public PacketChunkData() {}
@@ -71,17 +77,15 @@ public class PacketChunkData extends Packet<PacketChunkData> {
     z = chunk.getZ();
 
     fullChunk = true;
-    bitMask = getChunkSize();
+    bitMask = getChunkSize(chunk);
     heightMap = (TagCompound) chunk.serialize(chunk);
     biomes = new ArrayList<>();
     for (int i = 1; i <= 1024; i++) {
       biomes.add(0);
     }
 
-    data = new byte[getChunkSize()];
-    ByteBuf bytebuf = Unpooled.wrappedBuffer(data);
-    bytebuf.writerIndex(0);
-    new PacketBuffer(bytebuf).writeChunkSections(chunk.getProvider().getSections());
+    data = Unpooled.buffer(MAX_BUFFER_SIZE);
+    new PacketBuffer(data).writeChunkSections(chunk.getProvider().getSections());
 
     blockEntities = new ArrayList<>();
   }
@@ -99,8 +103,20 @@ public class PacketChunkData extends Packet<PacketChunkData> {
     return strategy;
   }
 
-  private int getChunkSize() {
-    return 65535; // TODO Only for testing
+  private int getChunkSize(IChunk chunk) {
+    IChunkSection[] sections = chunk.getProvider().getSections();
+
+    int bitMask = 0;
+
+    for (int i = 0; i < sections.length; i++) {
+      if (i == 0) {
+        bitMask = sections[0].isEmpty() ? 0 : 1;
+      } else {
+        bitMask |= (sections[i].isEmpty() ? 0 : 1) << i;
+      }
+    }
+
+    return bitMask;
   }
 
   public int getX() {
@@ -151,11 +167,11 @@ public class PacketChunkData extends Packet<PacketChunkData> {
     this.biomes = biomes;
   }
 
-  public byte[] getData() {
+  public ByteBuf getData() {
     return data;
   }
 
-  public void setData(byte[] data) {
+  public void setData(ByteBuf data) {
     this.data = data;
   }
 

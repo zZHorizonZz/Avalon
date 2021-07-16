@@ -6,6 +6,7 @@ import com.github.avalon.network.ProtocolType;
 import com.github.avalon.packet.packet.login.PacketLoginSuccess;
 import com.github.avalon.packet.packet.play.PacketEntityAction;
 import com.github.avalon.packet.packet.play.PacketPlayerPositionAndRotation;
+import com.github.avalon.packet.packet.play.PacketUpdateViewPosition;
 import com.github.avalon.server.Server;
 
 import java.util.Queue;
@@ -43,6 +44,22 @@ public class ActionHandler implements IActionHandler {
     if (!movements.isEmpty()) {
 
       for (Transform lastMove : movements) {
+        if (player.getLocation().getChunk().getX() != lastMove.getChunk().getX()
+            || player.getLocation().getChunk().getZ() != lastMove.getChunk().getZ()) {
+          PacketUpdateViewPosition packet =
+              new PacketUpdateViewPosition(lastMove.getChunk().getX(), lastMove.getChunk().getZ());
+          player.sendPacket(packet);
+        }
+
+        player.setLocation(
+            player
+                .getLocation()
+                .setTransform(
+                    lastMove.getX(),
+                    lastMove.getY(),
+                    lastMove.getZ(),
+                    lastMove.getYaw(),
+                    lastMove.getPitch()));
         player.getControllingCharacter().move(lastMove);
       }
 
