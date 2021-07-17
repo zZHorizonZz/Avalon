@@ -3,6 +3,7 @@ package com.github.avalon.data;
 import com.github.avalon.common.math.Vector3;
 import com.github.avalon.dimension.chunk.IChunk;
 import com.github.avalon.dimension.dimension.Dimension;
+import com.google.common.math.IntMath;
 
 /**
  * This class provides an implementation of transform system (Location system in other words). This
@@ -72,15 +73,15 @@ public class Transform {
   }
 
   public int getBlockX() {
-    return (int) Math.floor(x);
+    return (int) Math.round(x);
   }
 
   public int getBlockY() {
-    return (int) Math.floor(y);
+    return (int) Math.round(y);
   }
 
   public int getBlockZ() {
-    return (int) Math.floor(z);
+    return (int) Math.round(z);
   }
 
   /**

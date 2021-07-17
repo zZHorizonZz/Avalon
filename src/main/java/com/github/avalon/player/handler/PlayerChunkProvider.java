@@ -16,7 +16,28 @@ public class PlayerChunkProvider {
     IChunk currentChunk = player.getLocation().getChunk();
     Dimension dimension = player.getDimension();
 
-    int x = 0;
+    int maxRadius = 7;
+
+    for (int r = 0; r <= maxRadius; r++) {
+      for (int x = -r; x <= r; x++) {
+        for (int z = -r; z <= r; z++) {
+          if (x != -r && z != -r && x != r && z != r) {
+            continue;
+          }
+
+          int xPosition = currentChunk.getX() + x;
+          int zPosition = currentChunk.getZ() + z;
+
+          IChunk chunk = dimension.getChunkAt(xPosition, zPosition);
+
+          if (!player.getChunkView().contains(chunk.getPosition())) {
+            player.getDimension().getChunkService().loadToClient(player, chunk);
+            player.getChunkView().add(chunk.getPosition());
+          }
+        }
+      }
+    }
+    /*int x = 0;
     int z = 0;
     int dx = 0;
     int dz = -1;
@@ -47,7 +68,7 @@ public class PlayerChunkProvider {
       }
       x += dx;
       z += dz;
-    }
+    }*/
   }
 
   public IPlayer getPlayer() {

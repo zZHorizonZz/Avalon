@@ -31,7 +31,7 @@ public class ChunkSectionProvider {
    */
   private Material getMaterialAt(int x, int y, int z) {
     return sections[y / IChunk.CHUNK_SECTION_SIZE].getMaterialAt(
-        Math.abs(x % 16), Math.abs(y % 16), Math.abs(z % 16));
+        x < 0 ? 15 + x % 16 : x % 16, y < 0 ? 15 + y % 16 : y % 16, z < 0 ? 15 + z % 16 : z % 16);
   }
 
   /**
@@ -43,7 +43,7 @@ public class ChunkSectionProvider {
    */
   private int getStateAt(int x, int y, int z) {
     return sections[y / IChunk.CHUNK_SECTION_SIZE].getStateAt(
-        Math.abs(x % 16), Math.abs(y % 16), Math.abs(z % 16));
+        x < 0 ? 15 + x % 16 : x % 16, y < 0 ? 15 + y % 16 : y % 16, z < 0 ? 15 + z % 16 : z % 16);
   }
 
   /**
@@ -54,7 +54,10 @@ public class ChunkSectionProvider {
    */
   private void setMaterialAt(int x, int y, int z, Material material) {
     sections[Math.floorDiv(y, IChunk.CHUNK_SECTION_SIZE)].setMaterialAt(
-        Math.abs(x % 16), Math.abs(y % 16), Math.abs(z % 16), material);
+        x < 0 ? 15 + x % 16 : x % 16,
+        y < 0 ? 15 + y % 16 : y % 16,
+        z < 0 ? 15 + z % 16 : z % 16,
+        material);
   }
 
   /**
@@ -65,7 +68,10 @@ public class ChunkSectionProvider {
    */
   private void setStateAt(int x, int y, int z, int state) {
     sections[Math.floorDiv(y, IChunk.CHUNK_SECTION_SIZE)].setStateAt(
-        Math.abs(x % 16), Math.abs(y % 16), Math.abs(z % 16), state);
+        x < 0 ? 15 + x % 16 : x % 16,
+        y < 0 ? 15 + y % 16 : y % 16,
+        z < 0 ? 15 + z % 16 : z % 16,
+        state);
   }
 
   /**
@@ -133,6 +139,24 @@ public class ChunkSectionProvider {
   public void placeBlockAsSystem(Transform location, Material material) {
     Collection<IPlayer> receivers = chunk.getChunkBatch().getDimension().getPlayers();
     setMaterialAt(location.getBlockX(), location.getBlockY(), location.getBlockZ(), material);
+    if (getChunk().getX() == -1 && getChunk().getZ() == -1) {
+      System.out.println(
+          "Block "
+              + material.getName()
+              + " : "
+              + " X: "
+              + location.getBlockX()
+              + " ABS X: "
+              + Math.abs(location.getBlockX() % 16)
+              + " Y: "
+              + location.getBlockY()
+              + " ABS Y: "
+              + Math.abs(location.getBlockY() % 16)
+              + " Z: "
+              + location.getBlockZ()
+              + " ABS Z: "
+              + Math.abs(location.getBlockZ() % 16));
+    }
     updateBlockAt(location.getBlockX(), location.getBlockY(), location.getBlockZ(), receivers);
   }
 

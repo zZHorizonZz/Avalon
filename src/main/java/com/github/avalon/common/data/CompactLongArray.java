@@ -1,5 +1,9 @@
 package com.github.avalon.common.data;
 
+import com.google.common.math.IntMath;
+
+import java.math.RoundingMode;
+
 public class CompactLongArray {
 
   private int entriesPerLong;
@@ -13,7 +17,7 @@ public class CompactLongArray {
   public long[] toArray(int[] data) {
     this.data = data;
 
-    long[] array = new long[data.length / entriesPerLong];
+    long[] array = new long[IntMath.divide(data.length, entriesPerLong, RoundingMode.CEILING)];
     long entry = 0;
     int index = 0;
     int arrayIndex = 0;
