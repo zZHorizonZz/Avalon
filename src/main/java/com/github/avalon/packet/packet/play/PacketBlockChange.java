@@ -44,7 +44,7 @@ public class PacketBlockChange extends Packet<PacketBlockChange> {
   }
 
   public PacketBlockChange(int x, int y, int z, int identifier) {
-    location = (((long) x - 1 & 0x3FFFFFF) << 38) | (((long) z - 1 & 0x3FFFFFF) << 12) | ((long) y - 1 & 0xFFF);
+    location = (((long) x & 0x3FFFFFF) << 38) | (((long) z & 0x3FFFFFF) << 12) | ((long) y & 0xFFF);
     this.identifier = identifier;
   }
 
@@ -63,6 +63,11 @@ public class PacketBlockChange extends Packet<PacketBlockChange> {
   @Override
   public void handle(PlayerConnection connection, PacketBlockChange packetBlockChange) {}
 
+  @Override
+  public PacketStrategy getStrategy() {
+    return strategy;
+  }
+
   public long getLocation() {
     return location;
   }
@@ -77,10 +82,5 @@ public class PacketBlockChange extends Packet<PacketBlockChange> {
 
   public void setIdentifier(int identifier) {
     this.identifier = identifier;
-  }
-
-  @Override
-  public PacketStrategy getStrategy() {
-    return strategy;
   }
 }

@@ -31,7 +31,9 @@ public class ChunkSectionProvider {
    */
   private Material getMaterialAt(int x, int y, int z) {
     return sections[y / IChunk.CHUNK_SECTION_SIZE].getMaterialAt(
-        x < 0 ? 15 + x % 16 : x % 16, y < 0 ? 15 + y % 16 : y % 16, z < 0 ? 15 + z % 16 : z % 16);
+        x < 0 ? 16 + ((x - 1) % 16 == 0 ? -16 : (x - 1) % 16) : x % 16,
+        y < 0 ? 16 + ((y - 1) % 16 == 0 ? -16 : (y - 1) % 16) : y % 16,
+        z < 0 ? 16 + ((z - 1) % 16 == 0 ? -16 : (z - 1) % 16) : z % 16);
   }
 
   /**
@@ -43,7 +45,9 @@ public class ChunkSectionProvider {
    */
   private int getStateAt(int x, int y, int z) {
     return sections[y / IChunk.CHUNK_SECTION_SIZE].getStateAt(
-        x < 0 ? 15 + x % 16 : x % 16, y < 0 ? 15 + y % 16 : y % 16, z < 0 ? 15 + z % 16 : z % 16);
+        x < 0 ? 16 + ((x - 1) % 16 == 0 ? -16 : (x - 1) % 16) : x % 16,
+        y < 0 ? 16 + ((y - 1) % 16 == 0 ? -16 : (y - 1) % 16) : y % 16,
+        z < 0 ? 16 + ((z - 1) % 16 == 0 ? -16 : (z - 1) % 16) : z % 16);
   }
 
   /**
@@ -53,10 +57,20 @@ public class ChunkSectionProvider {
    * @param material Material that will be set.
    */
   private void setMaterialAt(int x, int y, int z, Material material) {
+    if (x == -15 && z == -15) {
+      System.out.println("Material is " + material.getName());
+      System.out.println(
+          "Location X " + (x < 0 ? 16 + (x - 1 % 16 == 0 ? 16 : x - 1 % 16) : x - 1 % 16));
+      System.out.println(
+          "Location Y " + (y < 0 ? 16 + (y - 1 % 16 == 0 ? 16 : y - 1 % 16) : y - 1 % 16));
+      System.out.println(
+          "Location Z " + (z < 0 ? 16 + (z - 1 % 16 == 0 ? 16 : z - 1 % 16) : z - 1 % 16));
+    }
+
     sections[Math.floorDiv(y, IChunk.CHUNK_SECTION_SIZE)].setMaterialAt(
-        x < 0 ? 15 + x % 16 : x % 16,
-        y < 0 ? 15 + y % 16 : y % 16,
-        z < 0 ? 15 + z % 16 : z % 16,
+        x < 0 ? 16 + ((x - 1) % 16 == 0 ? -16 : (x - 1) % 16) : x % 16,
+        y < 0 ? 16 + ((y - 1) % 16 == 0 ? -16 : (y - 1) % 16) : y % 16,
+        z < 0 ? 16 + ((z - 1) % 16 == 0 ? -16 : (z - 1) % 16) : z % 16,
         material);
   }
 
@@ -68,9 +82,9 @@ public class ChunkSectionProvider {
    */
   private void setStateAt(int x, int y, int z, int state) {
     sections[Math.floorDiv(y, IChunk.CHUNK_SECTION_SIZE)].setStateAt(
-        x < 0 ? 15 + x % 16 : x % 16,
-        y < 0 ? 15 + y % 16 : y % 16,
-        z < 0 ? 15 + z % 16 : z % 16,
+        x < 0 ? 16 + ((x - 1) % 16 == 0 ? -16 : (x - 1) % 16) : x % 16,
+        y < 0 ? 16 + ((y - 1) % 16 == 0 ? -16 : (y - 1) % 16) : y % 16,
+        z < 0 ? 16 + ((z - 1) % 16 == 0 ? -16 : (z - 1) % 16) : z % 16,
         state);
   }
 
